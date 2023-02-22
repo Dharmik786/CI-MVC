@@ -1,0 +1,315 @@
+﻿@{
+    Layout = "_navbar1";
+    ViewData["Title"] = "Home Page";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="~/css/Volunteering.css" />
+    <link rel="stylesheet" href="~/css/landing.css" />
+
+</head>
+
+<body>
+
+    <div class="container mt-3">
+        <div class="row">
+
+            <div class="col-12 col-lg-6 col-md-12 col-sm-12 ">
+                <div class="car1">
+
+                    <!-- Full-width images with number text -->
+                    <div class="mySlides">
+                        <div class="numbertext">1 / 6</div>
+                        <img src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">2 / 6</div>
+                        <img src="/Image/img1.png" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">3 / 6</div>
+                        <img src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-2.png" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">4 / 6</div>
+                        <img src="/Image/img11.png" style="width:100%">
+                    </div>
+
+
+
+                    <!-- Next and previous buttons -->
+                    @*<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>*@
+
+                    <!-- Image text -->
+                    <!-- Thumbnail images -->
+                    <div class="row mt-3">
+                        <div class="column" style="width:25%">
+                            <img class="demo cursor" src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                        </div>
+                        <div class="column" style="width:25%">
+                            <img class="demo cursor" src="/Image/img1.png" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
+                        </div>
+                        <div class="column" style="width:25%">
+                            <img class="demo cursor" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-1.png" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+                        </div>
+                        <div class="column" style="width:25%">
+                            <img class="demo cursor" src="/Image/img11.png" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
+                        </div>
+                        @*<div class="column">
+                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
+                        </div>
+                        <div class="column">
+                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+
+           <div class="card col-12 col-lg-6 col-md-12 col-sm-12">
+
+                <div class="card-body">
+                    <div class="card-title fs-5">
+                        CSR initiative stands for Coffee & Farmer Equity
+                    </div>
+                    <div class="card-subtitle">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                    </div>
+                    <div class="rule mt-2">
+                        <hr>
+                        <button class="date-btn mt-1 p-1">Plant 10000 tree</button>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-md-6 d-flex justify-content-center">
+                            <p class="me-2 pt-2">
+                                <img src="/Image/Seats-left.png"/>
+                                <div>
+                                    <div>10</div>
+                                    <div>Seats Left</div>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-6 mt-1 d-flex justify-content-center">
+                            <p class="me-2 pt-2">
+                                <img src="/Image/achieved.png"/>
+                                <div>
+                                    <div class="mt-1">
+                                        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                                            <div class="progress-bar bg-success" style="width: 25%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>8000 Achived</div>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="d-flex">
+                        <button class="col-6  date-btn m-1 p-1 "><img src="/Image/heart1.png" class="me-2" /><span>Add to fav</span></button>
+                        <button class="col-6 date-btn m-1 p-1"><img src="/Image/add1.png" class="me-2"/><span>Recommend to co-worker</span></button>
+                    </div>
+
+                    @*<div class="row">
+                        <div class="col-6"><button class="col-6  date-btn m-1 p-1 "><img src="/Image/heart1.png" class="me-2" /><span>Add to fav</span></button></div>
+                        <div class="col-6"><button class="col-6 date-btn m-1 p-1"><img src="/Image/add1.png" class="me-2" /><span>Recommend to co-worker</span></button></div>
+                    </div>*@
+
+                    <div class="rule mt-2">
+                        <hr>
+                        <img src="/Image/star.png"/>
+                        <img src="/Image/star.png"/>
+                        <img src="/Image/star.png"/>
+                        <img src="/Image/star.png"/>
+                        <img src="/Image/star.png"/>
+                        <hr>
+                    </div>
+                    <div class="row d-flex mt-2">
+                        <div class="card d-flex col-md-3 col-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill mt-2 mb-auto" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                            </svg>
+                            <div class="mt-3 mb-0">
+                                <div>city</div>
+                                <div>London</div>
+                            </div>
+                        </div>
+                        <div class="card d-flex col-md-3 col-6 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe mt-2 mb-auto" viewBox="0 0 16 16">
+                                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z" />
+                            </svg>
+                            <div class="mt-3 mb-0">
+                                <div>Theme</div>
+                                <div>Environment</div>
+                            </div>
+                        </div>
+                        <div class="card col-md-3 col-6 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-week mt-2 mb-auto" viewBox="0 0 16 16">
+                                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                            </svg>
+                            <div class="mt-3 mb-0">
+                                <div>Date</div>
+                                <div>Ongoing Opportunity</div>
+                            </div>
+                        </div>
+                        <div class="card col-md-3 col-6 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people mt-2 mb-auto" viewBox="0 0 16 16">
+                                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                            </svg>
+                            <div class="mt-3 mb-0">
+                                <div>Organization</div>
+                                <div>CSE Network</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
+                    </div>
+                </div>
+
+           </div>
+        </div>
+
+
+        <div class="row">
+
+            @*tab bar*@
+            <div class="col-lg-8 mb-3">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active text-muted" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-muted" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-muted" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                       <div class="mt-4">
+                            <h3>Introduction</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                            sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+                            ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                       </div>
+                        <div class="mt-4">
+                            <h3>Challenge</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                                sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <h3>Documents</h3>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                     <p> sbd fjewbfjkb fkhb ekhdbferkbcgjf bgjhbkfhbdfkbv df v kbkerbvkeabffk hebffkherbkherb br,b gberkf berberkreejffer ferkbfkerffkjer bkbfdbfkb </p>
+                    </div>
+
+                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    
+                    </div>
+                </div>
+            </div>
+
+            @*Deatils*@
+            <div class="col-lg-4 ms-0">
+
+            @*information*@
+                <div class="card" style="">
+                    <div class="card-header">
+                        <h4>Information</h4>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-3 ms-2">Skills</div>
+                        <div class="col-8">Cool, Easy going, Math, Computer </div>
+                    </div>
+
+                    <hr style="border:1px solid black" class="ms-2 me-2 "/>
+
+                    <div class="row">
+                        <div class="col-3 ms-2">Days</div>
+                        <div class="col-8">Weekend Only</div>
+                    </div>
+
+                    <hr style="border:1px solid black" class="ms-2 me-2 "/>
+
+                    <div class="row">
+                        <div class="col-3 ms-2">Rating</div>
+                        <div class="col-8">
+                            <img src="/Image/selected-star.png" />
+                            <img src="/Image/selected-star.png" />
+                            <img src="/Image/selected-star.png" />
+                            <img src="/Image/selected-star.png" />
+                            <img src="/Image/selected-star.png" />
+                            <span>(By 125 Volunteer)</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            @*Recent Volunteer*@
+                <div class="">
+                    <div class="card-header"><h4>Recent Volunteers</h4></div>
+
+                    @*<div class="row col-lg-3 col-md-5 align-item-center justify-content-center">
+                       <div><img src="/Image/Volunteer1.png"/></div>
+                    </div>*@
+
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <img src="/Image/Volunteer1.png" class="rounded-circle" />
+                            <h2>Heading</h2>
+                        </div>
+                        <!-- /.col-lg-4 -->
+
+                        <div class="col-lg-4">
+                            <img src="/Image/Volunteer1.png" class="rounded-circle" />
+                            <h2>Heading</h2>
+                        </div>
+                        <!-- /.col-lg-4 -->
+                        
+                        <div class="col-lg-4">
+                            <img src="/Image/Volunteer1.png" class="rounded-circle" />
+                            <h2>Heading</h2>
+                        </div>
+                        <!-- /.col-lg-4 -->
+
+                    </div>
+                    
+                </div>
+
+            </div>
+               
+        </div>
+    </div>
+</body>
+<script src="~/js/Volunteering.js"></script>
+<partial name="_RelatedMission">
+</html>
