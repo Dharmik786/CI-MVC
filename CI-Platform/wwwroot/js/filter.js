@@ -1,5 +1,5 @@
-﻿var checkboxes = document.querySelectorAll(".checkbox");
-
+﻿
+var checkboxes = document.querySelectorAll(".checkbox");
 
 let filtersSection = document.querySelector(".filters-section");
 
@@ -15,13 +15,11 @@ for (var checkbox of checkboxes) {
             addElement(this, this.value);
         }
         else {
-
             removeElement(this.value);
             console.log("unchecked");
         }
     })
 }
-
 
 function addElement(current, value) {
     let filtersSection = document.querySelector(".filters-section");
@@ -39,15 +37,12 @@ function addElement(current, value) {
     crossButton.classList.add("filter-close-button");
     let cross = '&times;'
 
-
-
     crossButton.addEventListener('click', function () {
         let elementToBeRemoved = document.getElementById(value);
 
         console.log(elementToBeRemoved);
         console.log(current);
         elementToBeRemoved.remove();
-
         current.checked = false;
     })
 
@@ -66,5 +61,4 @@ function removeElement(value) {
 
     let elementToBeRemoved = document.getElementById(value);
     filtersSection.removeChild(elementToBeRemoved);
-
 }

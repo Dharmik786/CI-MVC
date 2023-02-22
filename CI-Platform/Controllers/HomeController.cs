@@ -46,6 +46,10 @@ namespace CI_Platform.Controllers
         {
             return View();
         }
+        public IActionResult Volunteering()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
