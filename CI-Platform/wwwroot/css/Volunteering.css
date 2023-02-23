@@ -83,9 +83,9 @@
     .active,
     .demo:hover {
         opacity: 1;
-  }
+    }
 
-div.rule{
+div.rule {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,9 +97,24 @@ hr {
     height: 2px;
     background: black;
 }
-.nav-item .active{
-    border:none!important;
-    border-bottom:3px solid black !important;
-    font-weight:500;
-    color:black !important;
+
+.nav-item .active {
+    border: none !important;
+    border-bottom: 3px solid black !important;
+    font-weight: 500;
+    color: black !important;
+}
+div .cmnt{
+    overflow: auto;
+    height: 300px;
+    width: 100%;
+    background-color:gray;
+}
+div .media{
+    background-color:white;
+}
+
+.rv-button {
+    border: none;
+    background: white;
 }

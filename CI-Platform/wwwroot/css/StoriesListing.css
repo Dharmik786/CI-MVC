@@ -1,0 +1,34 @@
+﻿/*-------------------*/
+.add-story-bg {
+    background: url(/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png)no-repeat repeat center/cover;
+    position: relative;
+    z-index: 1;
+    height: 300px;
+}
+.center{
+    position:absolute;
+    top:30%;
+    left:20%;
+    right:20%;
+    z-index:1;
+    color:white;
+}
+
+.sys-btn{
+    border:1px solid;
+    padding:5px;
+    border-radius:20px;
+    z-index:1;
+}
+
+.card-body img{
+    border-radius:50%;
+    width:45%;
+}
+.card img:hover{
+    opacity:0.6;
+}
+
+.apply-btn{
+    position:absolute;
+}
