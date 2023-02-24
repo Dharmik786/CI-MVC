@@ -1,34 +1,80 @@
-﻿/*-------------------*/
-.add-story-bg {
-    background: url(/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png)no-repeat repeat center/cover;
+﻿.story-header {
+    height: 38vh;
     position: relative;
-    z-index: 1;
-    height: 300px;
 }
-.center{
-    position:absolute;
-    top:30%;
-    left:20%;
-    right:20%;
+
+.story-img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 40%;
+    /*opacity: 0.6;*/
+   /* z-index: 1;
+    overflow: hidden;*/
+}
+    
+
+
+.img-btn-div {
+    position: absolute;
+    text-align: center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    /*  top: 30%;
+    left: 20%;
+    right: 20%;*/
+    width:100%;
+    height:100%;
+    color: white;
     z-index:1;
-    color:white;
+    background-color:rgba(0,0,0,0.5)
 }
 
-.sys-btn{
-    border:1px solid;
-    padding:5px;
-    border-radius:20px;
-    z-index:1;
+.sys-btn {
+    border: 2px solid white;
+    border-radius: 20px;
+    /*z-index: -1;*/
+    background: none;
+    color: white;
+}
+/*-----------------------------------------------------card-------------------------------------*/
+.img-event img {
+    height:33vh;
+}
+.card-body img {
+    border-radius: 50%;
+    /*position: relative !important;*/
+    width: 15%;
 }
 
-.card-body img{
-    border-radius:50%;
-    width:45%;
-}
-.card img:hover{
-    opacity:0.6;
+.card-img-top {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+  /*  backface-visibility: hidden;*/
 }
 
-.apply-btn{
-    position:absolute;
+.view-details-btn{
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*-ms-transform: translate(-50%, -50%);*/
+    text-align: center;
+}
+
+.img-event:hover .card-img-top {
+    opacity: 0.3;
+
+}
+
+.img-event:hover .view-details-btn {
+    opacity: 1;
 }

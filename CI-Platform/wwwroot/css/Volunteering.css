@@ -118,3 +118,9 @@ div .media{
     border: none;
     background: white;
 }
+.doc-btn{
+    border: 2px solid black;
+    border-radius: 20px!important;
+/*    padding: 7px;*/
+    /*margin: 10px;*/
+}
