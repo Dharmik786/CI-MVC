@@ -30,7 +30,7 @@
     height:100%;
     color: white;
     z-index:1;
-    background-color:rgba(0,0,0,0.5)
+    background-color:rgba(0,0,0,0.5);
 }
 
 .sys-btn {

@@ -1,8 +1,10 @@
+using CI_Entity.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContext<CIDbContext>();
 
 var app = builder.Build();
 
@@ -23,6 +25,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=StoriesListing}/{id?}");
+    pattern: "{controller=Home}/{action=login}/{id?}");
 
 app.Run();

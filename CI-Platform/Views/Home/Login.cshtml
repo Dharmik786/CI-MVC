@@ -1,4 +1,5 @@
-﻿@*
+﻿@model CI_Entity.Models.User
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -93,15 +94,16 @@
             <div class="align-self-center col-lg-4 col-md-12 col-sm-12 col-xs-12 mt-2 rgt_div">
                 <div class="row justify-content-center">
                     <div class="col-lg-9 col-md-9 col-sm-9">
-                        <form asp-action="landingpage">
+
+                        <form asp-controller="Login" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" class="form-control" placeholder="Email" id="exampleInputEmail1"
+                                <label asp-for="Email" class="form-label">Email address</label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="Email" id="exampleInputEmail1"
                                        aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" placeholder="Password"
+                                <label asp-for="Password" class="form-label">Password</label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password"
                                        id="exampleInputPassword1">
                             </div>
                             <div class="mt-4">
@@ -114,6 +116,7 @@
                                 <span>Don’t have an account? <a nav-link text-dark asp-area="" asp-controller="Home" asp-action="Registration">Create Account</a>  </span>
                             </div>
                         </form>
+
                     </div>
                 </div>
                 <div class="text-center text-secondary mt-4 ">
