@@ -14,13 +14,11 @@ public class LoginController : Controller
     private readonly CIDbContext _CIDbContext;
 
     public LoginController(CIDbContext CIDbContext)
-    {
+    { 
         _CIDbContext = CIDbContext;
 
 
     }
-
-
 
     [AllowAnonymous]
     public IActionResult Login(string returnUrl)
@@ -36,21 +34,12 @@ public class LoginController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _CIDbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+            //var user = await _CIDbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+            var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
 
             if (user != null)
             {
-                var claims = new List<Claim>
-{
-new Claim(ClaimTypes.Name, user.Email)
-};
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-                var authProperties = new AuthenticationProperties
-                {
-                    //IsPersistent = model.RememberMe
-                };
-                //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+
                 return RedirectToAction(nameof(HomeController.landingpage), "Home");
             }
             else
@@ -58,7 +47,7 @@ new Claim(ClaimTypes.Name, user.Email)
                 return RedirectToAction(nameof(LoginController.Login), "Home");
             }
         }
-        return View(model);
+        return View();
     }
 
     [HttpPost]

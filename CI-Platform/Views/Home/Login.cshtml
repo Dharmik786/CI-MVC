@@ -95,19 +95,23 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-9 col-md-9 col-sm-9">
 
-                        <form asp-controller="Login" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                        <form asp-controller="Home" asp-action="Login" method="post" class="form-horizontal" role="form">
                             <div class="mb-3">
+                                
                                 <label asp-for="Email" class="form-label">Email address</label>
                                 <input asp-for="Email" type="email" class="form-control" placeholder="Email" id="exampleInputEmail1"
                                        aria-describedby="emailHelp">
+                                @*<span asp-validation-for="Email" class="text-danger" id="Email1"></span>*@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Password" class="form-label">Password</label>
                                 <input asp-for="Password" type="password" class="form-control" placeholder="Password"
                                        id="exampleInputPassword1">
+                                @*<span asp-validation-for="Password" class="text-danger" id="password"></span>*@
+
                             </div>
                             <div class="mt-4">
-                                <button type="submit" class="btn">Login</button>
+                                <button type="Submit" value="Login" class="btn">Login</button>
                             </div>
                             <div class="mt-3 text-center">
                                 <a nav-link  asp-action="Lost_Password" asp-controller="Home">Lost Password?</a>
@@ -115,6 +119,7 @@
                             <div class="mt-2 text-center">
                                 <span>Don’t have an account? <a nav-link text-dark asp-area="" asp-controller="Home" asp-action="Registration">Create Account</a>  </span>
                             </div>
+                            
                         </form>
 
                     </div>

@@ -1,30 +1,22 @@
-﻿using CI_Entity.Models;
+﻿ using CI_Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CI.Controllers
 {
     public class UserController : Controller
     {
-
         private readonly CIDbContext _CIDbContext;
 
         public UserController(CIDbContext CIDbContext)
         {
             _CIDbContext = CIDbContext;
-
-        }
-        public IActionResult Index()
-        {
-            List<User> Users = _CIDbContext.Users.ToList();
-            return View(Users);
         }
 
-
-
+       
         public IActionResult Create()
         {
             User user = new User();
-            return View(user);
+            return View();
         }
 
         [HttpPost]
