@@ -10,15 +10,15 @@ namespace CI_Platform.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+      
 
         private readonly CIDbContext _CIDbContext;
 
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(CIDbContext CIDbContext)
         {
-            _logger = logger;
+            _CIDbContext = CIDbContext;
         }
+     
 
         public IActionResult Index()
         {
@@ -33,10 +33,7 @@ namespace CI_Platform.Controllers
         {
             return View();
         }
-        public IActionResult Registration()
-        {
-            return View();
-        }
+    
         public IActionResult Lost_Password()
         {
             return View();
@@ -62,29 +59,30 @@ namespace CI_Platform.Controllers
             return View();
         }
 
+
+      
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(Login model)
-        //{
+        public async Task<IActionResult> Login(Login model)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
+            if (ModelState.IsValid)
+            {
 
-        //        //var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
+                var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
 
-        //        //if (user != null)
-        //        //{
-
-        //        //    return RedirectToAction(nameof(HomeController.landingpage), "Home");
-        //        //}
-        //        //else
-        //        //{
-        //        //    ViewBag.Email = "email or pass is incorrect";
-        //        //}
-        //    }
-        //    return View();
-        //}
+                if (user != null)
+                {
+                    return RedirectToAction(nameof(HomeController.landingpage), "Home");
+                }
+                else
+                {
+                    ViewBag.Email = "email or pass is incorrect";
+                }
+            }
+            return View();
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

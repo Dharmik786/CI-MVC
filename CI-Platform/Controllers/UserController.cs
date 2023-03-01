@@ -12,47 +12,41 @@ namespace CI.Controllers
             _CIDbContext = CIDbContext;
         }
 
-       
-        public IActionResult Create()
+        public IActionResult Registration()
         {
-            User user = new User();
+            //User user = new User();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(User user)
+        public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
         {
-            _CIDbContext.Users.Add(user);
-            _CIDbContext.SaveChanges();
-            return RedirectToAction("Login", "Home");
+            var obj = _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);
+
+            var userData = new User
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber,
+                Email = Email,
+                Password = Password,
+
+            };
+
+            if (obj == null)
+            {
+                _CIDbContext.Users.Add(userData);
+                _CIDbContext.SaveChanges();
+                return RedirectToAction("Login", "Home");
+
+            }
+            else
+            {
+                ViewBag.RegEmail = "Email Exist";
+            }
+            return View();
         }
 
-        //public IActionResult Edit(int? id)
-        //{
-        //    Users user = _testingContext.Users.Where(x => x.Id == id).FirstOrDefault();
-        //    return View(user);
-        //}
 
-        //[HttpPost]
-        //public IActionResult Edit(Users user)
-        //{
-        //    _testingContext.Users.Update(user);
-        //    _testingContext.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        //public IActionResult Delete(int? id)
-        //{
-        //    Users user = _testingContext.Users.Where(x => x.Id == id).FirstOrDefault();
-        //    return View(user);
-        //}
-
-        //[HttpPost]
-        //public IActionResult Delete(Users user)
-        //{
-        //    _testingContext.Users.Remove(user);
-        //    _testingContext.SaveChanges();
-        //    return RedirectToAction("index");
-        //}
     }
 }

@@ -16,45 +16,68 @@ public class LoginController : Controller
     public LoginController(CIDbContext CIDbContext)
     { 
         _CIDbContext = CIDbContext;
-
-
     }
 
-    [AllowAnonymous]
-    public IActionResult Login(string returnUrl)
+    //[AllowAnonymous]
+    //public IActionResult Login(string returnUrl)
+    //{
+    //    ViewData["ReturnUrl"] = returnUrl;
+    //    return View();
+    //}
+
+    //[HttpPost]
+    //[AllowAnonymous]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Login(Login model)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        //var user = await _CIDbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+    //        var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
+
+    //        if (user != null)
+    //        {
+
+    //            return RedirectToAction(nameof(HomeController.landingpage), "Home");
+    //        }
+    //        else
+    //        {
+    //            return RedirectToAction(nameof(LoginController.Login), "Home");
+    //        }
+    //    }
+    //    return View();
+    //}
+
+
+    public IActionResult Login()
     {
-        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
-    [HttpPost]
-    [AllowAnonymous]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(Login model)
+
+    public async Task<IActionResult>  Login(Login Model)
     {
-        if (ModelState.IsValid)
+      //  var obj = await _CIDbContext.Users.FirstOrDefault(u => u.Email == Model.Email && u.Password == Model.Password);
+        var user = await _CIDbContext.Users.Where(u => u.Email == Model.Email && u.Password == Model.Password).FirstOrDefaultAsync();
+
+
+        if (user != null)
         {
-            //var user = await _CIDbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-            var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
-
-            if (user != null)
-            {
-
-                return RedirectToAction(nameof(HomeController.landingpage), "Home");
-            }
-            else
-            {
-                return RedirectToAction(nameof(LoginController.Login), "Home");
-            }
+            return RedirectToAction(nameof(HomeController.landingpage), "Home");
         }
-        return View();
-    }
+        else
+        {
+           ViewBag.Email = "Email or pass is incorrect";
+        }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Logout()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction(nameof(HomeController.Index), "Home");
+        return View();
+
     }
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Logout()
+    //{
+    //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    //    return RedirectToAction(nameof(HomeController.Index), "Home");
+    //}
 }
