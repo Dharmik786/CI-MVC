@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Login\**" />
+    <Content Remove="Views\Login\**" />
+    <EmbeddedResource Remove="Views\Login\**" />
+    <None Remove="Views\Login\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
@@ -24,10 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CI-Entity\CI-Entity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Login\" />
   </ItemGroup>
 
 </Project>

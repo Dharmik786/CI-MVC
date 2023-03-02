@@ -122,14 +122,14 @@
                                 <input required asp-for="Password" type="password" class="form-control">
                             </div>
                             <div class="input-div mt-3">
-                                <label asp-for="ConfirmPassword">Confirm Password</label>
-                                <input required asp-for="ConfirmPassword" type="password" class="form-control">
+                                <label >Confirm Password</label>
+                                <input required  type="password" class="form-control">
                             </div>
                             <div class="btn1 mt-3">
                                 <button type="submit" class="btn">Registration</button>
                             </div>
                             <div class="input-div mt-3 text-center">
-                                <a asp-action="Lost_Password" asp-controller="Home">Lost your password?</a>
+                                <a asp-action="Forget" asp-controller="User">Lost your password?</a>
                             </div>
                             <div class="input-div mt-3 text-center">
                                 <span>Already registered? <a asp-action="Login" asp-controller="Home">Login now</a></span>

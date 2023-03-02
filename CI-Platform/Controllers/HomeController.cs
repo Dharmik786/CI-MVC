@@ -34,7 +34,7 @@ namespace CI_Platform.Controllers
             return View();
         }
     
-        public IActionResult Lost_Password()
+        public IActionResult Forget()
         {
             return View();
         }
@@ -62,8 +62,8 @@ namespace CI_Platform.Controllers
 
       
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Login model)
         {
 
@@ -74,7 +74,8 @@ namespace CI_Platform.Controllers
 
                 if (user != null)
                 {
-                    return RedirectToAction(nameof(HomeController.landingpage), "Home");
+                    return RedirectToAction("landingpage", "Home");
+                   // return RedirectToAction(nameof(HomeController.landingpage), "Home");
                 }
                 else
                 {

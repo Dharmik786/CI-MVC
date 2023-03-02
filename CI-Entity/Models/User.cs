@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CI_Entity.Models;
 
@@ -15,12 +14,6 @@ public partial class User
     public string Email { get; set; } = null!;
 
     public string Password { get; set; } = null!;
-
-    [NotMapped]
-
-    public string ConfirmPassword { get; set; } = null!;
-
-
 
     public int PhoneNumber { get; set; }
 
