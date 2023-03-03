@@ -2,6 +2,7 @@
 using CI_Entity.Models;
 using CI_Platform.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -29,10 +30,7 @@ namespace CI_Platform.Controllers
         {
             return View();
         }
-        public IActionResult Login()
-        {
-            return View();
-        }
+      
     
         public IActionResult Forget()
         {
@@ -59,9 +57,13 @@ namespace CI_Platform.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            HttpContext.Session.Clear();
+            return View();
+        }
 
-      
-        [HttpPost]
+       [HttpPost]
         //[AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Login model)
@@ -69,12 +71,14 @@ namespace CI_Platform.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
-
+                var username = model.Email.Split("@")[0];
                 if (user != null)
                 {
-                    return RedirectToAction("landingpage", "Home");
+                    HttpContext.Session.SetString("userID", username);
+                    HttpContext.Session.SetString("Firstname", user.FirstName);
+
+                    return RedirectToAction("landingpage", "Landingpage");
                    // return RedirectToAction(nameof(HomeController.landingpage), "Home");
                 }
                 else

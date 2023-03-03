@@ -72,7 +72,6 @@ namespace CI.Controllers
 
                 var token = Guid.NewGuid().ToString();
 
-
                 var passwordReset = new PasswordReset
                 {
                     Email = model.Email,
@@ -152,9 +151,9 @@ namespace CI.Controllers
         
 
         [HttpGet]
-        public ActionResult Reset_Password(string email, string token)
+        public IActionResult Reset_Password(string email, string token)
         {
-            var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(pr => pr.Email == email && pr.Token == token);
+            var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(u => u.Email == email && u.Token == token);
             if (passwordReset == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -171,26 +170,26 @@ namespace CI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Reset_Password(ResetPass resetPasswordView)
+        public IActionResult Reset_Password(ResetPass model)
         {
             if (ModelState.IsValid)
             {
                 // Find the user by email
-                var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == resetPasswordView.Email);
+                var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (user == null)
                 {
                     return RedirectToAction("Forget", "User");
                 }
 
                 // Find the password reset record by email and token
-                var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(pr => pr.Email == resetPasswordView.Email && pr.Token == resetPasswordView.Token);
+                var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
                 if (passwordReset == null)
                 {
                     return RedirectToAction("Logn", "Home");
                 }
 
                 // Update the user's password
-                user.Password = resetPasswordView.Password;
+                user.Password = model.Password;
                 _CIDbContext.SaveChanges();
 
             }

@@ -32,7 +32,11 @@
                         <a class="nav-link dropdown-toggle link-dark border-0" href="#" id="navbarDropdown"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="/Image/user-img.png" alt="mdo" width="32" height="32" class="rounded-circle" />
-                            Evan Donohue
+                            @{
+                                var firstname = Context.Session.GetString("Firstname");
+
+                            }
+                            @firstname
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">New project</a></li>
@@ -42,7 +46,7 @@
                                 <hr class="dropdown-divider" />
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Sign out</a>
+                                <a class="dropdown-item" asp-controller="Home" asp-action="Login">Log out</a>
                             </li>
                         </ul>
                     </div>
@@ -81,8 +85,8 @@
             <div class="dropdown text-end user-profile ">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
                    aria-expanded="false">
-                    <img src="/Image/user-img.png" alt="mdo" width="40" height="40" class="rounded-circle">
-                    <span class="txt text-dark">Evan Donohue</span>
+                    <img src="/Image/user-img.png" alt="mdo" width="40" height="40" class="rounded-circle">                 
+                    @firstname
                 </a>
                 <ul class="dropdown-menu text-small">
                     <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -91,7 +95,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Log out</a></li>
                 </ul>
             </div>
         </div>
