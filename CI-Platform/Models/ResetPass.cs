@@ -1,6 +1,6 @@
 ﻿namespace CI_Platform.Models
 {
-    public class ResetPassword
+    public class ResetPass
     {
         public string? Email { get; set; }
 

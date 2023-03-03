@@ -82,7 +82,7 @@ namespace CI.Controllers
                 _CIDbContext.PasswordReset.Add(passwordReset);
                 _CIDbContext.SaveChanges();
 
-                var resetLink = Url.Action("Reset_Password", "Home", new { email = model.Email, token }, Request.Scheme);
+                var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
 
                 var fromAddress = new MailAddress("gajeravirajpareshbhai@gmail.com", "Viraj Gajera");
                 var toAddress = new MailAddress(model.Email);
@@ -149,10 +149,7 @@ namespace CI.Controllers
 
         ////}
         ///
-        public IActionResult Reset_Password()
-        {
-            return View();
-        }
+        
 
         [HttpGet]
         public ActionResult Reset_Password(string email, string token)
@@ -163,7 +160,7 @@ namespace CI.Controllers
                 return RedirectToAction("Login", "Home");
             }
             // Pass the email and token to the view for resetting the password
-            var model = new ResetPassword
+            var model = new ResetPass
             {
                 Email = email,
                 Token = token
@@ -174,7 +171,7 @@ namespace CI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Reset_Password(ResetPassword resetPasswordView)
+        public ActionResult Reset_Password(ResetPass resetPasswordView)
         {
             if (ModelState.IsValid)
             {
@@ -198,7 +195,7 @@ namespace CI.Controllers
 
             }
 
-            return View(resetPasswordView);
+            return RedirectToAction("Login","Home");
         }
 
     }
