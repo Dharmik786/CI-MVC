@@ -33,6 +33,7 @@ function addElement(current, value) {
     createdTag.innerHTML = value;
 
     createdTag.setAttribute('id', value);
+    createdTag.setAttribute('name', value);
     let crossButton = document.createElement('button');
     crossButton.classList.add("filter-close-button");
     let cross = '&times;'
@@ -62,9 +63,10 @@ function removeElement(value) {
     let elementToBeRemoved = document.getElementById(value);
     filtersSection.removeChild(elementToBeRemoved);
 }
-function search() {
 
-    var input, filter, cards, cardContainer, h5, title, i;
+function myFunction() {
+
+    var input, filter, cards, cardContainer, title, i;
     input = document.getElementById("myFilter");
     filter = input.value.toUpperCase();
     cardContainer = document.getElementById("myItems");
@@ -79,3 +81,40 @@ function search() {
         }
     }
 }
+
+
+//var debounceTimer;
+
+//function debounce(func, delay)
+//{
+//    clearTimeout(debounceTimer);
+//    debounceTimer = setTimeout(func, delay);
+//}
+
+
+//document.getElementById("search-bar").addEventListener("input", function () {
+//    debounce(function () {
+//        search(document.getElementById("search-bar").value);
+//    }, 1500); // adjust the delay time as needed
+//});
+
+//function search(query) {
+//    // Get the current URL
+//    let url = window.location.href;
+
+//    let separator = url.indexOf('?') !== -1 ? '&' : '?';
+
+//    // Check if the searchQuery parameter already exists in the URL
+//    if (url.includes('searchQuery=')) {
+//        // Replace the value of the searchQuery parameter
+//        url = url.replace(/searchQuery=([^&]*)/, 'searchQuery=' + query);
+//    } else {
+//        // Append the parameter to the URL
+//        url += separator + 'searchQuery=' + query;
+//    }
+
+//    // Navigate to the updated URL
+//    window.location.href = url;
+
+
+//}
