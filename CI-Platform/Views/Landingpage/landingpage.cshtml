@@ -37,15 +37,25 @@
                     <div class="dropdown sort me-2 mt-1">
                         <button class=" btn dropdown d-flex " type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                            <span class="sortby me-5 "> Sort By</span>
+                            @ViewBag.Oredr
+                            <span class="sortby me-5 ">Sort By</span>
                             <img src="/Image/drop-down.png" alt="" class="sortaerrow">
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="1">Title</a></li>
+                            <li><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="2">Start Date</a></li>
+                            <li><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="3">End Date</a></li>
                         </ul>
+
+                        @*<select>
+                            <option selected>Choose a number</option>
+                            <option><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="1">Title</a></option>
+                            <option><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="2">Start Date</a></option>
+                            <option><a class="dropdown-item" asp-action="landingpage" asp-controller="landingpage" asp-route-sortOrder="3">End Date</a></option>
+                        </select>*@
                     </div>
+
+
 
                     <div class="me-2 mt-1">
                         <button onclick="grid()" class="grid"><img src="/Image/grid.png"></button>
@@ -60,7 +70,7 @@
 
         <div class="row " id="myItems">
 
-            @foreach (var iteam in Model)
+            @foreach (var item in Model)
             {
                 <div class="missioncard col-12 col-md-6 col-lg-4 mb-2 " id="myItems">
 
@@ -70,7 +80,7 @@
                             <img class="card-img-top card-img"
                                  src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
                                  alt="Card image cap">
-                            <div class="landing-page-top-right "><img src="/Image/pin.png" alt=""> @iteam.City.Name</div>
+                            <div class="landing-page-top-right "><img src="/Image/pin.png" alt=""> @item.City.Name</div>
 
                             <div class="landing-page-bottom-right d-flex flex-column">
                                 <button class="mb-2 landing-page-btn-img">
@@ -81,21 +91,21 @@
                                 </button>
                             </div>
 
-                            <div><button class="theme-btn ">@iteam.Theme.Title</button></div>
+                            <div><button class="theme-btn ">@item.Theme.Title</button></div>
                             <!-- <button class="theme-btn ">Environment</button> -->
                         </div>
 
 
                         <div class="card-body mt-2">
                             <h5 class="card-title "  style="overflow: hidden; display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">
-                                @iteam.Title
+                                @item.Title
                             </h5>
                             <p class="card-text text-secondary " style="overflow: hidden; display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">
-                                @iteam.ShortDescription
+                                @item.ShortDescription
                             </p>
 
                             <div class="d-flex">
-                                <div class="card-text">@iteam.OrganizationName</div>
+                                <div class="card-text">@item.OrganizationName</div>
                                 <div class="ms-auto">
                                     <img src="/Image/selected-star.png" class="star" alt="">
                                     <img src="/Image/selected-star.png" class="star" alt="">
@@ -107,7 +117,7 @@
 
                             <div class="rule mt-1">
                                 <hr>
-                                <button class="date-btn mt-1">From @iteam.StartDate.ToString().Split(" ")[0] until @iteam.EndDate.ToString().Split(" ")[0]</button>
+                                <button class="date-btn mt-1">From @item.StartDate.ToString().Split(" ")[0] until @item.EndDate.ToString().Split(" ")[0]</button>
                                 <hr>
                             </div>
 
@@ -118,11 +128,11 @@
                                 </div>
 
 
-                                @if (iteam.MissionType == "Time")
+                                @if (item.MissionType == "Time")
                                 {
                                     <div class="ms-auto"><img src="/Image//deadline.png" class="mt-2"></div>
                                     <div class="ms-2">
-                                        @iteam.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
+                                        @item.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
                                     </div>
                                 }
                                 else
@@ -166,7 +176,7 @@
         <ul class="pagination">
         
             <li class="page-item @(ViewBag.CurrentPage == 0 ? "disabled" : "")">
-                <a class="page-link" href="/Landingpage/Landingpage/?searchQuery=@ViewBag.searchQuery&pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                <a class="page-link" href="/Landingpage/Landingpage/?sortOreder=@ViewBag.Order&searchQuery=@ViewBag.searchQuery&pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
              </li>
@@ -174,12 +184,12 @@
             @for (int i = 0; i < ViewBag.TotalPages; i++)
             {
             <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                    <a class="page-link" href="/Landingpage/Landingpage/?searchQuery=@ViewBag.searchQuery&pageIndex=@i">@((i + 1).ToString())</a>
+                    <a class="page-link" href="/Landingpage/Landingpage/?sortOreder=@ViewBag.Order&searchQuery=@ViewBag.searchQuery&pageIndex=@i">@((i + 1).ToString())</a>
                 </li>
             }
            
             <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages - 1 ? "disabled" : "")">
-                <a class="page-link" href="/Landingpage/Landingpage/?searchQuery=@ViewBag.searchQuery&pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                <a class="page-link" href="/Landingpage/Landingpage/?sortOreder=@ViewBag.Order&searchQuery=@ViewBag.searchQuery&pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -194,8 +204,14 @@
         var cardimg = document.getElementsByClassName("card-img");
         var carddisplay = document.getElementsByClassName("card");
         var theme = document.getElementsByClassName("theme-btn");
-
+    if (localStorage.getItem("view") === "list") {
+    list();
+    }
+    else{
+        grid();
+    }
         function list() {
+    localStorage.setItem("view", "list");
             for (i = 0; i < card.length; i++) {
                 card[i].style.width = "100%";
                 card[i].style.marginTop = "1%";
@@ -207,6 +223,7 @@
             }
         }
         function grid() {
+    localStorage.setItem("view" ,"grid");
             for (i = 0; i < card.length; i++) {
 
                 if (screen.width > 1023) {
@@ -228,6 +245,8 @@
         }
       
     </script>
-    <script src="/js/filter.js"></script>
+   
+    <script src="~/js/filter.js"></script>
+
 </body>
 </html>

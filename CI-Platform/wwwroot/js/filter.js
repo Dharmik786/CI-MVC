@@ -64,57 +64,59 @@ function removeElement(value) {
     filtersSection.removeChild(elementToBeRemoved);
 }
 
-function myFunction() {
+//function myFunction() {
 
-    var input, filter, cards, cardContainer, title, i;
-    input = document.getElementById("myFilter");
-    filter = input.value.toUpperCase();
-    cardContainer = document.getElementById("myItems");
-    cards = cardContainer.getElementsByClassName("card");
+//    var input, filter, cards, cardContainer, title, i;
+//    input = document.getElementById("myFilter");
+//    filter = input.value.toUpperCase();
+//    cardContainer = document.getElementById("myItems");
+//    cards = cardContainer.getElementsByClassName("card");
 
-    for (i = 0; i < cards.length; i++) {
-        title = cards[i].querySelector(".card-body h5.card-title");
-        if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-            cards[i].style.display = "";
-        } else {
-            cards[i].style.display = "none";
-        }
-    }
+//    for (i = 0; i < cards.length; i++) {
+//        title = cards[i].querySelector(".card-body h5.card-title");
+//        if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+//            cards[i].style.display = "";
+//        } else {
+//            cards[i].style.display = "none";
+//        }
+//    }
+//}
+
+
+var debounceTimer;
+
+function debounce(func, delay)
+{
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(func, delay);
 }
 
 
-//var debounceTimer;
+document.getElementById("search-bar").addEventListener("input", function () {
+    debounce(function () {
+        search(document.getElementById("search-bar").value);
+    }, 1500); // adjust the delay time as needed
+});
 
-//function debounce(func, delay)
-//{
-//    clearTimeout(debounceTimer);
-//    debounceTimer = setTimeout(func, delay);
-//}
+function search(query) {
+    // Get the current URL
+    let url = window.location.href;
 
+    let separator = url.indexOf('?') !== -1 ? '&' : '?';
 
-//document.getElementById("search-bar").addEventListener("input", function () {
-//    debounce(function () {
-//        search(document.getElementById("search-bar").value);
-//    }, 1500); // adjust the delay time as needed
-//});
+    // Check if the searchQuery parameter already exists in the URL
+    if (url.includes('searchQuery=')) {
+        // Replace the value of the searchQuery parameter
+        url = url.replace(/searchQuery=([^&]*)/, 'searchQuery=' + query);
+    } else {
+        // Append the parameter to the URL
+        url += separator + 'searchQuery=' + query;
+    }
 
-//function search(query) {
-//    // Get the current URL
-//    let url = window.location.href;
-
-//    let separator = url.indexOf('?') !== -1 ? '&' : '?';
-
-//    // Check if the searchQuery parameter already exists in the URL
-//    if (url.includes('searchQuery=')) {
-//        // Replace the value of the searchQuery parameter
-//        url = url.replace(/searchQuery=([^&]*)/, 'searchQuery=' + query);
-//    } else {
-//        // Append the parameter to the URL
-//        url += separator + 'searchQuery=' + query;
-//    }
-
-//    // Navigate to the updated URL
-//    window.location.href = url;
+    // Navigate to the updated URL
+    window.location.href = url;
 
 
-//}
+}
+
+
