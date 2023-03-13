@@ -263,13 +263,13 @@
                             <img src="/Image/drop-down.png" alt="" height="10%" width="10%" class="mt-3">
                         </a>
                         <ul class="dropdown-menu" style="height:200px; overflow-y:auto;">
-                            @if (ViewBag.city != null)
+                            @if (ViewBag.City != null)
                             {
-                                @foreach (var item in ViewBag.city)
+                                @foreach (var item in ViewBag.City)
                                 {
                                     <li>
                                         <a class="dropdown-item p-0 mt-1" href="#">
-                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Name" value="@item.Name">
+                                            <input type="checkbox" class="checkbox ms-3 " id="@item.CityId" value="@item.Name" name="city" onchange="updateUrlForCity()">
                                             @item.Name
                                         </a>
                                     </li>
@@ -345,7 +345,7 @@
                 </div>
             }
         }
-        @*@if (@ViewBag.city != null)
+    @* @if (@ViewBag.city1 != null)
         {
             @foreach (var city in @ViewBag.city)
             {
@@ -384,18 +384,8 @@
             const country = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(el => el.id);
             let url = window.location.href;
             let separator = url.indexOf('?') !== -1 ? '&' : '?';
-        
-            //if (url.includes('ACountries=')) {
-            //    url = url.replace(/ACountries=([^&]*)/, 'ACountries=' + country);
-            //}
-            //else {
-            
-                url += separator + 'ACountries=' + country;
-            
-                //}
+            url += separator + 'ACountries=' + country;
              window.location.href = url;
-
-
         }
 
 
@@ -405,6 +395,24 @@
             let url = window.location.href;
             c = "";
             url = url.replace(/ACountries=([^&]*)/, 'ACountries=' + c);
+            window.location.href = url;
+        }
+
+        function updateUrlForCity() {
+
+            const city = Array.from(Document.querySelectorAll('input[name="city"]:checked')).map(el => el.id);
+            let url = window.location.href;
+            let separator = url.indexOf('?') !== -1 ? '&' : '?';
+            url += separator + 'ACities=' + city;
+            window.location.href = url;
+        }
+
+        function cityBtn(){
+            var c = document.getElementById("ci") ;
+            c.style.display="none";
+            let url = window.location.href;
+            c = "";
+            url = url.replace(/ACity=([^&]*)/,'ACity=' + c);
             window.location.href = url;
         }
     </script>

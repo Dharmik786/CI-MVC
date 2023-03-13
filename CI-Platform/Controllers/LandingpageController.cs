@@ -1,6 +1,7 @@
 ﻿using CI_Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using NuGet.Packaging;
 using System.Linq;
 
 namespace CI_Platform.Controllers
@@ -21,7 +22,7 @@ namespace CI_Platform.Controllers
         {
             _CIDbContext = CIDbContext;
         }
-        public IActionResult landingpage(long id,int? pageIndex,string searchQuery, string sortOrder, long[] ACountries )
+        public IActionResult landingpage(long id,int? pageIndex,string searchQuery, string sortOrder, long[] ACountries , long[] ACity )
         {    
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
@@ -54,24 +55,19 @@ namespace CI_Platform.Controllers
             //Filter
             if (ACountries != null && ACountries.Length > 0)
             {
-
                 foreach (var country1 in ACountries)
-                {
-                    //mission = mission.Where(m => m.CountryId == country).ToList();
+                {           
                     if (i == 0)
                     {
                         mission = mission.Where(m => m.CountryId == country1 + 500).ToList();
                         i++;
                     }
-
                     finalmission = newmission.Where(m => m.CountryId == country1).ToList();
-
                     mission.AddRange(finalmission);
                     if (mission.Count() == 0)
                     {
                         return RedirectToAction("NoMissionFound", "Home");
                     }
-
                     ViewBag.countryId = country1;
                     if (ViewBag.countryId != null)
                     {
@@ -82,11 +78,46 @@ namespace CI_Platform.Controllers
                             i1++;
                         }
                         country.AddRange(countryElement);
+                    }
+                }
+                ViewBag.country1 = country;
+            }
+
+            if (ACity != null && ACity.Length > 0)
+            {
+
+                foreach (var city1 in ACity)
+                {
+                    //mission = mission.Where(m => m.CountryId == country).ToList();
+                    if (i == 0)
+                    {
+                        mission = mission.Where(m => m.CityId == city1 + 500).ToList();
+                        i++;
+                    }
+
+                    finalmission = newmission.Where(m => m.CityId == city1).ToList();
+
+                    mission.AddRange(finalmission);
+                    if (mission.Count() == 0)
+                    {
+                        return RedirectToAction("NoMissionFound", "Home");
+                    }
+
+                    ViewBag.cityId = city1;
+                    if (ViewBag.cityId != null)
+                    {
+                        var cityElement = _CIDbContext.Cities.Where(m => m.CityId == city1).ToList();
+                        if (i1 == 0)
+                        {
+                            city = _CIDbContext.Cities.Where(m => m.CityId == city1 + 50000).ToList();
+                            i1++;
+                        }
+                        city.AddRange(cityElement);
                         //var c1 = _CIDbContext.Countries.FirstOrDefault(m => m.CountryId == country);
                         //ViewBag.country = c1.Name;
                     }
                 }
-                ViewBag.country1 = country;
+                ViewBag.city1 = city;
                 //Countries = _CIDbContext.Countries.ToList();
 
 
@@ -150,10 +181,25 @@ namespace CI_Platform.Controllers
         }
 
 
-        public IActionResult Volunteering()
-        {
-            List<Mission> mission = _CIDbContext.Missions.ToList();
-            return View(mission);
+        public IActionResult Volunteering(long id)
+        {           
+            List<Country> country = _CIDbContext.Countries.ToList();
+            List<City> city = _CIDbContext.Cities.ToList();
+            List<MissionTheme> theme = _CIDbContext.MissionThemes.ToList();
+
+            var mission = _CIDbContext.Missions.FirstOrDefault(m => m.MissionId == id);
+            ViewBag.mission = mission;
+
+            var city1 = _CIDbContext.Cities.FirstOrDefault(m => m.CityId == mission.CityId);
+            ViewBag.City1 = city1;
+
+            var theme1 = _CIDbContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == mission.ThemeId);
+            ViewBag.Theme1 = theme1;
+
+            var relatedMission = _CIDbContext.Missions.Where(m => m.ThemeId == mission.ThemeId && m.MissionId != mission.MissionId).ToList();
+            ViewBag.relatedMission = relatedMission.Take(3);
+
+            return View();
         }
 
     }
