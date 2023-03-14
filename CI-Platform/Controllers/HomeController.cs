@@ -78,7 +78,7 @@ namespace CI_Platform.Controllers
                     HttpContext.Session.SetString("userID", username);
                     HttpContext.Session.SetString("Firstname", user.FirstName);
 
-                    return RedirectToAction("landingpage", "Landingpage");
+                    return RedirectToAction("landingpage", "Landingpage",new {user.UserId});
                    // return RedirectToAction(nameof(HomeController.landingpage), "Home");
                 }
                 else

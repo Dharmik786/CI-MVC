@@ -5,7 +5,7 @@ using NuGet.Packaging;
 using System.Linq;
 
 namespace CI_Platform.Controllers
-{   
+{
     public class LandingpageController : Controller
     {
         int i = 0;
@@ -22,8 +22,8 @@ namespace CI_Platform.Controllers
         {
             _CIDbContext = CIDbContext;
         }
-        public IActionResult landingpage(long id,int? pageIndex,string searchQuery, string sortOrder, long[] ACountries , long[] ACity )
-        {    
+        public IActionResult landingpage(long id, int? pageIndex, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
+        {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
             {
@@ -45,18 +45,27 @@ namespace CI_Platform.Controllers
             List<MissionTheme> themes = _CIDbContext.MissionThemes.ToList();
             ViewBag.Themes = themes;
 
+            List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
+            ViewBag.GoalMissions = goalMissions;
+
+
             foreach (var item in mission)
             {
                 var City = _CIDbContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
                 var Theme = _CIDbContext.MissionThemes.FirstOrDefault(u => u.MissionThemeId == item.ThemeId);
             }
 
+            //Rating
+            List<MissionRating> rating = _CIDbContext.MissionRatings.ToList();
+
+            //var rat = _CIDbContext.Mission
+
 
             //Filter
             if (ACountries != null && ACountries.Length > 0)
             {
                 foreach (var country1 in ACountries)
-                {           
+                {
                     if (i == 0)
                     {
                         mission = mission.Where(m => m.CountryId == country1 + 500).ToList();
@@ -123,12 +132,12 @@ namespace CI_Platform.Controllers
 
             }
 
-
+      
 
             //Sort By
             // ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.Order = sortOrder;
-            switch(sortOrder)
+            switch (sortOrder)
             {
                 case "Newest":
                     mission = (List<Mission>)mission.OrderByDescending(mission => mission.StartDate).ToList();
@@ -142,7 +151,7 @@ namespace CI_Platform.Controllers
                     mission = (List<Mission>)mission.OrderBy(mission => mission.MissionType).ToList();
                     break;
             }
-                        
+
             //Search
             if (searchQuery != null)
             {
@@ -155,17 +164,6 @@ namespace CI_Platform.Controllers
                 }
             }
 
-            //if (!string.IsNullOrEmpty(searchQuery))
-            //{
-            //    mission = mission.Where(m => m.Title.ToUpper().Contains(searchQuery.ToUpper())).ToList();
-            //    ViewBag.searchQuery = Request.Query["searchQuery"];
-            //    if (mission.Count() == 0)
-            //    {
-            //        return RedirectToAction("NoMissionFound", "Home");
-            //    }
-            //}
-
-
             //Pagination
             int pageSize = 9;
             int skip = (pageIndex ?? 0) * pageSize;
@@ -177,30 +175,10 @@ namespace CI_Platform.Controllers
             ViewBag.CurrentPage = pageIndex ?? 0;
 
             return View(Missions);
-            
+
         }
 
 
-        public IActionResult Volunteering(long id)
-        {           
-            List<Country> country = _CIDbContext.Countries.ToList();
-            List<City> city = _CIDbContext.Cities.ToList();
-            List<MissionTheme> theme = _CIDbContext.MissionThemes.ToList();
-
-            var mission = _CIDbContext.Missions.FirstOrDefault(m => m.MissionId == id);
-            ViewBag.mission = mission;
-
-            var city1 = _CIDbContext.Cities.FirstOrDefault(m => m.CityId == mission.CityId);
-            ViewBag.City1 = city1;
-
-            var theme1 = _CIDbContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == mission.ThemeId);
-            ViewBag.Theme1 = theme1;
-
-            var relatedMission = _CIDbContext.Missions.Where(m => m.ThemeId == mission.ThemeId && m.MissionId != mission.MissionId).ToList();
-            ViewBag.relatedMission = relatedMission.Take(3);
-
-            return View();
-        }
 
     }
 }

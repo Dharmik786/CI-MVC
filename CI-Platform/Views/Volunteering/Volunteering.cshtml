@@ -82,18 +82,34 @@
 
                 <div class="card-body">
                     <div class="card-title fs-5">
-                        @ViewBag.mission.Title
+                        @ViewBag.Missiondetail.Title
                     </div>
                     <div class="card-subtitle">
-                        @ViewBag.mission.ShortDescription
+                        @ViewBag.Missiondetail.ShortDescription
                     </div>
 
 
-                    <div class="rule mt-2">
-                        <hr>
-                        <button class="date-btn mt-1 p-1">From @ViewBag.mission.StartDate.ToString().Split(" ")[0] to @ViewBag.mission.EndDate.ToString().Split(" ")[0]</button>
-                        <hr>
-                    </div>
+
+                    @if (@ViewBag.Missiondetail.MissionType == "Time")
+                    {
+                        <div class="rule mt-2">
+                            <hr>
+                            <button class="date-btn mt-1 p-1">From @ViewBag.Missiondetail.StartDate.ToString().Split(" ")[0] to @ViewBag.Missiondetail.EndDate.ToString().Split(" ")[0]</button>
+                            <hr>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (@ViewBag.Missiondetail.MissionId == @ViewBag.Missiondetail.MissionId)
+                        {
+                            <div class="rule mt-2">
+                                <hr>
+                                <button class="date-btn mt-1 p-1">@ViewBag.Missiondetail.GoalObjectiveText</button>
+                                <hr>
+                            </div>
+
+                        }
+                    }
 
 
                     <div class="row">
@@ -101,32 +117,19 @@
                             <p class="me-2 pt-2">
                                 <img src="/Image/Seats-left.png" />
                                 <div>
-                                    <div> @ViewBag.mission.Availability</div>
+                                    <div> @ViewBag.Missiondetail.Availability</div>
                                     <div>Seats Left</div>
                                 </div>
                             </p>
                         </div>
-                        @*<div class="col-6 col-md-6 mt-1 d-flex justify-content-center">
-                        <p class="me-2 pt-2">
-                        <img src="/Image/achieved.png"/>
-                        <div>
-                        <div class="mt-1">
-                        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
-                        <div class="progress-bar bg-success" style="width: 25%;"></div>
-                        </div>
-                        </div>
-                        <div>8000 Achived</div>
-                        </div>
-                        </p>
-                        </div>*@
+
 
                         <div class="col-6 col-md-6 mt-1 d-flex justify-content-center">
-                            @if (@ViewBag.mission.MissionType == "Time")
+                            @if (@ViewBag.Missiondetail.MissionType == "Time")
                             {
                                 <div class="me-2"><img src="/Image//deadline.png" class="mt-2"></div>
                                 <div class="ms-2">
-                                    @ViewBag.mission.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
+                                    @ViewBag.Missiondetail.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
                                 </div>
                             }
                             else
@@ -169,7 +172,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>city</div>
-                                <div>@ViewBag.City1.Name</div>
+                                <div>@ViewBag.Missiondetail.Cityname</div>
                             </div>
                         </div>
                         <div class="card d-flex col-md-3 col-6 ">
@@ -178,7 +181,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>Theme</div>
-                                <div>@ViewBag.Theme1.Title</div>
+                                <div>@ViewBag.Missiondetail.Themename</div>
                             </div>
                         </div>
                         <div class="card col-md-3 col-6 ">
@@ -197,7 +200,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>Organization</div>
-                                <div>@ViewBag.mission.OrganizationName</div>
+                                <div>@ViewBag.Missiondetail.OrganizationName</div>
                             </div>
                         </div>
                     </div>
@@ -230,13 +233,7 @@
                         <div class="mt-2">
                             <h3>Introduction</h3>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                @ViewBag.Missiondetail.Description
                             </p>
                         </div>
                         <div class="mt-4">
@@ -262,7 +259,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                        <p class="mt-2"> sbd fjewbfjkb fkhb ekhdbferkbcgjf bgjhbkfhbdfkbv df v kbkerbvkeabffk hebffkherbkherb br,b gberkf berberkreejffer ferkbfkerffkjer bkbfdbfkb </p>
+                        <p class="mt-2">@ViewBag.Missiondetail.OrganizationDetail </p>
                     </div>
 
                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
@@ -374,60 +371,27 @@
                     <div class=" card-header vol-sec-2-right-2nd-header"><h4>Recent Volunteers</h4></div>
                     <hr>
                     <div class="card-body">
-                        <div class="row p-">
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer1.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer2.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer3.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer4.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer5.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer6.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer7.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer8.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                            <div class="col mt-1 text-center">
-                                <img class="vol-page-right-recent-vol-img rounded-circle" src="/Image/volunteer9.png" alt="">
-                                <div class="vol-page-right-2nd-vol-name">Andrew Johnson</div>
-                            </div>
-                        </div>
-                        @*<div class="row">
-                        <div class="col-2"><button class="btn"><img src="/Image/left.png" alt="left"></button></div>
-                        <div class="col-8">Recent Volunteers</div>
-                        <div class="col-2"><button class="btn"><img src="/Image/right-arrow.png" alt="right"></button>
-                        </div>
-                        </div>*@
+                        <div class="overflow-x-auto d-flex">
 
-                        <div class="card-footer d-flex text-center bg-body pt-3 pb-0">
+
+                            @foreach (var recent in ViewBag.recentvolunteered)
+                            {
+                                <div class="col-4  d-flex ">
+                                    <a class=" ms-4 me-2 text-decoration-none text-black justify-content-center " asp-area="" asp-controller="home" asp-action="login">
+                                        <img src="/Image/volunteer1.png" class="involveduserprofile" />
+                                        <label id="" class="text-center">@recent.username</label>
+                                    </a>
+                                </div>
+                            }
+
+
+                        </div>
+                       
+                       @* <div class="card-footer d-flex text-center bg-body pt-3 pb-0">
                             <button class="col-1" style="background-color:white;border:none;"><img src="/Image/left.png" /></button>
                             <div class="col-10">1-9 of 25 Recent Volunteer</div>
                             <button class="col-1" style="background-color:white;border:none;"><img src="/Image/right-arrow1.png" /></button>
-                        </div>
+                        </div>*@
                     </div>
 
                 </div>
