@@ -75,7 +75,9 @@ namespace CI_Platform.Controllers
                 var username = model.Email.Split("@")[0];
                 if (user != null)
                 {
+
                     HttpContext.Session.SetString("userID", username);
+                    HttpContext.Session.SetString("user", user.UserId.ToString());
                     HttpContext.Session.SetString("Firstname", user.FirstName);
 
                     return RedirectToAction("landingpage", "Landingpage",new {user.UserId});

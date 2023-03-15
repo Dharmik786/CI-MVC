@@ -3,7 +3,6 @@
     public class VolunteeringVM
     {
         public long MissionId { get; set; }
-
         public long CityId { get; set; }
         public string Cityname { get; set; }
         public long CountryId { get; set; }

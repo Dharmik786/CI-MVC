@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <div class="row " id="myItems">
+        <div class="row " id="myItem">
 
             @foreach (var item in Model)
             {
@@ -110,6 +110,7 @@
                             <div class="d-flex">
                                 <div class="card-text">@item.OrganizationName</div>
                                 <div class="ms-auto">
+
                                     <img src="/Image/selected-star.png" class="star" alt="">
                                     <img src="/Image/selected-star.png" class="star" alt="">
                                     <img src="/Image/selected-star.png" class="star" alt="">
@@ -127,7 +128,7 @@
                                 </div>
                             }
                             else
-                            {
+                            { 
                                 @foreach (var goal in ViewBag.GoalMissions)
                                 {
                                     if (@item.MissionId == @goal.MissionId)
@@ -269,7 +270,7 @@
 
     </script>
 
-    <script src="~/js/filter.js"></script>
+   @* <script src="~/js/filter.js"></script>*@
 
 </body>
 </html>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NuGet.Packaging;
 using System.Linq;
+using System.Reflection;
 
 namespace CI_Platform.Controllers
 {
@@ -22,7 +23,8 @@ namespace CI_Platform.Controllers
         {
             _CIDbContext = CIDbContext;
         }
-        public IActionResult landingpage(long id, int? pageIndex, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
+
+        public IActionResult landingpage(long id, int? pageIndex, string search,string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
         {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
@@ -48,7 +50,10 @@ namespace CI_Platform.Controllers
             List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
             ViewBag.GoalMissions = goalMissions;
 
+            List<MissionRating> rate = _CIDbContext.MissionRatings.ToList();
+            ViewBag.Rate = rate;
 
+          
             foreach (var item in mission)
             {
                 var City = _CIDbContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
@@ -56,7 +61,7 @@ namespace CI_Platform.Controllers
             }
 
             //Rating
-            List<MissionRating> rating = _CIDbContext.MissionRatings.ToList();
+         
 
             //var rat = _CIDbContext.Mission
 
@@ -153,16 +158,21 @@ namespace CI_Platform.Controllers
             }
 
             //Search
-            if (searchQuery != null)
+            if (search != null)
             {
-                mission = _CIDbContext.Missions.Where(m => m.Title.Contains(searchQuery)).ToList();
-                ViewBag.InputSearch = searchQuery;
-
-                if (mission.Count() == 0)
-                {
-                    return RedirectToAction("NoMissionFound", "Home");
-                }
+                mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
             }
+
+            //if (searchQuery != null)
+            //{
+            //    mission = _CIDbContext.Missions.Where(m => m.Title.Contains(searchQuery)).ToList();
+            //    ViewBag.InputSearch = searchQuery;
+
+            //    if (mission.Count() == 0)
+            //    {
+            //        return RedirectToAction("NoMissionFound", "Home");
+            //    }
+            //}
 
             //Pagination
             int pageSize = 9;
@@ -178,7 +188,16 @@ namespace CI_Platform.Controllers
 
         }
 
+        //public IActionResult search(string search)
+        //{
+        //    List<Mission> mission = _CIDbContext.Missions.ToList();
+        //    if (search != null)
+        //    {
+        //        mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
 
+        //    }
+        //    return View(mission);
+        //}
 
     }
 }

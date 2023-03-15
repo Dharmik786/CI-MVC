@@ -1,6 +1,7 @@
 ﻿using CI.Models;
 using CI_Entity.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CI_Platform.Controllers
 {
@@ -13,8 +14,58 @@ namespace CI_Platform.Controllers
         {
             _CIDbContext = CIDbContext;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Addrating(string rating, long Id, long missionId)
+        {
+            MissionRating ratingExists = await _CIDbContext.MissionRatings.FirstOrDefaultAsync(fm => fm.UserId == Id && fm.MissionId == missionId);
+            if (ratingExists != null)
+            {
+                ratingExists.Rating = rating;
+                _CIDbContext.Update(ratingExists);
+                _CIDbContext.SaveChanges();
+                return Json(new { success = true, ratingExists, isRated = true });
+            }
+            else
+            {
+                var ratingele = new MissionRating();
+                ratingele.Rating = rating;
+                ratingele.UserId = Id;
+                ratingele.MissionId = missionId;
+                _CIDbContext.Add(ratingele);
+                _CIDbContext.SaveChanges();
+                return Json(new { success = true, ratingele, isRated = true });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Addfav(long Id, long missionId)
+        {
+            FavoriteMission fav = await _CIDbContext.FavoriteMissions.FirstOrDefaultAsync(m => m.UserId == Id && m.MissionId == missionId);
+            if (fav != null)
+            {
+                _CIDbContext.Remove(fav);
+                _CIDbContext.SaveChanges();
+                return Json(new { success = true, favmission = "1" });
+            }
+            else
+            {
+                var ratingele = new FavoriteMission();
+                 
+                ratingele.UserId = Id;
+                ratingele.MissionId = missionId;
+                _CIDbContext.AddAsync(ratingele);
+                _CIDbContext.SaveChanges();
+                return Json(new { success = true, favmission = "0" });
+            }
+        }
+
+
         public IActionResult Volunteering(long id , int missionid)
         {
+
+            var userId = HttpContext.Session.GetString("user");
+            ViewBag.UserId = int.Parse(userId);
             //List<Country> country = _CIDbContext.Countries.ToList();
             //List<City> city = _CIDbContext.Cities.ToList();
             //List<MissionTheme> theme = _CIDbContext.MissionThemes.ToList();
@@ -38,7 +89,6 @@ namespace CI_Platform.Controllers
             //ViewBag.relatedMission = relatedMission.Take(3);
 
             //return View();
-
 
 
             List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
@@ -107,7 +157,7 @@ namespace CI_Platform.Controllers
             //ViewBag.resentV = uname;
             ////volunteeringVM.username = uname.FirstName;
             //volunteeringVM.username= uname.FirstName;
-          ;
+        
 
 
             List<VolunteeringVM> recentvolunteredlist = new List<VolunteeringVM>();
