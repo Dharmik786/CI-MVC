@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NuGet.Packaging;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -53,7 +54,6 @@ namespace CI_Platform.Controllers
             List<MissionRating> rate = _CIDbContext.MissionRatings.ToList();
             ViewBag.Rate = rate;
 
-          
             foreach (var item in mission)
             {
                 var City = _CIDbContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
@@ -161,6 +161,10 @@ namespace CI_Platform.Controllers
             if (search != null)
             {
                 mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
+                if (mission.Count() == 0)
+                {
+                    return RedirectToAction("NoMissionFound", "Home");
+                }
             }
 
             //if (searchQuery != null)
@@ -196,6 +200,7 @@ namespace CI_Platform.Controllers
         //        mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
 
         //    }
+        //    //return RedirectToAction("landingpage", "landingpage", mission); 
         //    return View(mission);
         //}
 
