@@ -1,23 +1,69 @@
-﻿
+﻿var card = document.getElementsByClassName("missioncard")
+var cardimg = document.getElementsByClassName("card-img");
+var carddisplay = document.getElementsByClassName("card");
+var theme = document.getElementsByClassName("theme-btn");
+
+if (localStorage.getItem("view") === "list") {
+    list();
+}
+
+
+function list() {
+    localStorage.setItem("view", "list");
+    for (i = 0; i < card.length; i++) {
+        card[i].style.width = "100%";
+        card[i].style.marginTop = "1%";
+        carddisplay[i].style.display = "flex";
+        carddisplay[i].style.flexDirection = "row";
+        cardimg[i].style.height = "48vh";
+        theme[i].style.top = "95%";
+        // theme[i].style.left = "34%";
+    }
+}
+
+
+function grid() {
+
+    localStorage.setItem("view", "grid");
+    for (i = 0; i < card.length; i++) {
+
+        if (screen.width > 1023) {
+            card[i].style.width = "33%";
+            carddisplay[i].style.flexDirection = "column";
+            cardimg[i].style.width = "100%";
+            theme[i].style.top = "95%";
+            theme[i].style.left = "35%";
+        }
+        else {
+            card[i].style.width = "50%";
+            carddisplay[i].style.flexDirection = "column";
+            cardimg[i].style.width = "100%";
+            theme[i].style.top = "95%";
+            theme[i].style.left = "35%";
+
+        }
+    }
+}
+
 //search
-function mySearch() {
+function mySearch()
+{
     var Search = $("input[name='searchQuery']").val();
     console.log(Search)
     $.ajax({
-        url: "/landingpage/landingpage",
+        url: "/Landingpage/_Missions",
         type: "GET",
         data: { 'search': Search },
         
         success: function (res) {
-            $("#myItem").html(res);
+            $("#missions").html(res);
         },
         error: function () {
             alert("some Error");
         }
     })
-   
-}
-
+ }
+ mySearch()
 //search
 function myCountry() {
 
