@@ -1,5 +1,6 @@
 ﻿using CI.Models;
 using CI_Entity.Models;
+using CI_Entity.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,6 +64,9 @@ namespace CI_Platform.Controllers
 
         public IActionResult Volunteering(long id , int missionid)
         {
+            //List<MissionList> missionLists = new List<MissionList>();
+            //missionLists.countries = _CIDbContext.Cities.ToList();
+
 
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);

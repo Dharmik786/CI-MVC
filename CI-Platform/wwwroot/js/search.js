@@ -2,7 +2,8 @@
 var cardimg = document.getElementsByClassName("card-img");
 var carddisplay = document.getElementsByClassName("card");
 var theme = document.getElementsByClassName("theme-btn");
-
+var search = "";
+var sortValue = ""
 if (localStorage.getItem("view") === "list") {
     list();
 }
@@ -45,25 +46,57 @@ function grid() {
     }
 }
 
+
+
+
+
+
+
+
+$(document).ready(function () {
+    mySearch();
+    LoadMission();
+});
+
+
 //search
 function mySearch()
 {
     var Search = $("input[name='searchQuery']").val();
-    console.log(Search)
+    if (Search == '')
+        Search = '';
     $.ajax({
         url: "/Landingpage/_Missions",
         type: "GET",
         data: { 'search': Search },
         
         success: function (res) {
+            $("#missions").html('');
             $("#missions").html(res);
         },
         error: function () {
             alert("some Error");
         }
     })
- }
- mySearch()
+}
+
+function LoadMission(sortValue) {
+    console.log(sortValue)
+
+    @
+}
+
+
+
+
+
+
+
+
+
+
+//sort
+
 //search
 function myCountry() {
 

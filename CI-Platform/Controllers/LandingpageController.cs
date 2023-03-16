@@ -37,6 +37,8 @@ namespace CI_Platform.Controllers
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
             missionList.cities = _CIDbContext.Cities.ToList();
+            missionList.countries = _CIDbContext.Countries.ToList();
+
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
@@ -141,8 +143,6 @@ namespace CI_Platform.Controllers
             //    }
             //    ViewBag.city1 = city;
             //    //Countries = _CIDbContext.Countries.ToList();
-
-
             //}
 
 
@@ -153,15 +153,15 @@ namespace CI_Platform.Controllers
             //switch (sortOrder)
             //{
             //    case "Newest":
-            //        mission = (List<Mission>)mission.OrderByDescending(mission => mission.StartDate).ToList();
+            //        missionList.mission = missionList.mission.OrderByDescending(mission => mission.StartDate).ToList();
             //        break;
 
             //    case "Oldest":
-            //        mission = (List<Mission>)mission.OrderBy(mission => mission.StartDate).ToList();
+            //        missionList.mission = missionList.mission.OrderBy(mission => mission.StartDate).ToList();
             //        break;
 
             //    case "Theme":
-            //        mission = (List<Mission>)mission.OrderBy(mission => mission.MissionType).ToList();
+            //        missionList.mission = missionList.mission.OrderBy(mission => mission.MissionType).ToList();
             //        break;
             //}
 
@@ -191,7 +191,7 @@ namespace CI_Platform.Controllers
             //int skip = (pageIndex ?? 0) * pageSize;
             //var Missions = missionList.mission.Skip(skip).Take(pageSize).ToList();
             //int totalMissions = missionList.mission.Count();
-            //missionList.mission = Missions;
+            //missionList.mission = Missions
             //ViewBag.TotalMission = totalMissions;
             //ViewBag.TotalPages = (int)Math.Ceiling(totalMissions / (double)pageSize);
             //ViewBag.CurrentPage = pageIndex ?? 0;
@@ -200,30 +200,60 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(string search,int? pageIndex)
+        public IActionResult _Missions(string? search,int? pageIndex,string? sortValue)
         {
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
             missionList.cities = _CIDbContext.Cities.ToList();
+            missionList.countries = _CIDbContext.Countries.ToList();
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
+            List<Mission> mission = _CIDbContext.Missions.ToList();
+
+            //Seacrh
             if (search != null)
             {
-                missionList.mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
+                mission = mission.Where(m => m.Title.Contains(search)).ToList();
+            }
+
+
+            //Sort By
+            ViewBag.Order = sortValue;
+            switch (sortValue)
+            {
+                case "Newest":
+                    missionList.mission = missionList.mission.OrderByDescending(mission => mission.StartDate).ToList();
+                    break;
+
+                case "Oldest":
+                    missionList.mission = missionList.mission.OrderBy(mission => mission.StartDate).ToList();
+                    break;
+
+                case "Theme":
+                    missionList.mission = missionList.mission.OrderBy(mission => mission.MissionType).ToList();
+                    break;
+                default:
+                    mission = mission.ToList();
+                    break;
 
             }
-   
-            int pageSize = 9;
+
+            //Pagination
+            int pageSize = 8;
             int skip = (pageIndex ?? 0) * pageSize;
-            var Missions = missionList.mission.Skip(skip).Take(pageSize).ToList();
-            int totalMissions = missionList.mission.Count();
-            missionList.mission = Missions;
+            var Missions = mission.Skip(skip).Take(pageSize).ToList();
+            int totalMissions = mission.Count();
+
+
+
             ViewBag.TotalMission = totalMissions;
             ViewBag.TotalPages = (int)Math.Ceiling(totalMissions / (double)pageSize);
             ViewBag.CurrentPage = pageIndex ?? 0;
 
-          
+            missionList.mission = mission;
+
+
             return PartialView("_Missions", missionList);
         }
 
