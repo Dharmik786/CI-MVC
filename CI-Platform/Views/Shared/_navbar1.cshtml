@@ -139,14 +139,14 @@
                             Country
                         </a>
 
-                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;">
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;" id="countryDropdown">
                             @if (ViewBag.Country != null)
                             {
                                 @foreach (var item in ViewBag.Country)
                                 {
                                     <li>
                                         <a class="dropdown-item p-0 mt-1" href="#">
-                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Name" value="@item.Name">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Name" value="@item.Name" name="country">
                                             @item.Name
                                         </a>
                                     </li>
@@ -338,7 +338,7 @@
         </div>
     </nav>
 
-    <div class="d-flex mt-2">
+   @* <div class="d-flex mt-2">
         @if (@ViewBag.country1 != null)
         {
             @foreach (var country in @ViewBag.country1)
@@ -349,7 +349,7 @@
             }
         }
 
-        @* @if (@ViewBag.city1 != null)
+         @if (@ViewBag.city1 != null)
         {
         @foreach (var city in @ViewBag.city)
         {
@@ -357,8 +357,8 @@
         @city.Name<button type="button" class="btn-close me-2" aria-label="Close" onclick="cityBtn()"></button>
         </div>
         }
-        }*@
-        @*@if (@ViewBag.theme != null)
+        }
+        @if (@ViewBag.theme != null)
         {
         @foreach (var theme in @ViewBag.theme)
         {
@@ -373,8 +373,8 @@
         <div class="filter">
         <button type="button" class="clearall rounded-3 filter ms-2 ps-2" onclick="clearall()" id="clearall">Clear All</button>
         </div>
-        }*@
-    </div>
+        }
+    </div>*@
 
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>

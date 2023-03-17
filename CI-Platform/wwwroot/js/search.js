@@ -55,23 +55,40 @@ function grid() {
 
 $(document).ready(function () {
     mySearch();
-    LoadMission(sortValue);
+   /* LoadMission(sortValue);
+    myCountry();*/
 });
 
 
 //search
-function mySearch() {
+function mySearch(sortValue) {
+
     var Search = $("input[name='searchQuery']").val();
     //if (Search == '')
     //    Search = '';
     console.log(Search)
+
+
+    var country = [];
+
+    //$("#country").find("input:checked").each(function (i, obj) {
+
+    //    country.push($(obj).val());
+
+    //})
+    $('#countryDropdown').find("input:checked").each(function (i, ob) {
+        country.push($(ob).val());
+    });
+    console.log(country)
+
+
     $.ajax({
         url: "/Landingpage/_Missions",
-        type: "GET",
-        data: { 'search': Search },
+        type: "POST",
+        data: { 'search': Search, 'sortValue': sortValue, 'country': country },
 
         success: function (res) {
-            /*$("#missions").html('');*/
+            $("#missions").html('');
             $("#missions").html(res);
         },
         error: function () {
@@ -80,32 +97,6 @@ function mySearch() {
     })
 }
 /*mySearch()*/
-
-//sort
-function LoadMission(sortValue) {
-    console.log(sortValue)
-    
-    $.ajax({
-        url: "/Landingpage/_Missions",
-        type: "GET",
-        data: { 'sortValue': sortValue },
-
-        success: function (res) {
-            /*$("#missions").html('');*/
-            $("#missions").html(res);
-        },
-        error: function () {
-            alert("some Error");
-        }
-    })
-}
-
-
-
-
-
-
-
 
 
 

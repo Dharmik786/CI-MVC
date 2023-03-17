@@ -200,7 +200,7 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(string? search,int? pageIndex,string? sortValue)
+        public IActionResult _Missions(string? search,int? pageIndex,string? sortValue,string[] country)
         {
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
@@ -209,21 +209,20 @@ namespace CI_Platform.Controllers
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
-
-
-
-
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
             //Seacrh
             if (search != null)
             {
                 mission = mission.Where(m => m.Title.Contains(search)).ToList();
+                if(mission.Count() == 0)
+                {
+                    return PartialView("_NoMission");
+                }
             }
 
-
             ////Sort By
-            //ViewBag.Order = sortValue;
+            ViewBag.sort = sortValue;
             switch (sortValue)
             {
                 case "Newest":
@@ -243,13 +242,23 @@ namespace CI_Platform.Controllers
 
             }
 
+            //Country
+            //if(country != null)
+            //{
+            //    mission = mission.Where(x=>x.Country.Equals(country)).ToList();
+            //}
+            //else { mission = mission.ToList(); }
+
+            if (country.Length > 0)
+            {
+                mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
+            }
+
             //Pagination
-            int pageSize = 8;
+            int pageSize = 6;
             int skip = (pageIndex ?? 0) * pageSize;
             var Missions = mission.Skip(skip).Take(pageSize).ToList();
             int totalMissions = mission.Count();
-
-
 
             ViewBag.TotalMission = totalMissions;
             ViewBag.TotalPages = (int)Math.Ceiling(totalMissions / (double)pageSize);

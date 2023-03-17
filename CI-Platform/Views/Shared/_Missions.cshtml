@@ -16,13 +16,13 @@
                     <button class=" btn dropdown d-flex " type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
 
-                        <span class="sortby me-5 ">@ViewBag.Order By</span>
+                        <span class="sortby me-5 ">@ViewBag.sort By</span>
                         <img src="/Image/drop-down.png" alt="" class="sortaerrow">
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="LoadMission('Newest')">Newest</a></li>
-                        <li><a class="dropdown-item" onclick="LoadMission('Oldest')">Oldest </a></li>
-                        <li><a class="dropdown-item" onclick="LoadMission('Theme')">Theme</a></li>
+                        <li><a class="dropdown-item" onclick="mySearch('Newest')">Newest</a></li>
+                        <li><a class="dropdown-item" onclick="mySearch('Oldest')">Oldest </a></li>
+                        <li><a class="dropdown-item" onclick="mySearch('Theme')">Theme</a></li>
                     </ul>
 
 
