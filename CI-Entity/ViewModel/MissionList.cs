@@ -20,6 +20,8 @@ namespace CI_Entity.ViewModel
 
         public List<GoalMission> goalMissions { get; set; }
 
+        public List<FavoriteMission> favoriteMissions { get; set; }
+
 
         //public User User { get; set; }
 

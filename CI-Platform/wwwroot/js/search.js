@@ -49,10 +49,6 @@ function grid() {
 
 
 
-
-
-
-
 $(document).ready(function () {
     mySearch();
    /* LoadMission(sortValue);
@@ -71,21 +67,31 @@ function mySearch(sortValue) {
 
     var country = [];
 
-    //$("#country").find("input:checked").each(function (i, obj) {
-
-    //    country.push($(obj).val());
-
-    //})
-    $('#countryDropdown').find("input:checked").each(function (i, ob) {
-        country.push($(ob).val());
+    //$('#countryDropdown').find("input:checked").each(function (i, ob) {
+    //    country.push($(ob).val());
+    //});
+    $("input[type='checkbox'][name='country']:checked").each(function () {
+        country.push($(this).val());
     });
     console.log(country)
 
 
+    var city = [];
+    $("input[type='checkbox'][name='city']:checked").each(function () {
+        city.push($(this).val());
+    });
+    console.log(city)
+
+    var theme = [];
+    $("input[type='checkbox'][name='theme']:checked").each(function () {
+        theme.push($(this).val());
+    });
+    console.log(theme)
+
     $.ajax({
         url: "/Landingpage/_Missions",
         type: "POST",
-        data: { 'search': Search, 'sortValue': sortValue, 'country': country },
+        data: { 'search': Search, 'sortValue': sortValue, 'country': country, 'city': city, 'theme': theme },
 
         success: function (res) {
             $("#missions").html('');
@@ -104,21 +110,21 @@ function mySearch(sortValue) {
 //sort
 
 //search
-function myCountry() {
+//function myCountry() {
 
-    var country = [];
-    $("input[type='checkbox'][name='country']:checked").each(function () {
-        country.push($(this).val());
-    });
+//    var country = [];
+//    $("input[type='checkbox'][name='country']:checked").each(function () {
+//        country.push($(this).val());
+//    });
 
 
-    $.ajax({
-        url: "/landingpage/landingpage",
-        type: "GET",
-        data: { 'countryId': country.toString() },
-    })
-    console.log(country)
-}
+//    $.ajax({
+//        url: "/landingpage/landingpage",
+//        type: "GET",
+//        data: { 'countryId': country.toString() },
+//    })
+//    console.log(country)
+//}
 
 //Fiters
 //function updateUrlForCountry() {

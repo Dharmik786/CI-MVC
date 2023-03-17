@@ -26,14 +26,14 @@ namespace CI_Platform.Controllers
             _CIDbContext = CIDbContext;
         }
 
-        public IActionResult landingpage(long id, int? pageIndex, string search,string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
+        public IActionResult landingpage(long id, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
         {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
             {
                 return RedirectToAction("Login", "Home");
             }
-            
+
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
             missionList.cities = _CIDbContext.Cities.ToList();
@@ -200,8 +200,10 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(string? search,int? pageIndex,string? sortValue,string[] country)
+        public IActionResult _Missions(int missionid,string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
         {
+            var id = HttpContext.Session.GetString("user");
+
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
             missionList.cities = _CIDbContext.Cities.ToList();
@@ -211,11 +213,13 @@ namespace CI_Platform.Controllers
 
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
+           // List<FavoriteMission> favoriteMissions = _CIDbContext.FavoriteMissions.Where(x=>x.UserId == id && x.MissionId == missionid).ToList();
+
             //Seacrh
             if (search != null)
             {
                 mission = mission.Where(m => m.Title.Contains(search)).ToList();
-                if(mission.Count() == 0)
+                if (mission.Count() == 0)
                 {
                     return PartialView("_NoMission");
                 }
@@ -239,20 +243,21 @@ namespace CI_Platform.Controllers
                 default:
                     mission = mission.ToList();
                     break;
-
             }
 
-            //Country
-            //if(country != null)
+            //filter
+            //if (country.Length > 0)
             //{
-            //    mission = mission.Where(x=>x.Country.Equals(country)).ToList();
+            //    mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
             //}
-            //else { mission = mission.ToList(); }
-
-            if (country.Length > 0)
-            {
-                mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
-            }
+            //if (city.Length > 0)
+            //{
+            //    mission = mission.Where(s => city.Contains(s.City.Name)).ToList();
+            //}
+            //if (theme.Length > 0)
+            //{
+            //    mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
+            //}
 
             //Pagination
             int pageSize = 6;
@@ -265,7 +270,6 @@ namespace CI_Platform.Controllers
             ViewBag.CurrentPage = pageIndex ?? 0;
 
             missionList.mission = mission;
-
 
             return PartialView("_Missions", missionList);
         }

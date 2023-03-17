@@ -1,4 +1,6 @@
-﻿namespace CI.Models
+﻿using CI_Entity.Models;
+
+namespace CI.Models
 {
     public class VolunteeringVM
     {
@@ -33,6 +35,11 @@
         public string GoalValue { get; set; } = null!;
 
         public string username { get; set; }
+
+        public List<FavoriteMission> FavoriteMissions { get; set; }
+
+        //public long FavMissionID { get; set; }
+        //public long FavUserID { get; set; }
 
     }
 }

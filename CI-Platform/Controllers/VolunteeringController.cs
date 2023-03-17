@@ -1,6 +1,5 @@
 ﻿using CI.Models;
 using CI_Entity.Models;
-using CI_Entity.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,7 +51,7 @@ namespace CI_Platform.Controllers
             else
             {
                 var ratingele = new FavoriteMission();
-                 
+
                 ratingele.UserId = Id;
                 ratingele.MissionId = missionId;
                 _CIDbContext.AddAsync(ratingele);
@@ -62,7 +61,7 @@ namespace CI_Platform.Controllers
         }
 
 
-        public IActionResult Volunteering(long id , int missionid)
+        public IActionResult Volunteering(long id, int missionid)
         {
             //List<MissionList> missionLists = new List<MissionList>();
             //missionLists.countries = _CIDbContext.Cities.ToList();
@@ -161,7 +160,7 @@ namespace CI_Platform.Controllers
             //ViewBag.resentV = uname;
             ////volunteeringVM.username = uname.FirstName;
             //volunteeringVM.username= uname.FirstName;
-        
+
 
 
             List<VolunteeringVM> recentvolunteredlist = new List<VolunteeringVM>();
@@ -181,6 +180,6 @@ namespace CI_Platform.Controllers
 
 
 
-       
+
     }
 }
