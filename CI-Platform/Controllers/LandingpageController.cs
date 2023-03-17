@@ -49,17 +49,17 @@ namespace CI_Platform.Controllers
             //List<Mission> finalmission = _CIDbContext.Missions.ToList();
             //List<Mission> newmission = _CIDbContext.Missions.ToList();
 
-            //List<City> city = _CIDbContext.Cities.ToList();
-            //ViewBag.City = city;
+            List<City> city = _CIDbContext.Cities.ToList();
+            ViewBag.City = city;
 
-            //List<Country> country = _CIDbContext.Countries.ToList();
-            //ViewBag.Country = country;
+            List<Country> country = _CIDbContext.Countries.ToList();
+            ViewBag.Country = country;
 
-            //List<MissionTheme> themes = _CIDbContext.MissionThemes.ToList();
-            //ViewBag.Themes = themes;
+            List<MissionTheme> themes = _CIDbContext.MissionThemes.ToList();
+            ViewBag.Themes = themes;
 
-            //List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
-            //ViewBag.GoalMissions = goalMissions;
+            List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
+            ViewBag.GoalMissions = goalMissions;
 
             //List<MissionRating> rate = _CIDbContext.MissionRatings.ToList();
             //ViewBag.Rate = rate;
@@ -209,6 +209,10 @@ namespace CI_Platform.Controllers
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
+
+
+
+
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
             //Seacrh
@@ -218,20 +222,20 @@ namespace CI_Platform.Controllers
             }
 
 
-            //Sort By
-            ViewBag.Order = sortValue;
+            ////Sort By
+            //ViewBag.Order = sortValue;
             switch (sortValue)
             {
                 case "Newest":
-                    missionList.mission = missionList.mission.OrderByDescending(mission => mission.StartDate).ToList();
+                    mission = mission.OrderByDescending(mission => mission.StartDate).ToList();
                     break;
 
                 case "Oldest":
-                    missionList.mission = missionList.mission.OrderBy(mission => mission.StartDate).ToList();
+                    mission = mission.OrderBy(mission => mission.StartDate).ToList();
                     break;
 
                 case "Theme":
-                    missionList.mission = missionList.mission.OrderBy(mission => mission.MissionType).ToList();
+                    mission = mission.OrderBy(mission => mission.MissionType).ToList();
                     break;
                 default:
                     mission = mission.ToList();

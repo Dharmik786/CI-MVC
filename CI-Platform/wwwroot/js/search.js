@@ -55,23 +55,43 @@ function grid() {
 
 $(document).ready(function () {
     mySearch();
-    LoadMission();
+    LoadMission(sortValue);
 });
 
 
 //search
-function mySearch()
-{
+function mySearch() {
     var Search = $("input[name='searchQuery']").val();
-    if (Search == '')
-        Search = '';
+    //if (Search == '')
+    //    Search = '';
+    console.log(Search)
     $.ajax({
         url: "/Landingpage/_Missions",
         type: "GET",
         data: { 'search': Search },
-        
+
         success: function (res) {
-            $("#missions").html('');
+            /*$("#missions").html('');*/
+            $("#missions").html(res);
+        },
+        error: function () {
+            alert("some Error");
+        }
+    })
+}
+/*mySearch()*/
+
+//sort
+function LoadMission(sortValue) {
+    console.log(sortValue)
+    
+    $.ajax({
+        url: "/Landingpage/_Missions",
+        type: "GET",
+        data: { 'sortValue': sortValue },
+
+        success: function (res) {
+            /*$("#missions").html('');*/
             $("#missions").html(res);
         },
         error: function () {
@@ -80,11 +100,6 @@ function mySearch()
     })
 }
 
-function LoadMission(sortValue) {
-    console.log(sortValue)
-
-    @
-}
 
 
 
@@ -105,7 +120,7 @@ function myCountry() {
         country.push($(this).val());
     });
 
-   
+
     $.ajax({
         url: "/landingpage/landingpage",
         type: "GET",
