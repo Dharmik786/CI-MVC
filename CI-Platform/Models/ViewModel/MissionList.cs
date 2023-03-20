@@ -23,7 +23,7 @@ namespace CI_Entity.Models.ViewModel
         public List<FavoriteMission> favoriteMissions { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
 
-        public List<Comment> comments { get; set; }
+
 
         //  public List<Mission> missions { get; set; }
         //   public List<City> cities { get; set; }
@@ -40,7 +40,7 @@ namespace CI_Entity.Models.ViewModel
         //public List<FavoriteMission> favoriteMissions { get; set; }
         //public List<MissionSkill> missionSkills { get; set; }
         //public List<GoalMission> goalMissions { get; set; }
-   
+        public List<Comment> comments { get; set; }
         public List<Timesheet> timesheets { get; set; }
         public List<MissionDocument> missionDocuments { get; set; }
         public Mission singleMission { get; set; }

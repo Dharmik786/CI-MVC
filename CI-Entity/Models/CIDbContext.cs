@@ -47,7 +47,7 @@ public partial class CIDbContext : DbContext
 
     public virtual DbSet<MissionTheme> MissionThemes { get; set; }
 
-    public virtual DbSet<PasswordReset> PasswordReset { get; set; }
+    public virtual DbSet<PasswordReset> PasswordResets { get; set; }
 
     public virtual DbSet<Skill> Skills { get; set; }
 
@@ -208,6 +208,10 @@ public partial class CIDbContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('pending')")
                 .HasColumnName("approval_status");
+            entity.Property(e => e.CommentText)
+                .HasMaxLength(40)
+                .IsFixedLength()
+                .HasColumnName("comment_text");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")

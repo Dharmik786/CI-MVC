@@ -78,7 +78,7 @@ namespace CI.Controllers
                     Token = token
                 };
 
-                _CIDbContext.PasswordReset.Add(passwordReset);
+                _CIDbContext.PasswordResets.Add(passwordReset);
                 _CIDbContext.SaveChanges();
 
                 var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
@@ -153,7 +153,7 @@ namespace CI.Controllers
         [HttpGet]
         public IActionResult Reset_Password(string email, string token)
         {
-            var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(u => u.Email == email && u.Token == token);
+            var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
             if (passwordReset == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -182,7 +182,7 @@ namespace CI.Controllers
                 }
 
                 // Find the password reset record by email and token
-                var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
+                var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
                 if (passwordReset == null)
                 {
                     return RedirectToAction("Logn", "Home");

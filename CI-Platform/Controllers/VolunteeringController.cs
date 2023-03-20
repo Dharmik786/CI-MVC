@@ -81,6 +81,7 @@ namespace CI_Platform.Controllers
             vMMission.goalMissions = _CIDbContext.GoalMissions.ToList();
             vMMission.users = _CIDbContext.Users.ToList();
             vMMission.timesheets = _CIDbContext.Timesheets.ToList();
+            vMMission.comments = _CIDbContext.Comments.ToList();
 
             vMMission.favoriteMissions = _CIDbContext.FavoriteMissions.Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
             //vMMission.missionSkills = _CIDbContext.MissionSkills.Where(e => e.MissionId == Convert.ToInt32(vMMission.singleMission.MissionId)).ToList();
@@ -217,9 +218,12 @@ namespace CI_Platform.Controllers
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
 
-            var c = new Comment();
+            Comment c = new Comment();
             c.UserId = Convert.ToInt32(userId);
             c.MissionId = missonid;
+            c.CommentText = cmt;
+            _CIDbContext.Add(c);
+            _CIDbContext.SaveChanges(true);
             
         }
 

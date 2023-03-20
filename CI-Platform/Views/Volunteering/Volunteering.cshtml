@@ -298,57 +298,32 @@
                                 <div class="">
                                     <textarea maxlength="" style="width:100%" placeholder="Enter Your Comment.." id="comment"></textarea>
                                 </div>
-                                <button class="Apply-btn ms-2 mt-2"  onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
+                                <button class="Apply-btn ms-2 mt-2" onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
                             </div>
 
 
                             <div class="card cmnt mt-3">
+                                @*@{
+                                    var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
+                                }*@
+                                
+                                    @foreach (var i in Model.comments)
+                                    {
 
-                                <div class="media d-flex mt-2">
-                                    <div class="media-left mt-2">
-                                        <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                    </div>
-                                    <div class="media-body ms-2">
-                                        <h5 class="media-heading">Vedant</h5>
-                                        <span>thursday 22 February 2023 11:19 AM</span>
-                                        <p>Nice Mission Great Opportunity</p>
-                                    </div>
-                                </div>
+                                        <div class="media d-flex mt-2">
+                                            <div class="media-left mt-2">
+                                                <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
+                                            </div>
+                                            <div class="media-body ms-2">
 
-                                <div class="media d-flex mt-2">
-                                    <div class="media-left mt-2">
-                                        <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                    </div>
-                                    <div class="media-body ms-2">
-                                        <h5 class="media-heading">Vedant</h5>
-                                        <span>thursday 22 February 2023 11:19 AM</span>
-                                        <p>Nice Mission Great Opportunity</p>
-                                    </div>
-                                </div>
+                                                <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
+                                                <span>@i.CreatedAt.ToString()</span>
+                                                <p>@i.CommentText</p>
 
-                                <div class="media d-flex mt-2">
-                                    <div class="media-left mt-2">
-                                        <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                    </div>
-                                    <div class="media-body ms-2">
-                                        <h5 class="media-heading">Vedant</h5>
-                                        <span>thursday 22 February 2023 11:19 AM</span>
-                                        <p>Nice Mission Great Opportunity</p>
-                                    </div>
-                                </div>
-
-                                <div class="media d-flex mt-2">
-                                    <div class="media-left mt-2">
-                                        <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                    </div>
-                                    <div class="media-body ms-2">
-                                        <h5 class="media-heading">Vedant</h5>
-                                        <span>thursday 22 February 2023 11:19 AM</span>
-                                        <p>Nice Mission Great Opportunity</p>
-                                    </div>
-                                </div>
-
-
+                                            </div>
+                                        </div>
+                                    }
+                                
                             </div>
 
                         </div>
@@ -446,7 +421,7 @@
                 data: { 'missonid': missonid },
                 success: function () {
                     Console.log("Liked or Unliked mission.")
-                        },
+                },
                 error: function () {
                     alert("please login first.");
                 }
@@ -462,16 +437,16 @@
             $.ajax({
                 type: 'GET',
                 url: "/Volunteering/PostComment",
-                data: { 'missonid': missonid,'cmt':cmt },
+                data: { 'missonid': missionid, 'cmt': cmt },
                 success: function () {
-                    Console.log("comment posted")
+                    console.log("comment posted")
                 },
                 error: function () {
-                   
+
                 }
 
             });
-           
+            location.reload();  
         }
 
     </script>
