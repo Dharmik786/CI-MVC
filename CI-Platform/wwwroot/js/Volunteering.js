@@ -36,6 +36,7 @@ function addRating(starId, missionId, Id) {
         url: '/Volunteering/Addrating',
         type: 'POST',
         data: { missionId: missionId, Id: Id, rating: starId },
+
         success: function (result) {
             if (parseInt(result.ratingExists.rating, 10)) {
                 for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {

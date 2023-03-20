@@ -40,7 +40,7 @@
 
         </div>
     </div>
- 
+
 </div>
 
 
@@ -62,23 +62,53 @@
 
                     <div class="landing-page-bottom-right d-flex flex-column">
                         <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
-                           @{
+                            @{
                                 var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
                             }
                             @if (fav != null)
                             {
-                                <img src="~/Image/fill-heart.png" >
+                                <img src="~/Image/fill-heart.png">
                             }
                             else
                             {
-                                <img src="/Image/heart1.png" >                              
+                                <img src="/Image/heart1.png">
                             }
-                            
+
                         </button>
-                        <button class="landing-page-btn-img">
+                        <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <img src="/Image/user.png" alt="">
                         </button>
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Send Recommend TO</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body overflow-y-auto" style="height:200px;">
+                                        @foreach (var u in Model.users)
+                                        {
+                                            <div>
+                                                <img src="/Image/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
+                                                <label class=" ms-4 mt-2 me-auto"> @u.LastName @u.FirstName</label>
+                                                <input class="form-check-input me-2 mt-2" type="checkbox" id="@u.UserId" name="mail">
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary d-inline" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary d-inline" id="sendmail" onclick="sendmail(@item.MissionId)">Send Mission</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+
+
+
 
                     <div><button class="theme-btn ">@item.Theme.Title</button></div>
                     <!-- <button class="theme-btn ">Environment</button> -->
@@ -96,12 +126,40 @@
                     <div class="d-flex">
                         <div class="card-text">@item.OrganizationName</div>
                         <div class="ms-auto">
+                            @{
+                                int avgRating = 0;
+                                int rat = 0;
+                                var ratingList = Model.missionRatings.Where(m => m.MissionId == item.MissionId).ToList();
+ 
+                                if (ratingList.Count() > 0)
+                                {
 
-                            <img src="/Image/selected-star.png" class="star" alt="">
+                                    foreach (var r in ratingList)
+                                    {
+                                        rat = rat + int.Parse(r.Rating);
+                                    }
+                                    avgRating = rat / ratingList.Count();
+                                }
+                                ViewBag.rat = ratingList.Count();
+
+                                Model.avgrating = avgRating;
+                            }
+
+                            @for(int i=1;i<=Model.avgrating;i++)
+                            {
+                                <img src="/Image/selected-star.png"/>
+                            }
+                            @for(int i=Model.avgrating;i<5;i++)
+                            {
+                                <img src="~/Image/star-empty.png"/>
+                            }
+                            @*<img src="/Image/selected-star.png" class="star" alt="">
                             <img src="/Image/selected-star.png" class="star" alt="">
                             <img src="/Image/selected-star.png" class="star" alt="">
                             <img src="/Image/star-empty.png" class="star" alt="">
-                            <img src="/Image/star-empty.png" class="star" alt="">
+                            <img src="/Image/star-empty.png" class="star" alt="">*@
+
+
                         </div>
                     </div>
                     @{
@@ -158,7 +216,7 @@
 
                     <div class="text-center">
                         <button class="Apply-btn p-2">
-                               <a href="/Volunteering/Volunteering?missionid=@item.MissionId" class="" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                            <a href="/Volunteering/Volunteering?missionid=@item.MissionId" class="" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
                         </button>
                     </div>
                 </div>
@@ -193,6 +251,8 @@
 
     </ul>
 </nav>
+
+
 <script>
     function addToFav(missonid) {
         $.ajax({
@@ -201,12 +261,45 @@
             data: { 'missonid': missonid },
             success: function () {
                 Console.log("Liked or Unliked mission.")
-                    },
+            },
             error: function () {
                 alert("please login first.");
             }
 
         });
         location.reload();
+    }
+
+
+    function sendmail(missionid) {
+        const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+        console.log(mail)
+        console.log(missionid)
+        var send = document.getElementById("sendmail");
+        send.innerHTML = "Sending";
+
+        $.ajax({
+            url: '/Volunteering/Sendmail',
+            type: 'POST',
+            data: { 'emailList': mail, 'missionid': missionid },
+            success: function (result) {
+                alert("Recomendations sent successfully!")
+
+    @*  alert("Recomendations sent successfully!");
+                    const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+                    checkboxes.forEach((checkbox) => {
+                    checkbox.checked = false;
+                    });*@
+                    send.innerHTML = "sent"
+            },
+            error: function () {
+                // Handle error response from the server, e.g. show an error message to the user
+                alert('Error: Could not recommend mission.');
+            }
+        });
+
+
+
+
     }
 </script>

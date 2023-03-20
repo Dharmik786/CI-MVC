@@ -45,6 +45,7 @@ namespace CI_Entity.Models.ViewModel
         public List<MissionDocument> missionDocuments { get; set; }
         public Mission singleMission { get; set; }
        
+        public int avgrating { set; get; }
         public long missionId { get; set; }
         //public User User { get; set; }
 

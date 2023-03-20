@@ -72,10 +72,28 @@ namespace CI_Platform.Controllers
             missionList.countries = _CIDbContext.Countries.ToList();
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
+            missionList.users = _CIDbContext.Users.ToList();    
 
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
             missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();
+            missionList.missionRatings=_CIDbContext.MissionRatings.ToList();
+            //Avg Rating
+            //int avgRating = 0;
+            //int rat = 0;
+            //var ratingList = missionList.missionRatings.Where(m => m.MissionId == missionList.singleMission.MissionId).ToList();
+
+            //if (ratingList.Count() > 0)
+            //{
+
+            //    foreach (var r in ratingList)
+            //    {
+            //        rat = rat + int.Parse(r.Rating);
+            //    }
+            //    avgRating = rat / ratingList.Count();
+            //}
+
+
 
             //Seacrh
             if (search != null)

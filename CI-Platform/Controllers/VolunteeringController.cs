@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using CI_Entity.Models.ViewModel;
 using System.Security.Claims;
+using System.Net.Mail;
+using System.Net;
 
 namespace CI_Platform.Controllers
 {
@@ -17,51 +19,6 @@ namespace CI_Platform.Controllers
         public VolunteeringController(CIDbContext CIDbContext)
         {
             _CIDbContext = CIDbContext;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Addrating(string rating, long Id, long missionId)
-        {
-            MissionRating ratingExists = await _CIDbContext.MissionRatings.FirstOrDefaultAsync(fm => fm.UserId == Id && fm.MissionId == missionId);
-            if (ratingExists != null)
-            {
-                ratingExists.Rating = rating;
-                _CIDbContext.Update(ratingExists);
-                _CIDbContext.SaveChanges();
-                return Json(new { success = true, ratingExists, isRated = true });
-            }
-            else
-            {
-                var ratingele = new MissionRating();
-                ratingele.Rating = rating;
-                ratingele.UserId = Id;
-                ratingele.MissionId = missionId;
-                _CIDbContext.Add(ratingele);
-                _CIDbContext.SaveChanges();
-                return Json(new { success = true, ratingele, isRated = true });
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Addfav(long Id, long missionId)
-        {
-            FavoriteMission fav = await _CIDbContext.FavoriteMissions.FirstOrDefaultAsync(m => m.UserId == Id && m.MissionId == missionId);
-            if (fav != null)
-            {
-                _CIDbContext.Remove(fav);
-                _CIDbContext.SaveChanges();
-                return Json(new { success = true, favmission = "1" });
-            }
-            else
-            {
-                var ratingele = new FavoriteMission();
-
-                ratingele.UserId = Id;
-                ratingele.MissionId = missionId;
-                _CIDbContext.AddAsync(ratingele);
-                _CIDbContext.SaveChanges();
-                return Json(new { success = true, favmission = "0" });
-            }
         }
 
         public IActionResult Volunteering(long id, int missionid)
@@ -82,22 +39,35 @@ namespace CI_Platform.Controllers
             vMMission.users = _CIDbContext.Users.ToList();
             vMMission.timesheets = _CIDbContext.Timesheets.ToList();
             vMMission.comments = _CIDbContext.Comments.ToList();
+            
 
             vMMission.favoriteMissions = _CIDbContext.FavoriteMissions.Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
-            //vMMission.missionSkills = _CIDbContext.MissionSkills.Where(e => e.MissionId == Convert.ToInt32(vMMission.singleMission.MissionId)).ToList();
-
-            /*  vMMission.missionApplicatoins = _dbCiPlatform.MissionApplicatoins.Where(e => e.UserId == Convert.ToInt32(uid)).ToList();
-              vMMission.totalMissionApplication = _dbCiPlatform.MissionApplicatoins.ToList();
-              vMMission.missionDocuments = _dbCiPlatform.MissionDocuments.ToList();*/
-
-            //vMMission.singleMission = vMMission.mission.Where(e => e.MissionId == missionid).FirstOrDefault();
-
-
-
             var data = vMMission.mission.Where(e => e.MissionId == missionid).FirstOrDefault();
             vMMission.singleMission = data;
 
-            vMMission.relatedMission = _CIDbContext.Missions.Where(e => (e.ThemeId == data.ThemeId)  && (e.MissionId != missionid)).ToList();
+            vMMission.relatedMission = _CIDbContext.Missions.Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
+
+
+
+            int avgRating = 0;
+            int rat = 0;
+            var ratingList = vMMission.missionRatings.Where(m => m.MissionId == vMMission.singleMission.MissionId).ToList();
+
+            if (ratingList.Count() > 0)
+            {
+                
+                foreach (var r in ratingList)
+                {
+                    rat = rat + int.Parse(r.Rating);
+                }
+                avgRating = rat / ratingList.Count();
+            }
+            ViewBag.rat = ratingList.Count();
+
+            vMMission.avgrating = avgRating;
+           
+            
+
 
 
 
@@ -213,7 +183,7 @@ namespace CI_Platform.Controllers
 
         }
 
-        public void PostComment(int missonid,string cmt)
+        public void PostComment(int missonid, string cmt)
         {
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
@@ -224,9 +194,66 @@ namespace CI_Platform.Controllers
             c.CommentText = cmt;
             _CIDbContext.Add(c);
             _CIDbContext.SaveChanges(true);
-            
+
         }
 
+        [HttpPost]
+        public void Sendmail(int missionid, long[] emailList)
+        {
+            //var userId = HttpContext.Session.GetString("user");
+            //ViewBag.UserId = int.Parse(userId);
+
+            foreach (var i in emailList)
+            {
+                var user = _CIDbContext.Users.FirstOrDefault(u => u.UserId == i);
+
+                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, mission = missionid }, Request.Scheme);
+
+                var fromAddress = new MailAddress("officehl1882@gmail.com", "Sender Name");
+                var toAddress = new MailAddress(user.Email);
+                var subject = "Mission Request";
+                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
+
+                var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential("officehl1882@gmail.com", "yedkuuhuklkqfzwx"),
+                    EnableSsl = true
+
+                };
+                smtpClient.Send(message);
+            }
+        }
+
+        public async Task<IActionResult> Rating(int missonid, string starid)
+        {
+            var userId = HttpContext.Session.GetString("user");
+            ViewBag.UserId = int.Parse(userId);
+
+            MissionRating rate = _CIDbContext.MissionRatings.Where(e => e.MissionId == missonid && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            if (rate != null)
+            {
+                rate.Rating = starid;
+                _CIDbContext.Update(rate);
+            }
+            else
+            {
+                MissionRating mr = new MissionRating();
+                mr.MissionId = missonid;
+                mr.UserId = Convert.ToInt32(userId);
+                mr.Rating = starid;
+                _CIDbContext.Add(mr);
+            }
+            _CIDbContext.SaveChanges();
+            return Json(new { success = true, starid });
+        }
 
 
 

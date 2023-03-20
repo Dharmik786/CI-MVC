@@ -172,23 +172,45 @@
 
                         </button>
 
+                        <button class="col-6  date-btn m-1 p-1 rounded-5 d-flex  Addfavourite  justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <img src="/Image/add1.png" class="me-2" />
+                            <span>Recommend to a Co-Workers</span>
 
+                        </button>
 
-                        <button class="col-6 date-btn m-1 p-1"><img src="/Image/add1.png" class="me-2" /><span>Recommend to co-worker</span></button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Send Recommend TO</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body overflow-y-auto" style="height:200px;">
+                                        @foreach (var u in Model.users)
+                                        {
+                                            <div>
+                                                <img src="/Image/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
+                                                <label class=" ms-4 mt-2 me-auto"> @u.LastName @u.FirstName</label>
+                                                <input class="form-check-input me-2 mt-2" type="checkbox" id="@u.UserId" name="mail">
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary d-inline" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary d-inline" id="sendmail" onclick="sendmail(@Model.singleMission.MissionId)">Send Mission</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    @*<div class="row">
-                    <div class="col-6"><button class="col-6  date-btn m-1 p-1 "><img src="/Image/heart1.png" class="me-2" /><span>Add to fav</span></button></div>
-                    <div class="col-6"><button class="col-6 date-btn m-1 p-1"><img src="/Image/add1.png" class="me-2" /><span>Recommend to co-worker</span></button></div>
-                    </div>*@
 
                     <div class="rule mt-2">
                         <hr>
-                        <i class="bi bi-star-fill" id="1" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
-                        <i class="bi bi-star-fill" id="2" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
-                        <i class="bi bi-star-fill" id="3" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
-                        <i class="bi bi-star-fill" id="4" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
-                        <i class="bi bi-star-fill" id="5" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="1" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="2" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="3" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="4" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="5" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
 
                         <hr>
                     </div>
@@ -304,26 +326,26 @@
 
                             <div class="card cmnt mt-3">
                                 @*@{
-                                    var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
+                                var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
                                 }*@
-                                
-                                    @foreach (var i in Model.comments)
-                                    {
 
-                                        <div class="media d-flex mt-2">
-                                            <div class="media-left mt-2">
-                                                <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                            </div>
-                                            <div class="media-body ms-2">
+                                @foreach (var i in Model.comments)
+                                {
 
-                                                <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
-                                                <span>@i.CreatedAt.ToString()</span>
-                                                <p>@i.CommentText</p>
-
-                                            </div>
+                                    <div class="media d-flex mt-2">
+                                        <div class="media-left mt-2">
+                                            <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
                                         </div>
-                                    }
-                                
+                                        <div class="media-body ms-2">
+
+                                            <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
+                                            <span>@i.CreatedAt.ToString()</span>
+                                            <p>@i.CommentText</p>
+
+                                        </div>
+                                    </div>
+                                }
+
                             </div>
 
                         </div>
@@ -362,12 +384,20 @@
                     <div class="row">
                         <div class="col-3 ms-2">Rating</div>
                         <div class="col-8">
+
+                          
+                            
+                            @for(int i=1;i<=Model.avgrating;i++)
+                            {
+                                
                             <img src="/Image/selected-star.png" />
-                            <img src="/Image/selected-star.png" />
-                            <img src="/Image/selected-star.png" />
-                            <img src="/Image/selected-star.png" />
-                            <img src="/Image/selected-star.png" />
-                            <span>(By 125 Volunteer)</span>
+                            }
+                            @for(int i = Model.avgrating;i<5;i++)
+                            {
+                            <img src="/Image/star-empty.png" />
+                            }
+                            <span>(By @ViewBag.rat Volunteer)</span>
+                            
                         </div>
                     </div>
 
@@ -446,8 +476,75 @@
                 }
 
             });
-            location.reload();  
+            location.reload();
         }
 
+        function sendmail(missionid) {
+            const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+            console.log(mail)
+            console.log(missionid)
+            var send = document.getElementById("sendmail");
+            send.innerHTML = "Sending";
+
+            $.ajax({
+                url: '/Volunteering/Sendmail',
+                type: 'POST',
+                data: { 'emailList': mail, 'missionid': missionid },
+                success: function (result) {
+                    alert("Recomendations sent successfully!")
+
+        @*  alert("Recomendations sent successfully!");
+                        const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+                        checkboxes.forEach((checkbox) => {
+                        checkbox.checked = false;
+                        });*@
+                        send.innerHTML = "sent"
+                },
+                error: function () {
+                    // Handle error response from the server, e.g. show an error message to the user
+                    alert('Error: Could not recommend mission.');
+                }
+            });
+        }
+
+        function Rating(starid, missionid) {
+
+            console.log(starid)
+
+            $.ajax({
+                type: 'POST',
+                url: "/Volunteering/Rating",
+                data: { 'missonid': missionid, 'starid': starid },
+                success: function (result) {
+
+                    if (parseInt(result.starid, 10)) {
+                        for (i = 1; i <= parseInt(result.starid, 10); i++) {
+                            var starbtn = document.getElementById(String(i));
+                            starbtn.style.color = "#F88634";
+                        }
+                        for (i = parseInt(result.starid, 10) + 1; i <= 5; i++) {
+                            var starbtn = document.getElementById(String(i));
+                            starbtn.style.color = "black";
+                        }
+                    }
+
+                    else {
+                        for (i = 1; i <= parseInt(result.starid, 10); i++) {
+                            var starbtn = document.getElementById(String(i));
+
+                            starbtn.style.backgroundColor = "#F88634";
+                        }
+
+                    }
+                    console.log("Rating Done")
+                },
+                error: function () {
+                    console.log("Erroor");
+                }
+
+            });
+            location.reload();
+
+        }
     </script>
 </html>
