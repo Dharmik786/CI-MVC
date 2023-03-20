@@ -1,4 +1,4 @@
-﻿@using CI_Entity.ViewModel;
+﻿@using CI_Entity.Models.ViewModel;
 @model MissionList
 
 <div class="container grid-container mt-2">
@@ -61,8 +61,19 @@
                     <div class="landing-page-top-right "><img src="/Image/pin.png" alt="">@item.City.Name</div>
 
                     <div class="landing-page-bottom-right d-flex flex-column">
-                        <button class="mb-2 landing-page-btn-img">
-                            <img src="/Image/heart.png" alt="">
+                        <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
+                           @{
+                                var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
+                            }
+                            @if (fav != null)
+                            {
+                                <img src="~/Image/fill-heart.png" >
+                            }
+                            else
+                            {
+                                <img src="/Image/heart1.png" >                              
+                            }
+                            
                         </button>
                         <button class="landing-page-btn-img">
                             <img src="/Image/user.png" alt="">
@@ -182,3 +193,20 @@
 
     </ul>
 </nav>
+<script>
+    function addToFav(missonid) {
+        $.ajax({
+            type: 'GET',
+            url: "/Volunteering/addToFavourite",
+            data: { 'missonid': missonid },
+            success: function () {
+                Console.log("Liked or Unliked mission.")
+                    },
+            error: function () {
+                alert("please login first.");
+            }
+
+        });
+        location.reload();
+    }
+</script>

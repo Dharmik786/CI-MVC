@@ -1,5 +1,5 @@
-﻿@*@using CI_Entity.Models;
-@model Mission;*@
+﻿@using CI_Entity.Models.ViewModel
+@model MissionList
 @{
     Layout = "_navbar1";
     ViewData["Title"] = "Home Page";
@@ -83,33 +83,35 @@
 
                 <div class="card-body">
                     <div class="card-title fs-5">
-                        @ViewBag.Missiondetail.Title
+                        @Model.singleMission.Title
                     </div>
                     <div class="card-subtitle">
-                        @ViewBag.Missiondetail.ShortDescription
+                        @Model.singleMission.ShortDescription
                     </div>
 
+                    @{
+                        var goalObj = Model.goalMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
+                    }
 
-
-                    @if (@ViewBag.Missiondetail.MissionType == "Time")
+                    @if (@Model.singleMission.MissionType == "Time")
                     {
                         <div class="rule mt-2">
                             <hr>
-                            <button class="date-btn mt-1 p-1">From @ViewBag.Missiondetail.StartDate.ToString().Split(" ")[0] to @ViewBag.Missiondetail.EndDate.ToString().Split(" ")[0]</button>
+                            <button class="date-btn mt-1 p-1">From  @Model.singleMission.StartDate.ToString().Split(" ")[0] to  @Model.singleMission.EndDate.ToString().Split(" ")[0]</button>
                             <hr>
                         </div>
                     }
                     else
                     {
-                        @if (@ViewBag.Missiondetail.MissionId == @ViewBag.Missiondetail.MissionId)
-                        {
+                        @*@if (@Model.singleMission.MissionId == @Model.singleMission.MissionId)
+                        {*@
                             <div class="rule mt-2">
                                 <hr>
-                                <button class="date-btn mt-1 p-1">@ViewBag.Missiondetail.GoalObjectiveText</button>
+                            <button class="date-btn mt-1 p-1"> @Model.singleMission..GoalObjectiveText</button>
                                 <hr>
                             </div>
-
-                        }
+@*
+                        }*@
                     }
 
 
@@ -118,7 +120,7 @@
                             <p class="me-2 pt-2">
                                 <img src="/Image/Seats-left.png" />
                                 <div>
-                                    <div> @ViewBag.Missiondetail.Availability</div>
+                                    <div> @Model.singleMission.Availability</div>
                                     <div>Seats Left</div>
                                 </div>
                             </p>
@@ -126,11 +128,11 @@
 
 
                         <div class="col-6 col-md-6 mt-1 d-flex justify-content-center">
-                            @if (@ViewBag.Missiondetail.MissionType == "Time")
+                            @if (@Model.singleMission.MissionType == "Time")
                             {
                                 <div class="me-2"><img src="/Image//deadline.png" class="mt-2"></div>
                                 <div class="ms-2">
-                                    @ViewBag.Missiondetail.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
+                                    @Model.singleMission.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
                                 </div>
                             }
                             else
@@ -150,30 +152,26 @@
 
 
                     <div class="d-flex">
-                       @* <div class="col  col-12  col-xl-5 col-lg-12 col-md-5 col-sm-12  me-xl-4 me-md-4 rounded-5 d-flex mt-3  Addfavourite   justify-content-center" onclick="addtofav(@ViewBag.Missiondetail.MissionId,@ViewBag.userId)" id="favmissiondiv">
-                            <i class="bi bi-heart-fill" id="heart"></i>
-                            <label class="ms-2">ADD to Favourite</label>
+                        <button class="col-6  date-btn m-1 p-1 " id="addFav" value="addFav" onclick="addToFav(@Model.singleMission.MissionId)">
+                            @{
 
-                        </div>
-*@
-                       @* @if (ViewBag.Missiondetail.FavMissionID == ViewBag.Missiondetail.FavMissionID)
-                        {
-                            <div class="col  col-12  col-xl-5 col-lg-12 col-md-5 col-sm-12  me-xl-4 me-md-4 rounded-5 d-flex mt-3  Addfavourite   justify-content-center" onclick="addtofav(@ViewBag.Missiondetail.MissionId,@ViewBag.userId)" id="favmissiondiv">
-                                <i class="bi bi-heart-fill" id="heart"></i>
-                                <label class="ms-2">ADD to Favourite</label>
+                                var fav = Model.favoriteMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
+                                //var fav = @Model.favoriteMissions.Where(e => e.MissionId == Model.missionId).FirstOrDefault();
+                            }
 
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col  col-12  col-xl-5 col-lg-12 col-md-5 col-sm-12  me-xl-4 me-md-4 rounded-5 d-flex mt-3  Addfavourite   justify-content-center" onclick="addtofav(@ViewBag.Missiondetail.MissionId,@ViewBag.userId)" id="favmissiondiv">
-                                <i class="bi bi-heart-fill" id="heart"></i>
-                                <label class="ms-2">ADD to Favourite</label>
+                            @if(fav!=null)
+                            {
+                            <img src="~/Image/fill-heart.png" class="me-2" /><span>Remove from Favourite</span>                                
+                            }
+                            else
+                            {
+                            <img src="/Image/heart1.png" class="me-2" /><span>Add to fav</span>
+                            }
+                            
+                        </button>
 
-                            </div>
-                        }*@
 
-                        @*<button class="col-6  date-btn m-1 p-1 "><img src="/Image/heart1.png" class="me-2" /><span>Add to fav</span></button>*@
+
                         <button class="col-6 date-btn m-1 p-1"><img src="/Image/add1.png" class="me-2" /><span>Recommend to co-worker</span></button>
                     </div>
 
@@ -184,11 +182,11 @@
 
                     <div class="rule mt-2">
                         <hr>
-                        <i class="bi bi-star-fill" id="1" onclick="addRating(this.id,@ViewBag.Missiondetail.MissionId,@ViewBag.userId)"></i>
-                        <i class="bi bi-star-fill" id="2" onclick="addRating(this.id,@ViewBag.Missiondetail.MissionId,@ViewBag.userId)"></i>
-                        <i class="bi bi-star-fill" id="3" onclick="addRating(this.id,@ViewBag.Missiondetail.MissionId,@ViewBag.userId)"></i>
-                        <i class="bi bi-star-fill" id="4" onclick="addRating(this.id,@ViewBag.Missiondetail.MissionId,@ViewBag.userId)"></i>
-                        <i class="bi bi-star-fill" id="5" onclick="addRating(this.id,@ViewBag.Missiondetail.MissionId,@ViewBag.userId)"></i>
+                        <i class="bi bi-star-fill" id="1" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="2" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="3" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="4" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
+                        <i class="bi bi-star-fill" id="5" onclick="addRating(this.id,@Model.singleMission.MissionId)"></i>
 
                         <hr>
                     </div>
@@ -199,7 +197,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>city</div>
-                                <div>@ViewBag.Missiondetail.Cityname</div>
+                                <div>@Model.singleMission.City.Name</div>
                             </div>
                         </div>
                         <div class="card d-flex col-md-3 col-6 ">
@@ -208,7 +206,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>Theme</div>
-                                <div>@ViewBag.Missiondetail.Themename</div>
+                                <div>@Model.singleMission.Theme.Title</div>
                             </div>
                         </div>
                         <div class="card col-md-3 col-6 ">
@@ -227,7 +225,7 @@
                             </svg>
                             <div class="mt-3 mb-0">
                                 <div>Organization</div>
-                                <div>@ViewBag.Missiondetail.OrganizationName</div>
+                                <div>@Model.singleMission.OrganizationName</div>
                             </div>
                         </div>
                     </div>
@@ -260,7 +258,7 @@
                         <div class="mt-2">
                             <h3>Introduction</h3>
                             <p>
-                                @ViewBag.Missiondetail.Description
+                                @Model.singleMission.Description
                             </p>
                         </div>
                         <div class="mt-4">
@@ -286,7 +284,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                        <p class="mt-2">@ViewBag.Missiondetail.OrganizationDetail </p>
+                        <p class="mt-2">@Model.singleMission.OrganizationDetail </p>
                     </div>
 
                     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
@@ -365,14 +363,19 @@
 
                     <div class="row mt-3">
                         <div class="col-3 ms-2">Skills</div>
-                        <div class="col-8">Cool, Easy going, Math, Computer </div>
+                        <div class="col-8">
+                            @*@foreach(var i in Model.missionSkills)
+                            {
+                                <span>@i.Skill.SkillName, </span>
+                            }*@
+                        </div>
                     </div>
 
                     <hr style="border:1px solid black" class="ms-2 me-2 " />
 
                     <div class="row">
                         <div class="col-3 ms-2">Days</div>
-                        <div class="col-8">Weekend Only</div>
+                        <div class="col-8">@Model.singleMission.Availability</div>
                     </div>
 
                     <hr style="border:1px solid black" class="ms-2 me-2 " />
@@ -398,7 +401,7 @@
                     <div class="card-body">
                         <div class="overflow-x-auto d-flex">
 
-
+@*
                             @foreach (var recent in ViewBag.recentvolunteered)
                             {
                                 <div class="col-4  d-flex ">
@@ -407,7 +410,7 @@
                                         <label id="" class="text-center">@recent.username</label>
                                     </a>
                                 </div>
-                            }
+                            }*@
 
 
                         </div>
@@ -428,4 +431,26 @@
 </body>
 <script src="~/js/volunteering.js"></script>
 <partial name="_RelatedMission">
+
+    <script>
+
+
+        function addToFav(missonid) {
+            $.ajax({
+                type: 'GET',
+                url: "/Volunteering/addToFavourite",
+                data: { 'missonid': missonid },
+                success: function () {
+                    Console.log("Liked or Unliked mission.")
+                    @*alert("Liked or Unliked mission.");*@
+                },
+                error: function () {
+                   alert("please login first.");
+                }
+
+            });
+            location.reload();
+        }
+
+    </script>
 </html>

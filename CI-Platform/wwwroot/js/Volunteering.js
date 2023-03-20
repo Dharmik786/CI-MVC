@@ -64,25 +64,27 @@ function addRating(starId, missionId, Id) {
     });
 }
 
-//Add to Favourite
-function addtofav(missionId, Id) {
-    $.ajax({
-        url: '/Volunteering/Addfav',
-        type: 'POST',
-        data: { missionId: missionId, Id: Id },
-        success: function (result) {
-            if (result.favmission == "0") {
-                var favbtn = document.getElementById("favmissiondiv");
-                var heartbtn = document.getElementById("heart");
-                heartbtn.style.Color = "#F88634";
-                favbtn.style.color = "orange"
-            }
-            else {
-                var favbtn = document.getElementById("favmissiondiv");
-                var heartbtn = document.getElementById("heart");
-                heartbtn.style.Color = "black";
-                favbtn.style.color = "black"
-            }
-        }
-    });
-}
+////Add to Favourite
+//function addtofav(missionId, Id) {
+//    $.ajax({
+//        url: '/Volunteering/Addfav',
+//        type: 'POST',
+//        data: { missionId: missionId, Id: Id },
+//        success: function (result) {
+//            if (result.favmission == "0") {
+//                var favbtn = document.getElementById("favmissiondiv");
+//                var heartbtn = document.getElementById("heart");
+//                heartbtn.style.Color = "#F88634";
+//                favbtn.style.color = "orange"
+//            }
+//            else {
+//                var favbtn = document.getElementById("favmissiondiv");
+//                var heartbtn = document.getElementById("heart");
+//                heartbtn.style.Color = "black";
+//                favbtn.style.color = "black"
+//            }
+//        }
+//    });
+//}
+
+//Add To fav

@@ -1,5 +1,5 @@
 ﻿using CI_Entity.Models;
-using CI_Entity.ViewModel;
+using CI_Entity.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NuGet.Packaging;
@@ -11,13 +11,6 @@ namespace CI_Platform.Controllers
 {
     public class LandingpageController : Controller
     {
-        int i = 0;
-        int i1 = 0;
-        int j = 0;
-        int j1 = 0;
-        int k = 0;
-        int k1 = 0;
-
         private readonly CIDbContext _CIDbContext;
         private readonly object JsonRequestBehavior;
 
@@ -27,7 +20,7 @@ namespace CI_Platform.Controllers
         }
 
         public IActionResult landingpage(long id, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
-        {
+            {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
             {
@@ -42,13 +35,6 @@ namespace CI_Platform.Controllers
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
-
-
-            //List<Mission> mission = _CIDbContext.Missions.ToList();
-
-            //List<Mission> finalmission = _CIDbContext.Missions.ToList();
-            //List<Mission> newmission = _CIDbContext.Missions.ToList();
-
             List<City> city = _CIDbContext.Cities.ToList();
             ViewBag.City = city;
 
@@ -61,131 +47,7 @@ namespace CI_Platform.Controllers
             List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
             ViewBag.GoalMissions = goalMissions;
 
-            //List<MissionRating> rate = _CIDbContext.MissionRatings.ToList();
-            //ViewBag.Rate = rate;
-
-            //foreach (var item in mission)
-            //{
-            //    var City = _CIDbContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
-            //    var Theme = _CIDbContext.MissionThemes.FirstOrDefault(u => u.MissionThemeId == item.ThemeId);
-            //}
-
-            //Rating
-
-
-            //var rat = _CIDbContext.Mission
-
-
-            //Filter
-            //if (ACountries != null && ACountries.Length > 0)
-            //{
-            //    foreach (var country1 in ACountries)
-            //    {
-            //        if (i == 0)
-            //        {
-            //            mission = mission.Where(m => m.CountryId == country1 + 500).ToList();
-            //            i++;
-            //        }
-            //        finalmission = newmission.Where(m => m.CountryId == country1).ToList();
-            //        mission.AddRange(finalmission);
-            //        if (mission.Count() == 0)
-            //        {
-            //            return RedirectToAction("NoMissionFound", "Home");
-            //        }
-            //        ViewBag.countryId = country1;
-            //        if (ViewBag.countryId != null)
-            //        {
-            //            var countryElement = _CIDbContext.Countries.Where(m => m.CountryId == country1).ToList();
-            //            if (i1 == 0)
-            //            {
-            //                country = _CIDbContext.Countries.Where(m => m.CountryId == country1 + 50000).ToList();
-            //                i1++;
-            //            }
-            //            country.AddRange(countryElement);
-            //        }
-            //    }
-            //    ViewBag.country1 = country;
-            //}
-
-            //if (ACity != null && ACity.Length > 0)
-            //{
-
-            //    foreach (var city1 in ACity)
-            //    {
-            //        //mission = mission.Where(m => m.CountryId == country).ToList();
-            //        if (i == 0)
-            //        {
-            //            mission = mission.Where(m => m.CityId == city1 + 500).ToList();
-            //            i++;
-            //        }
-
-            //        finalmission = newmission.Where(m => m.CityId == city1).ToList();
-
-            //        mission.AddRange(finalmission);
-            //        if (mission.Count() == 0)
-            //        {
-            //            return RedirectToAction("NoMissionFound", "Home");
-            //        }
-
-            //        ViewBag.cityId = city1;
-            //        if (ViewBag.cityId != null)
-            //        {
-            //            var cityElement = _CIDbContext.Cities.Where(m => m.CityId == city1).ToList();
-            //            if (i1 == 0)
-            //            {
-            //                city = _CIDbContext.Cities.Where(m => m.CityId == city1 + 50000).ToList();
-            //                i1++;
-            //            }
-            //            city.AddRange(cityElement);
-            //            //var c1 = _CIDbContext.Countries.FirstOrDefault(m => m.CountryId == country);
-            //            //ViewBag.country = c1.Name;
-            //        }
-            //    }
-            //    ViewBag.city1 = city;
-            //    //Countries = _CIDbContext.Countries.ToList();
-            //}
-
-
-
-            //Sort By
-            // ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            //ViewBag.Order = sortOrder;
-            //switch (sortOrder)
-            //{
-            //    case "Newest":
-            //        missionList.mission = missionList.mission.OrderByDescending(mission => mission.StartDate).ToList();
-            //        break;
-
-            //    case "Oldest":
-            //        missionList.mission = missionList.mission.OrderBy(mission => mission.StartDate).ToList();
-            //        break;
-
-            //    case "Theme":
-            //        missionList.mission = missionList.mission.OrderBy(mission => mission.MissionType).ToList();
-            //        break;
-            //}
-
-            ////Search
-            //if (search != null)
-            //{
-            //    mission = _CIDbContext.Missions.Where(m => m.Title.Contains(search)).ToList();
-            //    if (mission.Count() == 0)
-            //    {
-            //        return RedirectToAction("NoMissionFound", "Home");
-            //    }
-            //}
-
-            //if (searchQuery != null)
-            //{
-            //    mission = _CIDbContext.Missions.Where(m => m.Title.Contains(searchQuery)).ToList();
-            //    ViewBag.InputSearch = searchQuery;
-
-            //    if (mission.Count() == 0)
-            //    {
-            //        return RedirectToAction("NoMissionFound", "Home");
-            //    }
-            //}
-
+            missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();
             //Pagination
             //int pageSize = 9;
             //int skip = (pageIndex ?? 0) * pageSize;
@@ -213,7 +75,7 @@ namespace CI_Platform.Controllers
 
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
-           // List<FavoriteMission> favoriteMissions = _CIDbContext.FavoriteMissions.Where(x=>x.UserId == id && x.MissionId == missionid).ToList();
+            missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();
 
             //Seacrh
             if (search != null)
@@ -246,18 +108,18 @@ namespace CI_Platform.Controllers
             }
 
             //filter
-            //if (country.Length > 0)
-            //{
-            //    mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
-            //}
-            //if (city.Length > 0)
-            //{
-            //    mission = mission.Where(s => city.Contains(s.City.Name)).ToList();
-            //}
-            //if (theme.Length > 0)
-            //{
-            //    mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
-            //}
+            if (country.Length > 0)
+            {
+                mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
+            }
+            if (city.Length > 0)
+            {
+                mission = mission.Where(s => city.Contains(s.City.Name)).ToList();
+            }
+            if (theme.Length > 0)
+            {
+                mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
+            }
 
             //Pagination
             int pageSize = 6;

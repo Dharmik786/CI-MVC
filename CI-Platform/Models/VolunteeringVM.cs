@@ -36,7 +36,7 @@ namespace CI.Models
 
         public string username { get; set; }
 
-        public List<FavoriteMission> FavoriteMissions { get; set; }
+        //public List<FavoriteMission> FavoriteMissions { get; set; }
 
         //public long FavMissionID { get; set; }
         //public long FavUserID { get; set; }
