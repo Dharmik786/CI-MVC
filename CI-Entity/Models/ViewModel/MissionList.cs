@@ -15,7 +15,7 @@ namespace CI_Entity.Models.ViewModel
         public List<MissionTheme> missionThemes { get; set; }
         public List<Skill> skills { get; set; }
         public List<MissionMedium> missionMedia { get; set; }
-        public List<FavoriteMission> favouriteMissions { get; set; }
+        public List<FavoriteMission> favoriteMissions { get; set; }
         public List<User> Users { get; set; }
 
         public List<GoalMission> goalMissions { get; set; }
@@ -39,12 +39,16 @@ namespace CI_Entity.Models.ViewModel
         //public List<MissionSkill> missionSkills { get; set; }
         //public List<GoalMission> goalMissions { get; set; }
    
+
         public List<Timesheet> timesheets { get; set; }
         public List<MissionDocument> missionDocuments { get; set; }
+
+        public List<Story> stories { get; set; }
         public Mission singleMission { get; set; }
        
-        public int avgRating { get; set; }
+        public int avgrating { get; set; }
         public long missionId { get; set; }
+        public Story storydetails { get; set; }
         //public User User { get; set; }
 
         //public long UserId { get; set; }

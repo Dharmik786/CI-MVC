@@ -1,5 +1,6 @@
 ﻿using CI.Models;
 using CI_Entity.Models;
+using CI_Entity.Models.ViewModel;
 using CI_Platform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -54,7 +55,22 @@ namespace CI_Platform.Controllers
         }
         public IActionResult StoriesListing()
         {
-            return View();
+            MissionList missionList = new MissionList();
+            missionList.stories = _CIDbContext.Stories.ToList();
+            missionList.users = _CIDbContext.Users.ToList();    
+            missionList.mission=_CIDbContext.Missions.ToList();
+            return View(missionList);
+        }
+
+        public IActionResult StoryDetails(int missionid)
+        {
+            MissionList missionList= new MissionList();
+            missionList.stories = _CIDbContext.Stories.ToList();
+            missionList.users = _CIDbContext.Users.ToList();
+            
+            var data = missionList.stories.Where(e=>e.MissionId == missionid).FirstOrDefault();
+            missionList.storydetails = data;
+            return View(missionList);
         }
 
         public IActionResult Login()
