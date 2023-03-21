@@ -11,113 +11,26 @@
 </head>
 <body>
     <!-- ------------------first navbar----------------------------------- -->
-    <nav class="navbar navbar-expand-md navbar-light  header " aria-label="Eighth navbar example">
-        <div class="container">
-
-            <button class="btn btn-dark " type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                <img src="/Image/list.png">
-            </button>
-
-            <div class="offcanvas offcanvas-start offcanvas1" data-bs-scroll="true" tabindex="-1"
-                 id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-
-                <div class="offcanvas-header">
-                    <h2>CI-PLATFORM</h2>
-                    <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-
-                <div class="offcanvas-body navbar-nav me-auto mb-2 mb-lg-0 align-self-center">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle link-dark border-0" href="#" id="navbarDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/Image/user-img.png" alt="mdo" width="32" height="32" class="rounded-circle" />
-                            @{
-                                var firstname = Context.Session.GetString("Firstname");
-
-                            }
-                            @firstname
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">New project</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-controller="Home" asp-action="Login">Log out</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Story</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                           aria-expanded="false">Policy</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </div>
-            </div>
-
-            <img src="/Image/logo.png" alt="CI-PLATFORM" class="me-5">
-            <ul class="navbar-nav  first-nav  me-auto mb-2 mb-lg-0 ">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Story</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                       aria-expanded="false">Policy</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="dropdown text-end user-profile ">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    <img src="/Image/user-img.png" alt="mdo" width="40" height="40" class="rounded-circle">                 
-                    @firstname
-                </a>
-                <ul class="dropdown-menu text-small">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Log out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    
     <!------------------------------------------------ second navbar----------------------------------- -->
 
-   @* <nav class="navbar navbar-expand-md navbar-lighte header2" aria-label="Second navbar example">
+    <nav class="navbar navbar-expand-md navbar-lighte header2" aria-label="Second navbar example">
         <div class="container">
             <div class="col-9 col-lg-6 col-md-5 me-2">
                 <form role="search" class="d-flex">
                     <img src="/Image/search.png" height="22px" width="21px" class="m-2">
                     <!-- <i class="bi bi-search mt-2"></i> -->
-                    <input class="form-control" type="search" placeholder="Search mission....." aria-label="Search "
-                           class="searchbox">
+                    <input class="form-control searchbox" placeholder="Search mission....." aria-label="Search"
+                           id="search" name="searchQuery" @*value="@ViewBag.InputSearch"*@ onkeyup="mySearch()">
                 </form>
             </div>
 
             <button class="btn hamburger" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#filteroffcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                <img src="./Image/filter.png">
+                <img src="~/Image/filter.png">
             </button>
+
+            @*--------------------------------------------OffCanvas------------------------*@
             <div class="offcanvas offcanvas-end offcanvas2" data-bs-scroll="true" tabindex="-1"
                  id="filteroffcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
 
@@ -131,45 +44,42 @@
                            aria-expanded="false">
                             Country
                         </a>
-                        <ul class="dropdown-menu">
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="INDIA" id=""
-                                       name="INDIA" aria-label="Checkbox for following text input">
-                                INDIA
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="USA" id="" name="USA"
-                                       aria-label="Checkbox for following text input">
-                                USA
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="US" id="" name="US"
-                                       aria-label="Checkbox for following text input">
-                                US
-                            </div>
+
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;" id="">
+                            @if (ViewBag.Country != null)
+                            {
+                                @foreach (var item in ViewBag.Country)
+                                {
+                                    <li>
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Name" value="@item.Name" name="country">
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
+                            }
                         </ul>
+
                     </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             City
                         </a>
-                        <ul class="dropdown-menu">
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="GONDAL" id=""
-                                       name="GONDAL" aria-label="Checkbox for following text input">
-                                GONDAL
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="RAJKOT" id=""
-                                       name="RAJKOT" aria-label="Checkbox for following text input">
-                                RAJKOT
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="SURAT" id=""
-                                       name="SURAT" aria-label="Checkbox for following text input">
-                                SURAT
-                            </div>
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;">
+                            @if (ViewBag.City != null)
+                            {
+                                @foreach (var item in ViewBag.City)
+                                {
+                                    <li>
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Name" value="@item.Name">
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </li>
 
@@ -178,25 +88,23 @@
                            aria-expanded="false">
                             Theme
                         </a>
-                        <ul class="dropdown-menu">
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="Enviroment" id=""
-                                       name="Enviroment" aria-label="Checkbox for following text input">
-                                Enviroment
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="Children" id=""
-                                       name="Children" aria-label="Checkbox for following text input">
-                                Children
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="Animal" id=""
-                                       name="Animal" aria-label="Checkbox for following text input">
-                                Animal
-                            </div>
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;">
+                            @if (ViewBag.Themes != null)
+                            {
+                                @foreach (var item in ViewBag.Themes)
+                                {
+                                    <li>
+
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Title" value="@item.Title">
+                                            @item.Title
+                                        </a>
+
+                                    </li>
+                                }
+                            }
                         </ul>
                     </li>
-
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -204,25 +112,35 @@
                             Skill
                         </a>
                         <ul class="dropdown-menu">
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="Computer Science" id=""
-                                       name="Computer Science" aria-label="Checkbox for following text input">
-                                Computer Science
-                            </div>
-                            <div>
-                                <input class="form-check-input mt-1 ms-2" type="checkbox" value="Music" id=""
-                                       name="Music" aria-label="Checkbox for following text input">
-                                Music
-
-                                <div>
-                                    <input class="form-check-input mt-1 ms-2" type="checkbox" value="History" id=""
-                                           name="History" aria-label="Checkbox for following text input">
-                                    History
-                                </div>
+                            <li>
+                                <a class="dropdown-item p-0 mt-1" href="#">
+                                    <input type="checkbox" value="Skill1" name="Skill1" id=""
+                                           class="ms-3 checkbox ">Skill1
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item p-0 mt-1" href="#">
+                                    <input type="checkbox" value="Skill2" name="Skill2" id=""
+                                           class="ms-3 checkbox ">Skill2
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item p-0 mt-1" href="#">
+                                    <input type="checkbox" value="Skill3" name="Skill3" id=""
+                                           class="ms-3 checkbox ">Skill3
+                                </a>
+                            </li>
                         </ul>
                     </li>
+
                 </div>
             </div>
+
+
+
             <div class="second-div col-lg-6 col-md-7">
                 <ul class="navbar-nav">
                     <li class="nav-item col-lg-3 col-md-3  dropdown filter-item">
@@ -231,44 +149,68 @@
                             <p class="me-auto mt-2">Country</p>
                             <img src="/Image/drop-down.png" alt="" height="10%" width="10%" class="mt-3">
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;" id="countryDropdown">
+                            @if (ViewBag.Country != null)
+                            {
+                                @foreach (var item in ViewBag.Country)
+                                {
+                                    <li>
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" class="checkbox ms-3 " id="@item.CountryId" value="@item.Name" name="country" onchange="mySearch()" @*onchange="updateUrlForCountry()"*@>
+                                            @item.Name
+                                        </a>
+                                    </li>
+
+                                }
+                            }
                         </ul>
                     </li>
+
                     <li class="nav-item col-lg-3  col-md-3 dropdown filter-item">
                         <a class="nav-link dropdown d-flex" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             <p class="me-auto mt-2">City</p>
                             <img src="/Image/drop-down.png" alt="" height="10%" width="10%" class="mt-3">
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;" id="cityDropdown">
+                            @if (ViewBag.City != null)
+                            {
+                                @foreach (var item in ViewBag.City)
+                                {
+                                    <li>
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" class="checkbox ms-3 " id="@item.CityId" value="@item.Name" name="city" onchange="mySearch()">
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </li>
+
                     <li class="nav-item col-lg-3  col-md-3 dropdown filter-item">
                         <a class="nav-link dropdown d-flex" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             <p class="me-auto mt-2">Theme</p>
                             <img src="/Image/drop-down.png" alt="" height="10%" width="10%" class="mt-3">
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;" id="themeDropdown">
+                            @if (ViewBag.Themes != null)
+                            {
+                                @foreach (var item in ViewBag.Themes)
+                                {
+                                    <li>
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Title" value="@item.Title" name="theme" onchange="mySearch()">
+                                            @item.Title
+                                        </a>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </li>
+
                     <li class="nav-item  col-lg-3 col-md-3 dropdown filter-item filter-item-skill">
                         <a class="nav-link dropdown d-flex" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
@@ -276,16 +218,33 @@
                             <img src="/Image/drop-down.png" alt="" height="10%" width="10%" class="mt-3">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <input type="checkbox" value="Skill1" name="Skill1" id=""
+                                           class="ms-3 checkbox ">Skill1
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <input type="checkbox" value="Skill2" name="Skill2" id=""
+                                           class="ms-3 checkbox ">Skill2
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <input type="checkbox" value="Skill3" name="Skill3" id=""
+                                           class="ms-3 checkbox ">Skill3
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
-    </nav>*@
-
-
+    </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
         $('.modal-backdrop').remove();

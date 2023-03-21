@@ -19,19 +19,19 @@ namespace CI_Platform.Controllers
             _CIDbContext = CIDbContext;
         }
 
-        public IActionResult landingpage(long id, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
+        public IActionResult landingpage(long userId, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
             {
-            int? userid = HttpContext.Session.GetInt32("userID");
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
+           // int? userid = HttpContext.Session.GetInt32("userID");
+            //if (userid == null)
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
 
             MissionList missionList = new MissionList();
             missionList.mission = _CIDbContext.Missions.ToList();
             missionList.cities = _CIDbContext.Cities.ToList();
             missionList.countries = _CIDbContext.Countries.ToList();
-
+            missionList.userId = userId;
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
 
@@ -62,7 +62,7 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(int missionid,string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
+        public IActionResult _Missions(long userId,int missionid,string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
         {
             var id = HttpContext.Session.GetString("user");
 
@@ -72,8 +72,8 @@ namespace CI_Platform.Controllers
             missionList.countries = _CIDbContext.Countries.ToList();
             missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
             missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
-            missionList.users = _CIDbContext.Users.ToList();    
-
+            missionList.users = _CIDbContext.Users.ToList();
+            //missionList.userId = userId;
             List<Mission> mission = _CIDbContext.Missions.ToList();
 
             missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();

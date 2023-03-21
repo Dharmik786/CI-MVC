@@ -24,7 +24,7 @@ namespace CI_Platform.Controllers
         public IActionResult Volunteering(long id, int missionid)
         {
             var userId = HttpContext.Session.GetString("user");
-            ViewBag.UserId = int.Parse(userId);
+            //ViewBag.UserId = int.Parse(userId);
 
 
             MissionList vMMission = new MissionList();
@@ -42,6 +42,7 @@ namespace CI_Platform.Controllers
             
 
             vMMission.favoriteMissions = _CIDbContext.FavoriteMissions.Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
+
             var data = vMMission.mission.Where(e => e.MissionId == missionid).FirstOrDefault();
             vMMission.singleMission = data;
 
@@ -255,7 +256,28 @@ namespace CI_Platform.Controllers
             return Json(new { success = true, starid });
         }
 
+        [HttpPost]
+        public void applyMission(int missionid)
+        {
+            var userid = HttpContext.Session.GetString("user");
 
+            MissionApplication ma = _CIDbContext.MissionApplications.Where(e=>e.MissionId == missionid).FirstOrDefault();
+            if(ma != null)
+            {
+                _CIDbContext.Remove(ma);
+            }
+            else
+            {   
+                MissionApplication mr = new MissionApplication();
+                mr.MissionId = missionid;
+                mr.UserId = Convert.ToInt32(userid);
+                mr.ApprovalStatus = "1";
+                mr.AppliedAt= DateTime.Now;
+                _CIDbContext.Add(mr);
+            }
+            _CIDbContext.SaveChanges();
+            
+        }
 
     }
 }

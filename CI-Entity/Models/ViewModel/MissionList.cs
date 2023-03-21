@@ -48,6 +48,7 @@ namespace CI_Entity.Models.ViewModel
        
         public int avgrating { get; set; }
         public long missionId { get; set; }
+        public long userId { get; set; }
         public Story storydetails { get; set; }
         //public User User { get; set; }
 

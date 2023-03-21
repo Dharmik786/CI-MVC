@@ -1,6 +1,11 @@
 ﻿@using CI_Entity.Models.ViewModel;
 @model MissionList
 
+@{
+    var userId = Context.Session.GetString("user");
+
+}
+
 <div class="container grid-container mt-2">
     <div class="row mb-2">
         <div class="d-flex">
@@ -61,24 +66,37 @@
                     <div class="landing-page-top-right "><img src="/Image/pin.png" alt="">@item.City.Name</div>
 
                     <div class="landing-page-bottom-right d-flex flex-column">
-                        <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
-                            @{
-                                var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
-                            }
-                            @if (fav != null)
-                            {
-                                <img src="~/Image/fill-heart.png">
-                            }
-                            else
-                            {
-                                <img src="/Image/heart1.png">
-                            }
 
-                        </button>
-                        <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <img src="/Image/user.png" alt="">
-                        </button>
+                        @if (userId != null)
+                        {
+                            <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
+                                @{
+                                    var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
+                                }
+                                @if (fav != null)
+                                {
+                                    <img src="~/Image/fill-heart.png">
+                                }
+                                else
+                                {
+                                    <img src="/Image/heart1.png">
+                                }
 
+                            </button>
+
+                            <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img src="/Image/user.png" alt="">
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="mb-2 landing-page-btn-img" disabled> <img src="/Image/heart.png"> </button>
+
+                            <button class="landing-page-btn-img" type="button" disabled>
+                                <img src="/Image/user.png" alt="">
+                            </button>
+
+                        }
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -130,7 +148,7 @@
                                 int avgRating = 0;
                                 int rat = 0;
                                 var ratingList = Model.missionRatings.Where(m => m.MissionId == item.MissionId).ToList();
- 
+
                                 if (ratingList.Count() > 0)
                                 {
 
@@ -145,19 +163,15 @@
                                 Model.avgrating = avgRating;
                             }
 
-                            @for(int i=1;i<=Model.avgrating;i++)
+                            @for (int i = 1; i <= Model.avgrating; i++)
                             {
-                                <img src="/Image/selected-star.png"/>
+                                <img src="/Image/selected-star.png" />
                             }
-                            @for(int i=Model.avgrating;i<5;i++)
+                            @for (int i = Model.avgrating; i < 5; i++)
                             {
-                                <img src="~/Image/star-empty.png"/>
+                                <img src="~/Image/star-empty.png" />
                             }
-                            @*<img src="/Image/selected-star.png" class="star" alt="">
-                            <img src="/Image/selected-star.png" class="star" alt="">
-                            <img src="/Image/selected-star.png" class="star" alt="">
-                            <img src="/Image/star-empty.png" class="star" alt="">
-                            <img src="/Image/star-empty.png" class="star" alt="">*@
+
 
 
                         </div>
@@ -215,9 +229,19 @@
                     <hr class="mt-0">
 
                     <div class="text-center">
-                        <button class="Apply-btn p-2">
-                            <a href="/Volunteering/Volunteering?missionid=@item.MissionId" class="" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
-                        </button>
+                        @if (userId != null)
+                        {
+                            <button class="Apply-btn p-2">
+                                <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="Apply-btn p-2">
+                                <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                            </button>
+                        }
+
                     </div>
                 </div>
             </div>
