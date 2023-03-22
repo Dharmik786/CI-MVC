@@ -1,6 +1,6 @@
 ﻿using CI.Models;
 using CI_Entity.Models;
-using CI_Entity.Models.ViewModel;
+using CI_Entity.ViewModel;
 using CI_Platform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -73,40 +73,7 @@ namespace CI_Platform.Controllers
             return View(missionList);
         }
 
-        public IActionResult Login()
-        {
-            HttpContext.Session.Clear();
-            return View();
-        }
-
-       [HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                var user = await _CIDbContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
-                var username = model.Email.Split("@")[0];
-                if (user != null)
-                {
-
-                    HttpContext.Session.SetString("userID", username);
-                    HttpContext.Session.SetString("user", user.UserId.ToString());
-                    HttpContext.Session.SetString("Firstname", user.FirstName);
-
-                    return RedirectToAction("landingpage", "Landingpage",new {user.UserId});
-                   // return RedirectToAction(nameof(HomeController.landingpage), "Home");
-                }
-                else
-                {
-                    ViewBag.Email = "email or pass is incorrect";
-                }
-            }
-            return View();
-        }
-
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

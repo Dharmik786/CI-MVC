@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CI_Entity.Models.ViewModel
+namespace CI_Entity.ViewModel
 {
     public class MissionList
     {
@@ -38,14 +38,14 @@ namespace CI_Entity.Models.ViewModel
         //public List<FavoriteMission> favoriteMissions { get; set; }
         //public List<MissionSkill> missionSkills { get; set; }
         //public List<GoalMission> goalMissions { get; set; }
-   
+
 
         public List<Timesheet> timesheets { get; set; }
         public List<MissionDocument> missionDocuments { get; set; }
 
         public List<Story> stories { get; set; }
         public Mission singleMission { get; set; }
-       
+
         public int avgrating { get; set; }
         public long missionId { get; set; }
         public long userId { get; set; }

@@ -4,10 +4,11 @@ using CI_Entity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
-using CI_Entity.Models.ViewModel;
 using System.Security.Claims;
 using System.Net.Mail;
 using System.Net;
+using CI_Entity.ViewModel;
+using CI_PlatForm.Repository.Interface;
 
 namespace CI_Platform.Controllers
 {
@@ -15,10 +16,13 @@ namespace CI_Platform.Controllers
     {
         private readonly CIDbContext _CIDbContext;
         private readonly object JsonRequestBehavior;
+        private readonly IUserInterface _IUser;
 
-        public VolunteeringController(CIDbContext CIDbContext)
+
+        public VolunteeringController(CIDbContext CIDbContext, IUserInterface IUser)
         {
             _CIDbContext = CIDbContext;
+            _IUser = IUser;
         }
 
         public IActionResult Volunteering(long id, int missionid)
@@ -28,25 +32,25 @@ namespace CI_Platform.Controllers
 
 
             MissionList vMMission = new MissionList();
-            vMMission.mission = _CIDbContext.Missions.ToList();
-            vMMission.cities = _CIDbContext.Cities.ToList();
-            vMMission.countries = _CIDbContext.Countries.ToList();
-            vMMission.missionThemes = _CIDbContext.MissionThemes.ToList();
-            vMMission.skills = _CIDbContext.Skills.ToList();
-            vMMission.missionMedia = _CIDbContext.MissionMedia.ToList();
-            vMMission.missionRatings = _CIDbContext.MissionRatings.ToList();
-            vMMission.goalMissions = _CIDbContext.GoalMissions.ToList();
-            vMMission.users = _CIDbContext.Users.ToList();
-            vMMission.timesheets = _CIDbContext.Timesheets.ToList();
-            vMMission.comments = _CIDbContext.Comments.ToList();
-            
+            vMMission.mission = _IUser.mission();
+            vMMission.cities = _IUser.cities();
+            vMMission.countries = _IUser.countries();
+            vMMission.missionThemes = _IUser.missionThemes();
+            vMMission.skills = _IUser.skills();
+            vMMission.missionMedia = _IUser.missionMedia();
+            vMMission.missionRatings =_IUser.MissionRatings();
+            vMMission.goalMissions = _IUser.goalMissions();
+            vMMission.users = _IUser.user();
+            vMMission.timesheets = _IUser.timesheets();
+            vMMission.comments = _IUser.comments();
 
-            vMMission.favoriteMissions = _CIDbContext.FavoriteMissions.Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
 
-            var data = vMMission.mission.Where(e => e.MissionId == missionid).FirstOrDefault();
+            vMMission.favoriteMissions = _IUser.favoriteMissions().Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
+
+            var data = vMMission.mission.FirstOrDefault(e => e.MissionId == missionid);
             vMMission.singleMission = data;
 
-            vMMission.relatedMission = _CIDbContext.Missions.Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
+            vMMission.relatedMission = _IUser.mission().Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
 
 
 
@@ -166,7 +170,7 @@ namespace CI_Platform.Controllers
             //add favourite mission data
             if (missonid != null)
             {
-                var tempFav = _CIDbContext.FavoriteMissions.Where(e => (e.MissionId == missonid) && (e.UserId == Convert.ToInt32(userId))).FirstOrDefault();
+                var tempFav = _IUser.favoriteMissions().Where(e => (e.MissionId == missonid) && (e.UserId == Convert.ToInt32(userId))).FirstOrDefault();
                 if (tempFav == null)
                 {
                     FavoriteMission fm = new FavoriteMission();
@@ -206,7 +210,7 @@ namespace CI_Platform.Controllers
 
             foreach (var i in emailList)
             {
-                var user = _CIDbContext.Users.FirstOrDefault(u => u.UserId == i);
+                var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
                 var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, mission = missionid }, Request.Scheme);
 
@@ -238,7 +242,7 @@ namespace CI_Platform.Controllers
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
 
-            MissionRating rate = _CIDbContext.MissionRatings.Where(e => e.MissionId == missonid && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            MissionRating rate = _IUser.MissionRatings().Where(e => e.MissionId == missonid && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             if (rate != null)
             {
                 rate.Rating = starid;
@@ -261,7 +265,7 @@ namespace CI_Platform.Controllers
         {
             var userid = HttpContext.Session.GetString("user");
 
-            MissionApplication ma = _CIDbContext.MissionApplications.Where(e=>e.MissionId == missionid).FirstOrDefault();
+            MissionApplication ma = _IUser.missionApplications().Where(e=>e.MissionId == missionid).FirstOrDefault();
             if(ma != null)
             {
                 _CIDbContext.Remove(ma);

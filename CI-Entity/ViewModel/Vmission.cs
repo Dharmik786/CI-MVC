@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CI_Entity.Models.ViewModel
+namespace CI_Entity.ViewModel
 {
     internal class Vmission
     {

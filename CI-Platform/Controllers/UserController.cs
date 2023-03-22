@@ -1,19 +1,58 @@
-﻿ using CI_Entity.Models;
+﻿using CI.Models;
+using CI_Entity.Models;
 using CI_Platform.Models;
+using CI_PlatForm.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
+using Forget = CI_Platform.Models.Forget;
 
 namespace CI.Controllers
 {
     public class UserController : Controller
     {
         private readonly CIDbContext _CIDbContext;
+        private readonly IUserInterface _IUser;
 
-        public UserController(CIDbContext CIDbContext)
+        public UserController(CIDbContext CIDbContext, IUserInterface IUser)
         {
+            _IUser=IUser;
             _CIDbContext = CIDbContext;
+        }
+
+        public IActionResult Login()
+        {
+            HttpContext.Session.Clear();
+            return View();
+        }
+
+        [HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Login model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var user =  _IUser.Login(model.Email,model.Password);
+                var username = model.Email.Split("@")[0];
+                if (user != null)
+                {
+
+                    HttpContext.Session.SetString("userID", username);
+                    HttpContext.Session.SetString("user", user.UserId.ToString());
+                    HttpContext.Session.SetString("Firstname", user.FirstName);
+
+                    return RedirectToAction("landingpage", "Landingpage", new { user.UserId });
+                    // return RedirectToAction(nameof(HomeController.landingpage), "Home");
+                }
+                else
+                {
+                    ViewBag.Email = "email or pass is incorrect";
+                }
+            }
+            return View();
         }
 
         //--------------------------------------------------REGISTRATION---------------------------------------------
@@ -24,25 +63,27 @@ namespace CI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
+       // public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
+        public IActionResult Registration(User user)
         {
-            var obj = _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);
+           // var obj = _IUser.Registration(user.Email);
 
-            var userData = new User
+            //var userData = new User
+            //{
+            //    FirstName = FirstName,
+            //    LastName = LastName,
+            //    PhoneNumber = PhoneNumber,
+            //    Email = Email,
+            //    Password = Password,
+
+            //};
+
+            if (_IUser.Registration(user))
             {
-                FirstName = FirstName,
-                LastName = LastName,
-                PhoneNumber = PhoneNumber,
-                Email = Email,
-                Password = Password,
-
-            };
-
-            if (obj == null)
-            {
-                _CIDbContext.Users.Add(userData);
-                _CIDbContext.SaveChanges();
-                return RedirectToAction("Login", "Home");
+                //_CIDbContext.Users.Add(user);
+                //_CIDbContext.SaveChanges();
+                //_IUser.AddUser(user);
+                return RedirectToAction("Login", "User");
 
             }
             else
@@ -63,14 +104,16 @@ namespace CI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
-                if (user == null)
+                //var c = _IUser.Forget(model.Email);
+                //var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                var c = _IUser.Forget(model.Email);
+                if (c ==null)
                 {
                     return RedirectToAction("Forget", "user");
                     //ViewBag.Forget = "Enter Valid Email";
                 }
 
-                var token = Guid.NewGuid().ToString();
+                var token = Guid.NewGuid().ToString(); 
 
                 var passwordReset = new PasswordReset
                 {
@@ -78,12 +121,14 @@ namespace CI.Controllers
                     Token = token
                 };
 
+                //_IUser.AddPassToken(passwordReset.Email, passwordReset.Token);
+               // _IUser.passwordResets(passwordReset.Email, passwordReset.Token);
                 _CIDbContext.PasswordResets.Add(passwordReset);
-                _CIDbContext.SaveChanges();
+               _CIDbContext.SaveChanges();
 
                 var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
 
-                var fromAddress = new MailAddress("gajeravirajpareshbhai@gmail.com", "Viraj Gajera");
+                var fromAddress = new MailAddress("officehl1881@gmail.com", "Vedant shah");
                 var toAddress = new MailAddress(model.Email);
                 var subject = "Password reset request";
                 var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
@@ -98,65 +143,26 @@ namespace CI.Controllers
                 {
                     UseDefaultCredentials = false,
                     //Credentials = new NetworkCredential("tatvahl@gmail.com", "dvbexvljnrhcflfw"),
-                    Credentials = new NetworkCredential("gajeravirajpareshbhai@gmail.com", "drbwjzfrmubtveud"),
+                    Credentials = new NetworkCredential("officehl1881@gmail.com", "vrbxqqayjlbvoihx"),
                     EnableSsl = true
                 };
                 smtpClient.Send(message);
 
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "User");
             }
 
             return View();
         }
 
         //----------------------------------------------RESET PASSWORD-------------------------------------------------------------
-
-
-
-
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        ////public IActionResult Reset_Password(ResetPassword rsp)
-        ////{
-        ////    if (ModelState.IsValid)
-        ////    {
-        ////        // Find the user by email                
-        ////        var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == rsp.Email);
-        ////        if (user == null)
-        ////        {
-        ////            return RedirectToAction("Reset_Password", "Home");
-        ////        }
-
-        ////        // Find the password reset record by email and token
-        ////        var passwordReset = _CIDbContext.PasswordReset.FirstOrDefault(u => u.Email == rsp.Email && u.Token == rsp.Token);
-        ////        if (passwordReset == null)
-        ////        {
-        ////            return RedirectToAction("ResetPassword", "ResetPassword");
-        ////        }
-
-        ////        // Update the user's password
-        ////        user.Password = rsp.Password;
-        ////        _CIDbContext.SaveChanges();
-
-        ////        // Remove the password reset record from the database
-        ////        _CIDbContext.PasswordReset.Remove(passwordReset);
-        ////        _CIDbContext.SaveChanges();
-
-        ////        return RedirectToAction("Login", "Login");
-        ////    }
-
-        ////}
-        ///
-        
-
         [HttpGet]
         public IActionResult Reset_Password(string email, string token)
         {
-            var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
+            // var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
+            var passwordReset = _IUser.passwordResets(email, token);
             if (passwordReset == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "User");
             }
             // Pass the email and token to the view for resetting the password
             var model = new ResetPass
@@ -175,7 +181,8 @@ namespace CI.Controllers
             if (ModelState.IsValid)
             {
                 // Find the user by email
-                var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                //var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                var user = _IUser.Forget(model.Email);
                 if (user == null)
                 {
                     return RedirectToAction("Forget", "User");
@@ -194,7 +201,7 @@ namespace CI.Controllers
 
             }
 
-            return RedirectToAction("Login","Home");
+            return RedirectToAction("Login","User");
         }
 
     }

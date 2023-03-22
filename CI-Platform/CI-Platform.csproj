@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CI-Entity\CI-Entity.csproj" />
+    <ProjectReference Include="..\CI-PlatForm.Repository\CI-PlatForm.Repository.csproj" />
   </ItemGroup>
 
 </Project>

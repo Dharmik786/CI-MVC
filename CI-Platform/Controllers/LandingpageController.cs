@@ -1,5 +1,6 @@
 ﻿using CI_Entity.Models;
-using CI_Entity.Models.ViewModel;
+using CI_Entity.ViewModel;
+using CI_PlatForm.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NuGet.Packaging;
@@ -13,10 +14,12 @@ namespace CI_Platform.Controllers
     {
         private readonly CIDbContext _CIDbContext;
         private readonly object JsonRequestBehavior;
+        private readonly IUserInterface _IUser;
 
-        public LandingpageController(CIDbContext CIDbContext)
+        public LandingpageController(CIDbContext CIDbContext , IUserInterface IUser)
         {
             _CIDbContext = CIDbContext;
+            _IUser = IUser;
         }
 
         public IActionResult landingpage(long userId, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
@@ -28,26 +31,26 @@ namespace CI_Platform.Controllers
             //}
 
             MissionList missionList = new MissionList();
-            missionList.mission = _CIDbContext.Missions.ToList();
-            missionList.cities = _CIDbContext.Cities.ToList();
-            missionList.countries = _CIDbContext.Countries.ToList();
+            missionList.mission = _IUser.mission();
+            missionList.cities = _IUser.cities();
+            missionList.countries = _IUser.countries();
             missionList.userId = userId;
-            missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
-            missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
+            missionList.missionThemes = _IUser.missionThemes();
+            missionList.goalMissions = _IUser.goalMissions();
 
-            List<City> city = _CIDbContext.Cities.ToList();
+            List<City> city = _IUser.cities();
             ViewBag.City = city;
 
-            List<Country> country = _CIDbContext.Countries.ToList();
+            List<Country> country = _IUser.countries();
             ViewBag.Country = country;
 
-            List<MissionTheme> themes = _CIDbContext.MissionThemes.ToList();
+            List<MissionTheme> themes = _IUser.missionThemes();
             ViewBag.Themes = themes;
 
-            List<GoalMission> goalMissions = _CIDbContext.GoalMissions.ToList();
+            List<GoalMission> goalMissions = _IUser.goalMissions();
             ViewBag.GoalMissions = goalMissions;
 
-            missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();
+            missionList.favoriteMissions = _IUser.favoriteMissions();
             //Pagination
             //int pageSize = 9;
             //int skip = (pageIndex ?? 0) * pageSize;
@@ -67,17 +70,17 @@ namespace CI_Platform.Controllers
             var id = HttpContext.Session.GetString("user");
 
             MissionList missionList = new MissionList();
-            missionList.mission = _CIDbContext.Missions.ToList();
-            missionList.cities = _CIDbContext.Cities.ToList();
-            missionList.countries = _CIDbContext.Countries.ToList();
-            missionList.missionThemes = _CIDbContext.MissionThemes.ToList();
-            missionList.goalMissions = _CIDbContext.GoalMissions.ToList();
-            missionList.users = _CIDbContext.Users.ToList();
+            missionList.mission = _IUser.mission();
+            missionList.cities = _IUser.cities();
+            missionList.countries = _IUser.countries();
+            missionList.missionThemes = _IUser.missionThemes();
+            missionList.goalMissions = _IUser.goalMissions();
+            missionList.users = _IUser.user();
             //missionList.userId = userId;
-            List<Mission> mission = _CIDbContext.Missions.ToList();
+            List<Mission> mission = _IUser.mission();
 
-            missionList.favoriteMissions = _CIDbContext.FavoriteMissions.ToList();
-            missionList.missionRatings=_CIDbContext.MissionRatings.ToList();
+            missionList.favoriteMissions = _IUser.favoriteMissions();
+            missionList.missionRatings= _IUser.MissionRatings();
             //Avg Rating
             //int avgRating = 0;
             //int rat = 0;
