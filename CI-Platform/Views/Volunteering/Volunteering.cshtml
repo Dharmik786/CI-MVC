@@ -108,7 +108,7 @@
                             <button class="date-btn mt-1 p-1"> @goalObj.GoalObjectiveText</button>
                             <hr>
                         </div>
-                       
+
                     }
 
 
@@ -250,9 +250,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
-                    </div>
+
+                    @{
+                        var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId && e.UserId == Model.userId);
+                    }
+                    @if (applied == null)
+                    {
+                        <div class="d-flex justify-content-center">
+                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
+                        </div>
+                    }
+
                 </div>
 
             </div>
@@ -320,30 +334,32 @@
                                 <button class="Apply-btn ms-2 mt-2" onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
                             </div>
 
+                            <partial name="_Comment"></partial>
 
-                            <div class="card cmnt mt-3">
-                                @*@{
-                                var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
-                                }*@
 
-                                @foreach (var i in Model.comments)
-                                {
+                            @* <div class="card cmnt mt-3">
+                            {
+                            var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
+                            }
 
-                                    <div class="media d-flex mt-2">
-                                        <div class="media-left mt-2">
-                                            <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
-                                        </div>
-                                        <div class="media-body ms-2">
+                            @foreach (var i in Model.comments)
+                            {
 
-                                            <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
-                                            <span>@i.CreatedAt.ToString()</span>
-                                            <p>@i.CommentText</p>
+                            <div class="media d-flex mt-2">
+                            <div class="media-left mt-2">
+                            <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
+                            </div>
+                            <div class="media-body ms-2">
 
-                                        </div>
-                                    </div>
-                                }
+                            <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
+                            <span>@i.CreatedAt.ToString()</span>
+                            <p>@i.CommentText</p>
 
                             </div>
+                            </div>
+                            }
+
+                            </div>*@
 
                         </div>
                     </div>
@@ -382,19 +398,19 @@
                         <div class="col-3 ms-2">Rating</div>
                         <div class="col-8">
 
-                          
-                            
-                            @for(int i=1;i<=Model.avgrating;i++)
+
+
+                            @for (int i = 1; i <= Model.avgrating; i++)
                             {
-                                
-                            <img src="/Image/selected-star.png" />
+
+                                <img src="/Image/selected-star.png" />
                             }
-                            @for(int i = Model.avgrating;i<5;i++)
+                            @for (int i = Model.avgrating; i < 5; i++)
                             {
-                            <img src="/Image/star-empty.png" />
+                                <img src="/Image/star-empty.png" />
                             }
                             <span>(By @ViewBag.rat Volunteer)</span>
-                            
+
                         </div>
                     </div>
 
@@ -407,16 +423,16 @@
                     <div class="card-body">
                         <div class="overflow-x-auto d-flex">
 
-                            @*
-                            @foreach (var recent in ViewBag.recentvolunteered)
+
+                            @foreach(var i in Model.recentVolunteering)
                             {
-                            <div class="col-4  d-flex ">
-                            <a class=" ms-4 me-2 text-decoration-none text-black justify-content-center " asp-area="" asp-controller="home" asp-action="login">
-                            <img src="/Image/volunteer1.png" class="involveduserprofile" />
-                            <label id="" class="text-center">@recent.username</label>
-                            </a>
-                            </div>
-                            }*@
+                                <div class="col-4  d-flex ">
+                                    <a class=" ms-4 me-2 text-decoration-none text-black justify-content-center " asp-area="" asp-controller="home" asp-action="login">
+                                        <img src="/Image/volunteer1.png" class="involveduserprofile rounded-circle" />
+                                        <label id="" class="text-center">@i.User.FirstName @i.User.LastName</label>
+                                    </a>
+                                </div>
+                            }
 
 
                         </div>
@@ -465,7 +481,8 @@
                 type: 'GET',
                 url: "/Volunteering/PostComment",
                 data: { 'missonid': missionid, 'cmt': cmt },
-                success: function () {
+                success: function (res) {
+                    $("#cmt").html(res)
                     console.log("comment posted")
                 },
                 error: function () {
@@ -473,8 +490,8 @@
                 }
 
             });
-            location.reload();
-        }
+        @* location.reload();*@
+                        }
 
         function sendmail(missionid) {
             const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
@@ -544,18 +561,18 @@
 
         }
 
-        function applyMission(missionid)
-        {
-            console.log(missionid)
+        function applyMission(missionid) {
+
             $.ajax({
-                type:'POST',
+                type: 'POST',
                 url: "/Volunteering/applyMission",
-                data:{'missionid':missionid},
-                success:function(){
-                    console.log("mission applied")
+                data: { 'missionid': missionid },
+                success: function () {
+                    alert("mission applied");
                 }
-                        
+
             });
+            location.reload();
         }
     </script>
 </html>

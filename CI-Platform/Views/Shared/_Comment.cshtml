@@ -1,0 +1,28 @@
+﻿@using CI_Entity.ViewModel
+@model MissionList
+
+
+<div class="card cmnt mt-3">
+    @*@{
+    var c = Model.comments.Where(e=>e.MissionId == Model.singleMission.MissionId);
+    }*@
+    
+  
+    @foreach (var i in Model.comments)
+    {
+        <div id="cmt"></div>
+        <div class="media d-flex mt-2">
+            <div class="media-left mt-2">
+                <img src="/Image/volunteer1.png" class="media-object rounded-circle" style="width:60px">
+            </div>
+            <div class="media-body ms-2">
+
+                <h5 class="media-heading">@i.User.LastName @i.User.FirstName</h5>
+                <span>@i.CreatedAt.ToString()</span>
+                <p>@i.CommentText</p>
+
+            </div>
+        </div>
+    }
+
+</div>

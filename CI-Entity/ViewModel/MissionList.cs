@@ -42,7 +42,7 @@ namespace CI_Entity.ViewModel
 
         public List<Timesheet> timesheets { get; set; }
         public List<MissionDocument> missionDocuments { get; set; }
-
+        public List<MissionApplication> missionApplications { get; set; }
         public List<Story> stories { get; set; }
         public Mission singleMission { get; set; }
 
@@ -50,9 +50,11 @@ namespace CI_Entity.ViewModel
         public long missionId { get; set; }
         public long userId { get; set; }
         public Story storydetails { get; set; }
+        public int isApplied { get; set; }  
         //public User User { get; set; }
 
-        //public long UserId { get; set; }
+        public int UserId { get; set; }
+        public List<MissionApplication> recentVolunteering { get; set; }
 
         //public long MissionId { get; set; }
 

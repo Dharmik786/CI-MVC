@@ -1,4 +1,15 @@
-﻿
+﻿.applied-div {
+    position: absolute;
+    left: 0px;
+    top: 8px;
+    padding: 5px 10px;
+    color: white;
+    background-color: rgba(0, 255, 97, 0.6);
+    font-size: 14px;
+}
+
+
+
 @media screen and (min-width:767px) {
 
     .btn,
@@ -16,6 +27,7 @@
     .nav-brand {
         display: none;
     }
+
 }
 
 @media screen and (max-width:767px) {

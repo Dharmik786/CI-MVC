@@ -48,15 +48,21 @@ namespace CI_PlatForm.Repository.Repository
             //    return true;
             //}
         }
-        public List<PasswordReset> passwordResets(string email, string token)
+        public PasswordReset passwordResets(string email, string token)
         {
-            var c = _CIDbContext.PasswordResets.Where(u => u.Email == email && u.Token == token).ToList();
-            //if(c==null)
-            //{
-            //    //_CIDbContext.Add(c);
-            //    _CIDbContext.PasswordResets.Add(c);
-            //    _CIDbContext.SaveChanges();
-            //}
+            var c = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
+            if (c == null)
+            {
+                //_CIDbContext.Add(c);
+
+                var p = new PasswordReset
+                {
+                    Email = email,
+                    Token = token
+                };
+                _CIDbContext.PasswordResets.Add(p);
+                _CIDbContext.SaveChanges();
+            }
             return c;
         }
 
@@ -120,6 +126,90 @@ namespace CI_PlatForm.Repository.Repository
         public List<MissionApplication> missionApplications()
         {
             return _CIDbContext.MissionApplications.ToList();
+        }
+        public FavoriteMission addfav(int missionId, int userId)
+        {
+            var fav = new FavoriteMission
+            {
+                MissionId = missionId,
+                UserId = userId,
+            };
+            _CIDbContext.FavoriteMissions.Add(fav);
+            return fav;
+        }
+
+        public FavoriteMission FavMission(int missionId, int userId)
+        {
+            var tempFav = _CIDbContext.FavoriteMissions.Where(e => (e.MissionId == missionId) && (e.UserId == Convert.ToInt32(userId))).FirstOrDefault();
+            if (tempFav == null)
+            {
+                FavoriteMission fav = new FavoriteMission
+                {
+                    MissionId = missionId,
+                     UserId = userId,
+                };
+                _CIDbContext.Add(fav);
+                
+            }
+            else
+            {
+                _CIDbContext.FavoriteMissions.Remove(tempFav);
+            }
+            _CIDbContext.SaveChanges();
+            return tempFav;
+        }
+
+        public Comment addcomment(int missionId, int userId, string cmt)
+            {
+            Comment c = new Comment();
+            c.UserId =userId;
+            c.MissionId = missionId;
+            c.CommentText = cmt;
+            _CIDbContext.Add(c);
+            _CIDbContext.SaveChanges();
+            return c;
+        }
+        public MissionRating rating(int missionId, string starId, int userId)
+        {
+            MissionRating rate = _CIDbContext.MissionRatings.Where(e => e.MissionId == missionId && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            if(rate!=null)
+            {
+                rate.Rating = starId;
+                _CIDbContext.Update(rate);
+            }
+            else
+            {
+                MissionRating mr= new MissionRating();
+                mr.UserId = Convert.ToInt32(userId);
+                mr.MissionId = missionId;
+                mr.Rating = starId;
+                _CIDbContext.Add(mr);
+            }
+                _CIDbContext.SaveChanges();
+            return rate;
+        }
+        public MissionApplication applymission(int missionId, int userId)
+            {
+            //MissionApplication ma= _CIDbContext.MissionApplications.Where(e => e.MissionId == missionId).FirstOrDefault();
+            //if(ma==null)
+            //{
+            //    _CIDbContext.Remove(ma);
+            //}
+            //else
+            //{
+                MissionApplication am = new MissionApplication();
+                am.MissionId = missionId;
+                am.UserId = userId;
+                am.ApprovalStatus = "1";
+                am.AppliedAt = DateTime.Now;
+                _CIDbContext.Add(am);
+            //}
+            _CIDbContext.SaveChanges();
+            return am;
+        }
+        public List<Story> stories()
+        {
+            return _CIDbContext.Stories.ToList();
         }
     }
 }

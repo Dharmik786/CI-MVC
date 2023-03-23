@@ -1,5 +1,5 @@
 ﻿@using CI_Entity.ViewModel;
-  
+
 @model MissionList
 
 @{
@@ -56,14 +56,23 @@
 
     @foreach (var item in @Model.mission)
     {
+        
         <div class="missioncard col-12 col-md-6 col-lg-4 mb-2 " id="myItems">
-
+            @{
+                var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId));
+                bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
+            }
             <div class="card">
 
                 <div class="img-event">
                     <img class="card-img-top card-img"
                          src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
                          alt="Card image cap">
+                    @if (applied != null)
+                    {
+                        <div class="applied-div">Applied</div>
+
+                    }
                     <div class="landing-page-top-right "><img src="/Image/pin.png" alt="">@item.City.Name</div>
 
                     <div class="landing-page-bottom-right d-flex flex-column">
@@ -71,7 +80,7 @@
                         @if (userId != null)
                         {
                             <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
-                                @{
+                              @*  @{
                                     var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
                                 }
                                 @if (fav != null)
@@ -82,9 +91,9 @@
                                 {
                                     <img src="/Image/heart1.png">
                                 }
-
+                        *@
+                            <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
                             </button>
-
                             <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <img src="/Image/user.png" alt="">
                             </button>
@@ -230,11 +239,22 @@
                     <hr class="mt-0">
 
                     <div class="text-center">
+
                         @if (userId != null)
                         {
-                            <button class="Apply-btn p-2">
-                                <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
-                            </button>
+
+                            @if (applied == null)
+                            {
+                                <button class="Apply-btn p-2">
+                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="Apply-btn p-2">
+                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Already applied &nbsp;</a>
+                                </button>
+                            }
                         }
                         else
                         {
@@ -284,15 +304,17 @@
             type: 'GET',
             url: "/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
-            success: function () {
+            success: function (res) {
+                location.reload()
                 Console.log("Liked or Unliked mission.")
+                
             },
             error: function () {
                 alert("please login first.");
             }
 
         });
-        location.reload();
+       @* location.reload();*@
     }
 
 

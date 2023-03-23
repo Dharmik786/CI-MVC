@@ -2,6 +2,7 @@
 using CI_Entity.Models;
 using CI_Entity.ViewModel;
 using CI_Platform.Models;
+using CI_PlatForm.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace CI_Platform.Controllers
       
 
         private readonly CIDbContext _CIDbContext;
+        private readonly IUserInterface _IUser;
 
-        public HomeController(CIDbContext CIDbContext)
+        public HomeController(CIDbContext CIDbContext,IUserInterface Iuser)
         {
             _CIDbContext = CIDbContext;
+            _IUser = Iuser;
         }
      
 
@@ -56,18 +59,20 @@ namespace CI_Platform.Controllers
         public IActionResult StoriesListing()
         {
             MissionList missionList = new MissionList();
-            missionList.stories = _CIDbContext.Stories.ToList();
-            missionList.users = _CIDbContext.Users.ToList();    
-            missionList.mission=_CIDbContext.Missions.ToList();
+            missionList.stories = _IUser.stories();
+            missionList.users = _IUser.user();
+            missionList.mission = _IUser.mission();
+            missionList.missionThemes = _IUser.missionThemes();
             return View(missionList);
         }
 
         public IActionResult StoryDetails(int missionid)
         {
             MissionList missionList= new MissionList();
-            missionList.stories = _CIDbContext.Stories.ToList();
-            missionList.users = _CIDbContext.Users.ToList();
-            
+            missionList.stories = _IUser.stories();
+            missionList.users = _IUser.user();
+            missionList.missionThemes = _IUser.missionThemes();
+
             var data = missionList.stories.Where(e=>e.MissionId == missionid).FirstOrDefault();
             missionList.storydetails = data;
             return View(missionList);

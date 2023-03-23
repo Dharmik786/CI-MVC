@@ -42,7 +42,15 @@ namespace CI_Platform.Controllers
             vMMission.goalMissions = _IUser.goalMissions();
             vMMission.users = _IUser.user();
             vMMission.timesheets = _IUser.timesheets();
-            vMMission.comments = _IUser.comments();
+            vMMission.comments = _IUser.comments().Where(e=>e.MissionId == missionid).ToList();
+            vMMission.missionApplications = _IUser.missionApplications();
+            vMMission.userId = Convert.ToInt32(userId);
+            vMMission.recentVolunteering = _IUser.missionApplications().Where(e=>e.MissionId == missionid).ToList();
+
+
+
+
+           // vMMission.isApplied = _IUser.missionApplications().Where(e=>e.MissionId == missionid && e.UserId == Convert.ToInt32(userId)).ToList();
 
 
             vMMission.favoriteMissions = _IUser.favoriteMissions().Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
@@ -170,36 +178,41 @@ namespace CI_Platform.Controllers
             //add favourite mission data
             if (missonid != null)
             {
-                var tempFav = _IUser.favoriteMissions().Where(e => (e.MissionId == missonid) && (e.UserId == Convert.ToInt32(userId))).FirstOrDefault();
-                if (tempFav == null)
-                {
-                    FavoriteMission fm = new FavoriteMission();
-                    fm.UserId = Convert.ToInt32(userId);
-                    fm.MissionId = missonid;
-                    _CIDbContext.Add(fm);
-                }
-                else
-                {
-                    _CIDbContext.Remove(tempFav);
-                }
-                _CIDbContext.SaveChanges();
+                //var tempFav = _IUser.favoriteMissions().Where(e => (e.MissionId == missonid) && (e.UserId == Convert.ToInt32(userId))).FirstOrDefault();
+                _IUser.FavMission(missonid, Convert.ToInt32(userId));
+
+                //if (tempFav == null)
+                //{
+                   // _IUser.addfav(missonid, Convert.ToInt32(userId));
+                  //  FavoriteMission fm = new FavoriteMission();
+                   // fm.UserId = Convert.ToInt32(userId);
+                   // fm.MissionId = missonid;
+                    //_CIDbContext.Add(fm);
+                //}
+                //else
+                //{
+                //    _CIDbContext.Remove(tempFav);
+                //}
+                //_CIDbContext.SaveChanges();
 
             }
 
         }
 
-        public void PostComment(int missonid, string cmt)
+        public PartialViewResult PostComment(int missonid, string cmt)
         {
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
 
-            Comment c = new Comment();
-            c.UserId = Convert.ToInt32(userId);
-            c.MissionId = missonid;
-            c.CommentText = cmt;
-            _CIDbContext.Add(c);
-            _CIDbContext.SaveChanges(true);
+            _IUser.addcomment(missonid,Convert.ToInt32(userId), cmt);
 
+            //Comment c = new Comment();
+            //c.UserId = Convert.ToInt32(userId);
+            //c.MissionId = missonid;
+            //c.CommentText = cmt;
+            //_CIDbContext.Add(c);
+            //_CIDbContext.SaveChanges(true);
+            return PartialView("_Comment");
         }
 
         [HttpPost]
@@ -243,20 +256,21 @@ namespace CI_Platform.Controllers
             ViewBag.UserId = int.Parse(userId);
 
             MissionRating rate = _IUser.MissionRatings().Where(e => e.MissionId == missonid && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
-            if (rate != null)
-            {
-                rate.Rating = starid;
-                _CIDbContext.Update(rate);
-            }
-            else
-            {
-                MissionRating mr = new MissionRating();
-                mr.MissionId = missonid;
-                mr.UserId = Convert.ToInt32(userId);
-                mr.Rating = starid;
-                _CIDbContext.Add(mr);
-            }
-            _CIDbContext.SaveChanges();
+            _IUser.rating(missonid, starid,Convert.ToInt32(userId));
+            //if (rate != null)
+            //{
+            //    rate.Rating = starid;
+            //    _CIDbContext.Update(rate);
+            //}
+            //else
+            //{
+            //    MissionRating mr = new MissionRating();
+            //    mr.MissionId = missonid;
+            //    mr.UserId = Convert.ToInt32(userId);
+            //    mr.Rating = starid;
+            //    _CIDbContext.Add(mr);
+            //}
+            //_CIDbContext.SaveChanges();
             return Json(new { success = true, starid });
         }
 
@@ -265,21 +279,23 @@ namespace CI_Platform.Controllers
         {
             var userid = HttpContext.Session.GetString("user");
 
-            MissionApplication ma = _IUser.missionApplications().Where(e=>e.MissionId == missionid).FirstOrDefault();
-            if(ma != null)
-            {
-                _CIDbContext.Remove(ma);
-            }
-            else
-            {   
-                MissionApplication mr = new MissionApplication();
-                mr.MissionId = missionid;
-                mr.UserId = Convert.ToInt32(userid);
-                mr.ApprovalStatus = "1";
-                mr.AppliedAt= DateTime.Now;
-                _CIDbContext.Add(mr);
-            }
-            _CIDbContext.SaveChanges();
+            _IUser.applymission(missionid, Convert.ToInt32(userid));
+
+            //MissionApplication ma = _IUser.missionApplications().Where(e=>e.MissionId == missionid).FirstOrDefault();
+            //if(ma != null)
+            //{
+            //    _CIDbContext.Remove(ma);
+            //}
+            //else
+            //{   
+            //    MissionApplication mr = new MissionApplication();
+            //    mr.MissionId = missionid;
+            //    mr.UserId = Convert.ToInt32(userid);
+            //    mr.ApprovalStatus = "1";
+            //    mr.AppliedAt= DateTime.Now;
+            //    _CIDbContext.Add(mr);
+            //}
+            //_CIDbContext.SaveChanges();
             
         }
 

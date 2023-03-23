@@ -37,6 +37,9 @@ namespace CI_Platform.Controllers
             missionList.userId = userId;
             missionList.missionThemes = _IUser.missionThemes();
             missionList.goalMissions = _IUser.goalMissions();
+            missionList.missionApplications = _IUser.missionApplications();
+            missionList.userId = Convert.ToInt32(userId);
+
 
             List<City> city = _IUser.cities();
             ViewBag.City = city;
@@ -79,8 +82,13 @@ namespace CI_Platform.Controllers
             //missionList.userId = userId;
             List<Mission> mission = _IUser.mission();
 
+            missionList.missionApplications = _IUser.missionApplications();
+            missionList.userId = Convert.ToInt32(userId);
+
             missionList.favoriteMissions = _IUser.favoriteMissions();
             missionList.missionRatings= _IUser.MissionRatings();
+
+          
             //Avg Rating
             //int avgRating = 0;
             //int rat = 0;
@@ -101,7 +109,7 @@ namespace CI_Platform.Controllers
             //Seacrh
             if (search != null)
             {
-                mission = mission.Where(m => m.Title.Contains(search)).ToList();
+                mission = mission.Where(m => m.Title.ToUpper().Contains(search.ToUpper())).ToList();
                 if (mission.Count() == 0)
                 {
                     return PartialView("_NoMission");

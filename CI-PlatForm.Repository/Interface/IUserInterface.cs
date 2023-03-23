@@ -13,7 +13,7 @@ namespace CI_PlatForm.Repository.Interface
         public User Login(string Email, string Password);
         public User Forget(string Email);
 
-        public List<PasswordReset> passwordResets(string email, string token);
+        public PasswordReset passwordResets(string email, string token);
         //public PasswordReset AddPassToken(string email, string token);
 
         public List<User> user();
@@ -31,8 +31,14 @@ namespace CI_PlatForm.Repository.Interface
         public List<Comment> comments();
 
         public List<MissionApplication> missionApplications();
+        public FavoriteMission addfav(int missionId, int userId);
+        public FavoriteMission FavMission(int missionId, int userId);
 
+        public Comment addcomment(int missionId,int userId,string cmt);
 
-       
+        public MissionRating rating(int missionId, string starId,int userId);
+
+        public MissionApplication applymission(int missionId, int userId);
+       public List<Story> stories();
     }
 }
