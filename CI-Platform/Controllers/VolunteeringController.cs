@@ -37,20 +37,28 @@ namespace CI_Platform.Controllers
             vMMission.countries = _IUser.countries();
             vMMission.missionThemes = _IUser.missionThemes();
             vMMission.skills = _IUser.skills();
-            vMMission.missionMedia = _IUser.missionMedia();
-            vMMission.missionRatings =_IUser.MissionRatings();
+            vMMission.missionMedia = _IUser.missionMedia(); 
+            vMMission.missionRatings = _IUser.MissionRatings();
             vMMission.goalMissions = _IUser.goalMissions();
             vMMission.users = _IUser.user();
             vMMission.timesheets = _IUser.timesheets();
-            vMMission.comments = _IUser.comments().Where(e=>e.MissionId == missionid).ToList();
+
+            MissionRating ratin= vMMission.missionRatings.FirstOrDefault(e => (e.MissionId == missionid) && (e.UserId == Convert.ToInt32(userId)));
+            vMMission.userRate = ratin != null ? int.Parse(ratin.Rating) : 0;
+
+
+            vMMission.comments = _IUser.comments().Where(e => e.MissionId == missionid).ToList();
+            var cmt = _IUser.comments().Where(e => e.MissionId == missionid).ToList();
+            vMMission.comments = cmt.OrderByDescending(cmt => cmt.CreatedAt).ToList();
+
             vMMission.missionApplications = _IUser.missionApplications();
             vMMission.userId = Convert.ToInt32(userId);
-            vMMission.recentVolunteering = _IUser.missionApplications().Where(e=>e.MissionId == missionid).ToList();
+            vMMission.recentVolunteering = _IUser.missionApplications().Where(e => e.MissionId == missionid).ToList();
 
 
 
 
-           // vMMission.isApplied = _IUser.missionApplications().Where(e=>e.MissionId == missionid && e.UserId == Convert.ToInt32(userId)).ToList();
+            // vMMission.isApplied = _IUser.missionApplications().Where(e=>e.MissionId == missionid && e.UserId == Convert.ToInt32(userId)).ToList();
 
 
             vMMission.favoriteMissions = _IUser.favoriteMissions().Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
@@ -68,7 +76,7 @@ namespace CI_Platform.Controllers
 
             if (ratingList.Count() > 0)
             {
-                
+
                 foreach (var r in ratingList)
                 {
                     rat = rat + int.Parse(r.Rating);
@@ -78,8 +86,8 @@ namespace CI_Platform.Controllers
             ViewBag.rat = ratingList.Count();
 
             vMMission.avgrating = avgRating;
-           
-            
+
+
 
 
 
@@ -170,7 +178,7 @@ namespace CI_Platform.Controllers
             return View(vMMission);
         }
 
-        public void addToFavourite(int missonid)
+        public IActionResult addToFavourite(int missonid)
         {
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
@@ -183,11 +191,11 @@ namespace CI_Platform.Controllers
 
                 //if (tempFav == null)
                 //{
-                   // _IUser.addfav(missonid, Convert.ToInt32(userId));
-                  //  FavoriteMission fm = new FavoriteMission();
-                   // fm.UserId = Convert.ToInt32(userId);
-                   // fm.MissionId = missonid;
-                    //_CIDbContext.Add(fm);
+                // _IUser.addfav(missonid, Convert.ToInt32(userId));
+                //  FavoriteMission fm = new FavoriteMission();
+                // fm.UserId = Convert.ToInt32(userId);
+                // fm.MissionId = missonid;
+                //_CIDbContext.Add(fm);
                 //}
                 //else
                 //{
@@ -196,15 +204,16 @@ namespace CI_Platform.Controllers
                 //_CIDbContext.SaveChanges();
 
             }
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missonid });
 
         }
 
-        public PartialViewResult PostComment(int missonid, string cmt)
+        public IActionResult PostComment(int missonid, string cmt)
         {
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
 
-            _IUser.addcomment(missonid,Convert.ToInt32(userId), cmt);
+            _IUser.addcomment(missonid, Convert.ToInt32(userId), cmt);
 
             //Comment c = new Comment();
             //c.UserId = Convert.ToInt32(userId);
@@ -212,7 +221,9 @@ namespace CI_Platform.Controllers
             //c.CommentText = cmt;
             //_CIDbContext.Add(c);
             //_CIDbContext.SaveChanges(true);
-            return PartialView("_Comment");
+            //return PartialView("_Comment");
+
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missonid });
         }
 
         [HttpPost]
@@ -250,13 +261,13 @@ namespace CI_Platform.Controllers
             }
         }
 
-        public async Task<IActionResult> Rating(int missonid, string starid)
+        public IActionResult Rating(int missonid, string starid)
         {
             var userId = HttpContext.Session.GetString("user");
             ViewBag.UserId = int.Parse(userId);
 
             MissionRating rate = _IUser.MissionRatings().Where(e => e.MissionId == missonid && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
-            _IUser.rating(missonid, starid,Convert.ToInt32(userId));
+            _IUser.rating(missonid, starid, Convert.ToInt32(userId));
             //if (rate != null)
             //{
             //    rate.Rating = starid;
@@ -271,15 +282,17 @@ namespace CI_Platform.Controllers
             //    _CIDbContext.Add(mr);
             //}
             //_CIDbContext.SaveChanges();
-            return Json(new { success = true, starid });
+            //return Json(new { success = true, starid });
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missonid });
+
         }
 
-        [HttpPost]
-        public void applyMission(int missionid)
+       
+        public IActionResult applyMission(int missionid)
         {
-            var userid = HttpContext.Session.GetString("user");
+            var userId = HttpContext.Session.GetString("user");
 
-            _IUser.applymission(missionid, Convert.ToInt32(userid));
+            _IUser.applymission(missionid, Convert.ToInt32(userId));
 
             //MissionApplication ma = _IUser.missionApplications().Where(e=>e.MissionId == missionid).FirstOrDefault();
             //if(ma != null)
@@ -296,7 +309,7 @@ namespace CI_Platform.Controllers
             //    _CIDbContext.Add(mr);
             //}
             //_CIDbContext.SaveChanges();
-            
+           return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
         }
 
     }

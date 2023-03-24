@@ -75,12 +75,12 @@
                     }
                     <div class="landing-page-top-right "><img src="/Image/pin.png" alt="">@item.City.Name</div>
 
-                    <div class="landing-page-bottom-right d-flex flex-column">
+                    <div class="landing-page-bottom-right d-flex flex-column add_fav">
 
                         @if (userId != null)
                         {
-                            <button class="mb-2 landing-page-btn-img" onclick="addToFav(@item.MissionId)">
-                              @*  @{
+                            <button class="mb-2 landing-page-btn-img "  onclick="addToFav(@item.MissionId)">
+                               @* @{
                                     var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
                                 }
                                 @if (fav != null)
@@ -90,8 +90,7 @@
                                 else
                                 {
                                     <img src="/Image/heart1.png">
-                                }
-                        *@
+                                }*@
                             <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
                             </button>
                             <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -300,21 +299,24 @@
 
 <script>
     function addToFav(missonid) {
+        debugger;
         $.ajax({
             type: 'GET',
             url: "/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
-            success: function (res) {
-                location.reload()
-                Console.log("Liked or Unliked mission.")
-                
+            success: function (result) {
+                @*location.reload()*@
+                console.log("Liked or Unliked mission.");
+               @* $('.add_fav').html($(result).find('.add_fav').html());*@
+                    
             },
             error: function () {
                 alert("please login first.");
             }
 
         });
-       @* location.reload();*@
+        location.reload();
+
     }
 
 

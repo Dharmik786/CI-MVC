@@ -56,6 +56,9 @@ namespace CI_Entity.ViewModel
         public int UserId { get; set; }
         public List<MissionApplication> recentVolunteering { get; set; }
 
+        public MissionRating rating { get; set; }
+        public long? userRate { get; set; } = null;
+
         //public long MissionId { get; set; }
 
         //public long ThemeId { get; set; }
