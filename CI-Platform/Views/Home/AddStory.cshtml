@@ -1,0 +1,170 @@
+﻿@using CI_Entity.ViewModel
+@model MissionList
+@{
+    Layout = "_navbar1";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+    <link rel="stylesheet" href="~/css/AddStory.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var userId = Context.Session.GetString("user");
+    }
+    <div class=" sharestory container mt-3">
+        <div class="row">
+            <div class="col-12 col-md-6 col-sm-12">
+                <lable class="fs-2"> Share Your Story</lable>
+            </div>
+        </div>
+        <form asp-controller="Home" asp-action="addStoryDetail" method="post">
+            <div class="row ">
+                <div class="col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
+                    <lable class="fs-6">Select mission</lable>
+                    @if(userId!=null)
+                    {
+                        <select asp-for="missionId" class="form-select" aria-label="Default select example">
+                            @foreach (var i in Model.missionApplications )
+                            {
+                                <option value="@i.Mission.MissionId">@i.Mission.Title</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select class="form-select" aria-label="Default select example" onclick="loginalert()"> --                                          
+                        </select>
+                    }
+
+                </div>
+
+                <div class=" form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
+                    <label class="fs-6" asp-for="title">My Story Title</label>
+                    <input type="text" asp-for="title" placeholder="Enter Story Title" class="col-12 border-1  " style="height:40px; border-radius:5px" />
+                </div>
+
+                <div class="form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
+                    <label class="fs-6" asp-for="date">Date</label>
+                    <input type="datetime-local" asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                </div>
+
+            </div>
+            <div class="row mt-4">
+                <label class="fs-5 ">My Story</label>
+
+                <div class="col-12 mt-2">
+                    <textarea class="" asp-for="description" id="editor"></textarea>
+                </div>
+
+            </div>
+
+            @*<div class="container mt-4 mb-4">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 col-lg-8">
+                        <h1 class="h2 mb-4">Submit issue</h1>
+                        <label>Describe the issue in detail</label>
+                        <div class="form-group">
+                            <textarea id="editor" asp-for="description"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>*@
+
+            <div class="row mt-4  form-group">
+                <label class="fs-5">Enter Video URL</label>
+
+                <input type="text" placeholder="Enter your URL" class="col-12 border-1 border-black  mt-1 mb-2" style="height:40px; border-radius:5px" />
+
+            </div>
+
+            <label class=" fs-5 mt-2 "> Upload Your Photos</label>
+            <div class="input-div">
+                <p>Drag & drop photos here or <strong>Browse</strong></p>
+                <input type="file" class="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+            </div>
+
+            <output></output>
+
+            <div class="row flex-column flex-md-row mt-4 mb-2">
+                <div class="col-12 col-md-2 me-auto">
+                    <button class="w-100 bg-white rounded-5 py-2 canclebtn">cancel</button>
+                </div>
+                <div class=" col-12 col-md-2 mt-2 mt-md-0 ">
+                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn">Save</button>
+                </div>
+                <div class=" col-12 col-md-2 mt-2 mt-md-0">
+                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        
+
+        const inputDiv = document.querySelector(".input-div")
+        const input = document.querySelector(".file")
+        const output = document.querySelector("output")
+        let imagesArray = []
+
+        input.addEventListener("change", () => {
+            const files = input.files
+            for (let i = 0; i < files.length; i++) {
+                imagesArray.push(files[i])
+            }
+            displayImages()
+        })
+
+        inputDiv.addEventListener("drop", () => {
+            e.preventDefault()
+            const files = e.dataTransfer.files
+            for (let i = 0; i < files.length; i++) {
+                if (!files[i].type.match("image")) continue;
+
+                if (imagesArray.every(image => image.name !== files[i].name))
+                    imagesArray.push(files[i])
+            }
+            displayImages()
+        })
+
+        function displayImages() {
+            let images = ""
+            imagesArray.forEach((image, index) => {
+                images += `<div class="image">
+                                         <img src="${URL.createObjectURL(image)}" alt="image">
+                                         <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
+                                       </div>`
+            })
+            output.innerHTML = images
+        }
+
+        function deleteImage(index) {
+            imagesArray.splice(index, 1)
+            displayImages()
+        }
+
+
+        function loginalert() {
+            alert("login first");
+        }
+        tinymce.init({
+            selector: 'textarea#editor',
+            skin: 'bootstrap',
+            plugins: 'lists, link, image, media',
+            toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help',
+            menubar: false,
+        });
+    </script>
+
+   
+</body>
+</html>

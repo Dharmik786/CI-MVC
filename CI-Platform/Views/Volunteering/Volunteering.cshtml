@@ -22,6 +22,9 @@
 
     <div class="container mt-3">
         <div class="row">
+            @{
+                var userId = Context.Session.GetString("user");
+            }
 
             <div class="col-12 col-lg-6 col-md-12 col-sm-12 p-1 ">
                 <div class="car1">
@@ -149,32 +152,58 @@
 
 
                     <div class="d-flex">
-                        <button class="col-6  date-btn m-1 p-1 addFav" id="addFav" value="addFav" onclick="addToFav(@Model.singleMission.MissionId)">
-                            @{
-                                var fav = Model.favoriteMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
-                            }
+                        @if (userId != null)
+                        {
+                            <button class="col-6  date-btn m-1 p-1 addFav" id="addFav" value="addFav" onclick="addToFav(@Model.singleMission.MissionId)">
+                                @{
+                                    var fav = Model.favoriteMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
+                                }
 
-                            @if (fav != null)
-                            {
-                                <img src="~/Image/fill-heart.png" class="me-2" />
+                                @if (fav != null)
+                                {
+                                    <img src="~/Image/fill-heart.png" class="me-2" />
 
-                                <span>Remove from Favourite</span>
-                            }
-                            else
-                            {
-                                <img src="/Image/heart1.png" class="me-2" />
+                                    <span>Remove from Favourite</span>
+                                }
+                                else
+                                {
+                                    <img src="/Image/heart1.png" class="me-2" />
 
-                                <span>Add to fav</span>
-                            }
+                                    <span>Add to fav</span>
+                                }
 
-                        </button>
 
-                        <button class="col-6  date-btn m-1 p-1 rounded-5 d-flex  Addfavourite  justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <img src="/Image/add1.png" class="me-2" />
-                            <span>Recommend to a Co-Workers</span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="col-6  date-btn m-1 p-1 addFav" id="addFav" value="addFav" onclick="loginalert()">
+                               
+                                    <img src="/Image/heart1.png" class="me-2" />
 
-                        </button>
+                                    <span>Add to fav</span>
+                                
 
+
+                            </button>
+                        }
+
+                        @if (userId != null)
+                        {
+                            <button class="col-6  date-btn m-1 p-1 rounded-5 d-flex  Addfavourite  justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img src="/Image/add1.png" class="me-2" />
+                                <span>Recommend to a Co-Workers</span>
+
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="col-6  date-btn m-1 p-1 rounded-5 d-flex  Addfavourite  justify-content-center" type="button" onclick="loginalert()">
+                                <img src="/Image/add1.png" class="me-2" />
+                                <span>Recommend to a Co-Workers</span>
+
+                            </button>
+                        }
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -203,29 +232,41 @@
 
                     <div class="rule mt-2 rating">
                         <hr>
-                        
-                        @if (Model.userRate != null)
+                        @if (userId != null)
                         {
-                            int count = 0;
-                            @for (var i = 1; i <= Model.userRate; i++)
+                            @if (Model.userRate != null)
                             {
-                                <i class="bi bi-star-fill" style="color:yellow" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                                count++;
+                                int count = 0;
+                                @for (var i = 1; i <= Model.userRate; i++)
+                                {
+                                    <i class="bi bi-star-fill" style="color:yellow" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                    count++;
+                                }
+                                @for (var i = count + 1; i <= 5; i++)
+                                {
+                                    <i class="bi bi-star-fill" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                }
                             }
-                            @for (var i = count + 1; i <= 5; i++)
+                            else
                             {
-                                <i class="bi bi-star-fill" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+
+                                <i class="bi bi-star-fill" id="1" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="2" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="3" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="4" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="5" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
                             }
                         }
                         else
                         {
-
-                            <i class="bi bi-star-fill" id="1" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                            <i class="bi bi-star-fill" id="2" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                            <i class="bi bi-star-fill" id="3" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                            <i class="bi bi-star-fill" id="4" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                            <i class="bi bi-star-fill" id="5" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                            <i class="bi bi-star-fill" id="1" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="2" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="3" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="4" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="5" onclick="loginalert()"></i>
                         }
+
+                       
                         <hr>
                     </div>
                     <div class="row d-flex mt-2">
@@ -270,20 +311,44 @@
 
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId && e.UserId == Model.userId);
+                        var isClosed = 0;
+                        if (Model.singleMission.StartDate < DateTime.Now)
+                        {
+                            isClosed = 1;
+                        }
                     }
                     <div id="applydiv">
-                    @if (applied == null)
-                    {
-                        <div class="d-flex justify-content-center">
-                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-center">
-                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
-                        </div>
-                    }
+                        @if (isClosed == 1)
+                        {
+                            <div class="d-flex justify-content-center">
+                                <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Mission Closed</button>
+                            </div>
+                        }
+                        else
+                        {
+                            @if (userId != null)
+                            {
+                                @if (applied == null)
+                                {
+                                    <div class="d-flex justify-content-center">
+                                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex justify-content-center">
+                                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="d-flex justify-content-center">
+                                    <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="loginalert()">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
+                                </div>
+                            }
+
+                        }
                     </div>
                 </div>
 
@@ -349,7 +414,14 @@
                                 <div class="">
                                     <textarea maxlength="" style="width:100%" placeholder="Enter Your Comment.." id="comment"></textarea>
                                 </div>
-                                <button class="Apply-btn ms-2 mt-2" onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
+                                @if (userId != null)
+                                {                                    
+                                    <button class="Apply-btn ms-2 mt-2" onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
+                                }
+                                else
+                                {
+                                    <button class="Apply-btn ms-2 mt-2" onclick="loginalert()">Post Comment</button>
+                                }
                             </div>
 
                             @*  <partial name="_Comment"></partial>*@
@@ -467,7 +539,9 @@
 <partial name="_RelatedMission">
 
     <script>
-
+        function loginalert(){
+            alert("login first");
+        }
 
         function addToFav(missonid) {
             $.ajax({
@@ -543,27 +617,27 @@
                 url: "/Volunteering/Rating",
                 data: { 'missonid': missionid, 'starid': starid },
                 success: function (result) {
-                    @*if (parseInt(result.starid, 10)) {
+        @*if (parseInt(result.starid, 10)) {
                         for (i = 1; i <= parseInt(result.starid, 10); i++) {
-                            var starbtn = document.getElementById(String(i));
-                            starbtn.style.color = "#F88634"; x
+                        var starbtn = document.getElementById(String(i));
+                        starbtn.style.color = "#F88634"; x
                         }
                         for (i = parseInt(result.starid, 10) + 1; i <= 5; i++) {
-                            var starbtn = document.getElementById(String(i));
-                            starbtn.style.color = "black";
+                        var starbtn = document.getElementById(String(i));
+                        starbtn.style.color = "black";
                         }
-                    }
+                        }
 
-                    else {
+                        else {
                         for (i = 1; i <= parseInt(result.starid, 10); i++) {
-                            var starbtn = document.getElementById(String(i));
+                        var starbtn = document.getElementById(String(i));
 
-                            starbtn.style.backgroundColor = "#F88634";
+                        starbtn.style.backgroundColor = "#F88634";
                         }
 
-                    }*@
+                        }*@
 
-                    $('.avgRate').html($(result).find('.avgRate').html());
+                        $('.avgRate').html($(result).find('.avgRate').html());
                     $('.rating').html($(result).find('.rating').html());
                     console.log("Rating Done")
                 },
@@ -577,19 +651,19 @@
         }
 
         function applyMission(missionid) {
-       debugger;
+            debugger;
             $.ajax({
                 type: 'POST',
                 url: "/Volunteering/applyMission",
                 data: { 'missionid': missionid },
                 success: function (res) {
-                   @* alert("mission applied");*@
-                    $('#applydiv').html($(res).find('#applydiv').html());
-                    
+        @* alert("mission applied");*@
+                        $('#applydiv').html($(res).find('#applydiv').html());
+
                 }
 
             });
-            @*location.reload();*@
-        }
+        @*location.reload();*@
+                                }
     </script>
 </html>

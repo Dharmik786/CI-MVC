@@ -60,6 +60,11 @@
         <div class="missioncard col-12 col-md-6 col-lg-4 mb-2 " id="myItems">
             @{
                 var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId));
+                var isClosed =0 ;
+                if(item.StartDate < DateTime.Now )
+                {
+                    isClosed = 1;
+                }
                 bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
             }
             <div class="card">
@@ -72,6 +77,10 @@
                     {
                         <div class="applied-div">Applied</div>
 
+                    }
+                    @if(isClosed == 1)
+                    {
+                        <div class="close-div">Closed</div>
                     }
                     <div class="landing-page-top-right "><img src="/Image/pin.png" alt="">@item.City.Name</div>
 

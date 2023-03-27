@@ -16,15 +16,15 @@ namespace CI_Platform.Controllers
         private readonly object JsonRequestBehavior;
         private readonly IUserInterface _IUser;
 
-        public LandingpageController(CIDbContext CIDbContext , IUserInterface IUser)
+        public LandingpageController(CIDbContext CIDbContext, IUserInterface IUser)
         {
             _CIDbContext = CIDbContext;
             _IUser = IUser;
         }
 
         public IActionResult landingpage(long userId, int? pageIndex, string search, string searchQuery, string sortOrder, long[] ACountries, long[] ACity, string countryId)
-            {
-           // int? userid = HttpContext.Session.GetInt32("userID");
+        {
+            // int? userid = HttpContext.Session.GetInt32("userID");
             //if (userid == null)
             //{
             //    return RedirectToAction("Login", "Home");
@@ -68,7 +68,7 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(long userId,int missionid,string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
+        public IActionResult _Missions(long userId, int missionid, string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
         {
             var id = HttpContext.Session.GetString("user");
 
@@ -86,9 +86,9 @@ namespace CI_Platform.Controllers
             missionList.userId = Convert.ToInt32(userId);
 
             missionList.favoriteMissions = _IUser.favoriteMissions();
-            missionList.missionRatings= _IUser.MissionRatings();
+            missionList.missionRatings = _IUser.MissionRatings();
 
-          
+
             //Avg Rating
             //int avgRating = 0;
             //int rat = 0;
@@ -137,17 +137,25 @@ namespace CI_Platform.Controllers
             }
 
             //filter
-            if (country.Length > 0)
+            if (country.Length > 0 || city.Length > 0 || theme.Length > 0)
             {
-                mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
-            }
-            if (city.Length > 0)
-            {
-                mission = mission.Where(s => city.Contains(s.City.Name)).ToList();
-            }
-            if (theme.Length > 0)
-            {
-                mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
+
+                if (country.Length > 0)
+                {
+                    mission = mission.Where(s => country.Contains(s.Country.Name)).ToList();
+                }
+                if (city.Length > 0)
+                {
+                    mission = mission.Where(s => city.Contains(s.City.Name)).ToList();
+                }
+                if (theme.Length > 0)
+                {
+                    mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
+                }
+                if(mission.Count() ==0)
+                {
+                    return PartialView("_NoMission");
+                }
             }
 
             //Pagination

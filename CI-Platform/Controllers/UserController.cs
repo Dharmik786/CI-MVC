@@ -21,6 +21,11 @@ namespace CI.Controllers
             _CIDbContext = CIDbContext;
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("landingpage", "Landingpage");
+        }
         public IActionResult Login()
         {
             HttpContext.Session.Clear();

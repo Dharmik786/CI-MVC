@@ -59,6 +59,8 @@ namespace CI_Entity.ViewModel
         public MissionRating rating { get; set; }
         public long? userRate { get; set; } = null;
 
+        public List<StoryMedium> storyMedia { get;set; }
+
         //public long MissionId { get; set; }
 
         //public long ThemeId { get; set; }
@@ -104,6 +106,11 @@ namespace CI_Entity.ViewModel
         //public long RatedUser { get; set; }
         //public long Ratedmission { get; set; }
         //public int Ratingvalue { get; set; }
+
+        public string title { get; set; }   
+        public string description { get; set; }
+        public DateTime date { get; set; }
+
 
     }
 }

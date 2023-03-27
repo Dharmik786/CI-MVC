@@ -16,7 +16,7 @@
 
 </head>
 <body>
- 
+
     <div class="container-fluid p-0">
         <div class="story-header">
 
@@ -25,61 +25,61 @@
             </div>
 
             <div class="img-btn-div">
-                    <p class="story-text">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, similique? Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Perspiciatis molestiae quasi fugit adipisci repudiandae consequatur.
-                    </p>
-                <button class="sys-btn">Share your Story <i class="bi bi-arrow-right"></i></button>
-            </div>        
+                <p class="story-text">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, similique? Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit. Perspiciatis molestiae quasi fugit adipisci repudiandae consequatur.
+                </p>
+                <a asp-controller="Home" asp-action="AddStory"><button class="sys-btn">Share your Story <i class="bi bi-arrow-right"></i></button></a>
+            </div>
 
         </div>
 
     </div>
 
     <div class="container grid-container mt-4">
-      
+
         <div class="row ">
 
-            @foreach(var i in Model.stories)
-            {     
-            <div class="missioncard col-12 col-md-6 col-lg-4 mb-2">
-                <div class="card">
+            @foreach (var i in Model.stories)
+            {
+                <div class="missioncard col-12 col-md-6 col-lg-4 mb-2">
+                    <div class="card">
 
-                    <div class="img-event">
-                        <img class="card-img-top card-img"
-                             src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                             alt="Card image cap">
+                        <div class="img-event">
+                            <img class="card-img-top card-img"
+                                 src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                                 alt="Card image cap">
                             <div class="view-details-btn p-1"><button style="border-radius:25px"> <a href="/Home/StoryDetails?missionid=@i.MissionId" style="text-decoration:none;color:black">View Deatils</a><i class="bi bi-arrow-right"></i></button></div>
-                        <div><button class="theme-btn " >@i.Mission.Theme.Title</button></div>
-              
-                    </div>  
+                            <div><button class="theme-btn ">@i.Mission.Theme.Title</button></div>
 
-
-                    <div class="card-body m-2">
-                        <h5 class="card-title">
-                            @i.Title
-                        </h5>
-                        <p class="card-text text-secondary">
-                            @i.Description
-                        </p>
-                        <div class="d-flex">
-                            <img src="/Image/volunteer1.png"/>
-                                <div class="d-flex justify-content-center m-3">@i.User.LastName @i.User.FirstName </div>
                         </div>
-                         
+
+
+                        <div class="card-body m-2">
+                            <h5 class="card-title">
+                                @i.Title
+                            </h5>
+                            <p class="card-text text-secondary">
+                                @i.Description
+                            </p>
+                            <div class="d-flex">
+                                <img src="/Image/volunteer1.png" />
+                                <div class="d-flex justify-content-center m-3">@i.User.LastName @i.User.FirstName </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
             }
 
 
 
-           
+
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>                        
+                            <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item">

@@ -56,6 +56,25 @@ namespace CI_Platform.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult addStoryDetail(MissionList model)
+        {
+            var userId = HttpContext.Session.GetString("user");
+            _IUser.AddStory(model.missionId,Convert.ToInt32(userId),model.title,model.description,model.date);
+
+            return View();
+        }
+        public IActionResult AddStory()
+        {
+            var userId = HttpContext.Session.GetString("user");
+            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
+
+            MissionList ms = new MissionList();
+            ms.mission = _IUser.mission();
+            ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+            return View(ms);
+        }
         public IActionResult StoriesListing()
         {
             MissionList missionList = new MissionList();

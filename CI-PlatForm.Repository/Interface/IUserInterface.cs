@@ -1,4 +1,5 @@
 ﻿using CI_Entity.Models;
+using CI_Entity.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,5 +41,6 @@ namespace CI_PlatForm.Repository.Interface
 
         public MissionApplication applymission(int missionId, int userId);
        public List<Story> stories();
+       public void AddStory(long missionId,long userId,string title,string description,DateTime date);
     }
 }

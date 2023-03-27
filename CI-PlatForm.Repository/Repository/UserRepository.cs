@@ -1,4 +1,5 @@
 ﻿using CI_Entity.Models;
+using CI_Entity.ViewModel;
 using CI_PlatForm.Repository.Interface;
 using Microsoft.SqlServer.Server;
 using NuGet.Common;
@@ -146,10 +147,10 @@ namespace CI_PlatForm.Repository.Repository
                 FavoriteMission fav = new FavoriteMission
                 {
                     MissionId = missionId,
-                     UserId = userId,
+                    UserId = userId,
                 };
                 _CIDbContext.Add(fav);
-                
+
             }
             else
             {
@@ -160,9 +161,9 @@ namespace CI_PlatForm.Repository.Repository
         }
 
         public Comment addcomment(int missionId, int userId, string cmt)
-            {
+        {
             Comment c = new Comment();
-            c.UserId =userId;
+            c.UserId = userId;
             c.MissionId = missionId;
             c.CommentText = cmt;
             _CIDbContext.Add(c);
@@ -172,24 +173,24 @@ namespace CI_PlatForm.Repository.Repository
         public MissionRating rating(int missionId, string starId, int userId)
         {
             MissionRating rate = _CIDbContext.MissionRatings.Where(e => e.MissionId == missionId && e.UserId == Convert.ToInt32(userId)).FirstOrDefault();
-            if(rate!=null)
+            if (rate != null)
             {
                 rate.Rating = starId;
                 _CIDbContext.Update(rate);
             }
             else
             {
-                MissionRating mr= new MissionRating();
+                MissionRating mr = new MissionRating();
                 mr.UserId = Convert.ToInt32(userId);
                 mr.MissionId = missionId;
                 mr.Rating = starId;
                 _CIDbContext.Add(mr);
             }
-                _CIDbContext.SaveChanges();
+            _CIDbContext.SaveChanges();
             return rate;
         }
         public MissionApplication applymission(int missionId, int userId)
-            {
+        {
             //MissionApplication ma= _CIDbContext.MissionApplications.Where(e => e.MissionId == missionId).FirstOrDefault();
             //if(ma==null)
             //{
@@ -197,12 +198,12 @@ namespace CI_PlatForm.Repository.Repository
             //}
             //else
             //{
-                MissionApplication am = new MissionApplication();
-                am.MissionId = missionId;
-                am.UserId = userId;
-                am.ApprovalStatus = "1";
-                am.AppliedAt = DateTime.Now;
-                _CIDbContext.Add(am);
+            MissionApplication am = new MissionApplication();
+            am.MissionId = missionId;
+            am.UserId = userId;
+            am.ApprovalStatus = "1";
+            am.AppliedAt = DateTime.Now;
+            _CIDbContext.Add(am);
             //}
             _CIDbContext.SaveChanges();
             return am;
@@ -210,6 +211,20 @@ namespace CI_PlatForm.Repository.Repository
         public List<Story> stories()
         {
             return _CIDbContext.Stories.ToList();
+        }
+
+        public void AddStory(long missionId,long userId, string title,string description, DateTime date)
+        {
+            Story st = new Story();
+            st.MissionId = missionId;
+            st.UserId = userId; 
+            st.Title = title;
+            st.Description = description;
+            st.Status = "1";
+            st.CreatedAt = date;
+            _CIDbContext.Stories.Add(st);
+            _CIDbContext.SaveChanges();
+            
         }
     }
 }
