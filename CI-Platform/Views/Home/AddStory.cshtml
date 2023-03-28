@@ -24,14 +24,14 @@
                 <lable class="fs-2"> Share Your Story</lable>
             </div>
         </div>
-        <form asp-controller="Home" asp-action="addStoryDetail" method="post">
+        <form asp-controller="Home" asp-action="addStoryDetail" enctype="multipart/form-data" method="post">
             <div class="row ">
                 <div class="col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <lable class="fs-6">Select mission</lable>
-                    @if(userId!=null)
+                    @if (userId != null)
                     {
                         <select asp-for="missionId" class="form-select" aria-label="Default select example">
-                            @foreach (var i in Model.missionApplications )
+                            @foreach (var i in Model.missionApplications)
                             {
                                 <option value="@i.Mission.MissionId">@i.Mission.Title</option>
                             }
@@ -39,7 +39,8 @@
                     }
                     else
                     {
-                        <select class="form-select" aria-label="Default select example" onclick="loginalert()"> --                                          
+                        <select class="form-select" aria-label="Default select example" onclick="loginalert()">
+                            --
                         </select>
                     }
 
@@ -47,7 +48,7 @@
 
                 <div class=" form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="title">My Story Title</label>
-                    <input type="text" asp-for="title" placeholder="Enter Story Title" class="col-12 border-1  " style="height:40px; border-radius:5px" />
+                    <input type="text" asp-for="title" placeholder="Enter Story Title" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
                 </div>
 
                 <div class="form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
@@ -62,20 +63,9 @@
                 <div class="col-12 mt-2">
                     <textarea class="" asp-for="editor1" name="editor1"></textarea>
                 </div>
-            </div>           
+            </div>
 
-            @*<div class="container mt-4 mb-4">
-                <div class="row justify-content-md-center">
-                    <div class="col-md-12 col-lg-8">
-                        <h1 class="h2 mb-4">Submit issue</h1>
-                        <label>Describe the issue in detail</label>
-                        <div class="form-group">
-                            <textarea id="editor" asp-for="description"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-            </div>*@
+
 
             <div class="row mt-4  form-group">
                 <label class="fs-5">Enter Video URL</label>
@@ -87,10 +77,9 @@
             <label class=" fs-5 mt-2 "> Upload Your Photos</label>
             <div class="input-div">
                 <p>Drag & drop photos here or <strong>Browse</strong></p>
-                <input type="file" class="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+                <input type="file" class="file-input file" asp-for="attachment" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
             </div>
             <output></output>
-
 
 
             <div class="row flex-column flex-md-row mt-4 mb-2">
@@ -100,9 +89,12 @@
                 <div class=" col-12 col-md-2 mt-2 mt-md-0 ">
                     <button class="w-100 bg-white rounded-5 py-2 savecancelbtn">Save</button>
                 </div>
+
                 <div class=" col-12 col-md-2 mt-2 mt-md-0">
                     <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit">Submit</button>
                 </div>
+
+
             </div>
 
         </form>
@@ -140,9 +132,9 @@
             let images = ""
             imagesArray.forEach((image, index) => {
                 images += `<div class="image">
-                                         <img src="${URL.createObjectURL(image)}" alt="image">
-                                         <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
-                                       </div>`
+                                                 <img src="${URL.createObjectURL(image)}" alt="image">
+                                                 <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
+                                               </div>`
             })
             output.innerHTML = images
         }
@@ -155,16 +147,11 @@
 
         function loginalert() {
             alert("login first");
+
         }
-        tinymce.init({
-            selector: 'textarea#editor',
-            skin: 'bootstrap',
-            plugins: 'lists, link, image, media',
-            toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help',
-            menubar: false,
-        });
+
     </script>
 
-   
+
 </body>
 </html>

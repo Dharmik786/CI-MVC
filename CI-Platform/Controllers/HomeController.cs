@@ -7,23 +7,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 using System.Diagnostics;
+using System.Web;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace CI_Platform.Controllers
 {
     public class HomeController : Controller
     {
-      
+
 
         private readonly CIDbContext _CIDbContext;
         private readonly IUserInterface _IUser;
+        [Obsolete]
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
 
-        public HomeController(CIDbContext CIDbContext,IUserInterface Iuser)
+        public HomeController(CIDbContext CIDbContext, IUserInterface Iuser, IHostingEnvironment IHostingEnvironment)
         {
             _CIDbContext = CIDbContext;
             _IUser = Iuser;
+            _hostingEnvironment = IHostingEnvironment;
         }
-     
+
 
         public IActionResult Index()
         {
@@ -34,8 +40,8 @@ namespace CI_Platform.Controllers
         {
             return View();
         }
-      
-    
+
+
         public IActionResult Forget()
         {
             return View();
@@ -61,7 +67,29 @@ namespace CI_Platform.Controllers
         public IActionResult addStoryDetail(MissionList model)
         {
             var userId = HttpContext.Session.GetString("user");
-            _IUser.AddStory(model.missionId,Convert.ToInt32(userId),model.title,model.editor1, model.date);
+            _IUser.AddStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date);
+
+            foreach (var i in model.attachment)
+            {
+                if (i != null)
+                {
+                    string UploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Image\\story");
+                    string FileName = i.FileName;
+                    string FilePath = Path.Combine(UploadsFolder, FileName);
+
+                    using (var FileStream = new FileStream(FilePath, FileMode.Create))
+                    {
+                        i.CopyTo(FileStream);
+                    }
+                    var type = i.ContentType;
+
+                    //_IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId));
+                    _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FilePath, model.missionId, Convert.ToInt32(userId));
+
+
+                  // _homeRepository.AddStoryMedia(Convert.ToString(i.ContentType.Split("/")[1]), Convert.ToString(filename), (long)vmmission.missionId, uid);
+                }
+            }
 
             return RedirectToAction("StoriesListing", "Home");
         }
@@ -85,19 +113,20 @@ namespace CI_Platform.Controllers
             return View(missionList);
         }
 
-        public IActionResult StoryDetails(int missionid)
+        public IActionResult StoryDetails(int storyId)
         {
-            MissionList missionList= new MissionList();
+            var userId = HttpContext.Session.GetString("user");
+            MissionList missionList = new MissionList();
             missionList.stories = _IUser.stories();
-            missionList.users = _IUser.user();
+            missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             missionList.missionThemes = _IUser.missionThemes();
 
-            var data = missionList.stories.Where(e=>e.MissionId == missionid).FirstOrDefault();
+            var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
             missionList.storydetails = data;
             return View(missionList);
         }
 
-       
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

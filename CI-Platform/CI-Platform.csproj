@@ -42,4 +42,8 @@
     <ProjectReference Include="..\CI-PlatForm.Repository\CI-PlatForm.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Image\story\" />
+  </ItemGroup>
+
 </Project>

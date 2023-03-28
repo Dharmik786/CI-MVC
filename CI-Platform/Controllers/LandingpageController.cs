@@ -39,6 +39,7 @@ namespace CI_Platform.Controllers
             missionList.goalMissions = _IUser.goalMissions();
             missionList.missionApplications = _IUser.missionApplications();
             missionList.userId = Convert.ToInt32(userId);
+            missionList.missionMedia = _IUser.missionMedia();
 
 
             List<City> city = _IUser.cities();
@@ -87,6 +88,7 @@ namespace CI_Platform.Controllers
 
             missionList.favoriteMissions = _IUser.favoriteMissions();
             missionList.missionRatings = _IUser.MissionRatings();
+            missionList.missionMedia = _IUser.missionMedia();
 
 
             //Avg Rating

@@ -30,7 +30,7 @@ namespace CI_PlatForm.Repository.Interface
         public List<MissionMedium> missionMedia();
         public List<Timesheet> timesheets();
         public List<Comment> comments();
-
+        public MissionInvite AddMissionInvite(int FromUserId,int missionId,long Touserid);
         public List<MissionApplication> missionApplications();
         public FavoriteMission addfav(int missionId, int userId);
         public FavoriteMission FavMission(int missionId, int userId);
@@ -42,5 +42,6 @@ namespace CI_PlatForm.Repository.Interface
         public MissionApplication applymission(int missionId, int userId);
        public List<Story> stories();
        public void AddStory(long missionId,long userId,string title,string description,DateTime date);
+       public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId);
     }
 }

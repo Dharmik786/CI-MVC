@@ -70,9 +70,23 @@
             <div class="card">
 
                 <div class="img-event">
-                    <img class="card-img-top card-img"
-                         src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                         alt="Card image cap">
+                    @{
+                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == item.MissionId);
+                    }
+                 
+                    @if(img.MediaPath!="")
+                    {
+                        <img class="card-img-top card-img" src="@img.MediaPath" ;
+                        @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
+                        alt="Card image cap">
+                    }
+                    else
+                    {
+                        <img class="card-img-top card-img" src="@img.Default" style="height:35vh" ;
+                        @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
+                             alt="Card image cap">
+                    }
+
                     @if (applied != null)
                     {
                         <div class="applied-div">Applied</div>

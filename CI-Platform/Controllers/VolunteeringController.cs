@@ -25,7 +25,7 @@ namespace CI_Platform.Controllers
             _IUser = IUser;
         }
 
-        public IActionResult Volunteering(long id, int missionid)
+        public IActionResult Volunteering(long id, int missionid,int pageIndex=1)
         {
             var userId = HttpContext.Session.GetString("user");
             //ViewBag.UserId = int.Parse(userId);
@@ -37,13 +37,13 @@ namespace CI_Platform.Controllers
             vMMission.countries = _IUser.countries();
             vMMission.missionThemes = _IUser.missionThemes();
             vMMission.skills = _IUser.skills();
-            vMMission.missionMedia = _IUser.missionMedia(); 
+            vMMission.missionMedia = _IUser.missionMedia();
             vMMission.missionRatings = _IUser.MissionRatings();
             vMMission.goalMissions = _IUser.goalMissions();
-            vMMission.users = _IUser.user();
+            vMMission.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             vMMission.timesheets = _IUser.timesheets();
 
-            MissionRating ratin= vMMission.missionRatings.FirstOrDefault(e => (e.MissionId == missionid) && (e.UserId == Convert.ToInt32(userId)));
+            MissionRating ratin = vMMission.missionRatings.FirstOrDefault(e => (e.MissionId == missionid) && (e.UserId == Convert.ToInt32(userId)));
             vMMission.userRate = ratin != null ? int.Parse(ratin.Rating) : 0;
 
 
@@ -87,94 +87,21 @@ namespace CI_Platform.Controllers
 
             vMMission.avgrating = avgRating;
 
+          
 
+            int pageSize = 2; // Set the page size to 9
+            var volunteers = vMMission.recentVolunteering; // Retrieve all volunteers from data source
+            int totalCount = volunteers.Count(); // Get the total number of volunteers
+            int skip = (pageIndex - 1) * pageSize;
+            var volunteersOnPage = volunteers.Skip(skip).Take(pageSize).ToList(); // Get the volunteers for the current page
 
+            ViewBag.TotalCount = totalCount;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            ViewBag.TotalVol = vMMission.recentVolunteering.Count();
+            ViewBag.recentvolunteered = volunteersOnPage;
 
-
-
-            //vMMission.relatedMission = _dbCiPlatform.Missions.Where(e => (e.ThemeId == data.ThemeId) || (e.CityId == data.CityId)).ToList();
-
-            //List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
-
-            //var VolMission = _CIDbContext.Missions.FirstOrDefault(m => m.MissionId == missionid);
-            //var theme = _CIDbContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == VolMission.ThemeId);
-            //var City = _CIDbContext.Cities.FirstOrDefault(m => m.CityId == VolMission.CityId);
-            //var themeobjective = _CIDbContext.GoalMissions.FirstOrDefault(m => m.MissionId == missionid);
-
-            //string[] Startdate = VolMission.StartDate.ToString().Split(" ");
-            //string[] Enddate = VolMission.EndDate.ToString().Split(" ");
-
-            ////Voluntrring mission
-            //VolunteeringVM volunteeringVM = new VolunteeringVM();
-
-            //volunteeringVM.MissionId = missionid;
-            //volunteeringVM.Title = VolMission.Title;
-            //volunteeringVM.ShortDescription = VolMission.ShortDescription;
-            //volunteeringVM.OrganizationName = VolMission.OrganizationName;
-            //volunteeringVM.Description = VolMission.Description;
-            //volunteeringVM.OrganizationDetail = VolMission.OrganizationDetail;
-            //volunteeringVM.Availability = VolMission.Availability;
-            //volunteeringVM.MissionType = VolMission.MissionType;
-            //volunteeringVM.Cityname = City.Name;
-            //volunteeringVM.Themename = theme.Title;
-            //volunteeringVM.EndDate = Enddate[0];
-            //volunteeringVM.StartDate = Startdate[0];
-            //volunteeringVM.GoalObjectiveText = themeobjective.GoalObjectiveText;
-
-            //ViewBag.Missiondetail = volunteeringVM;
-
-            ////Related Mission
-            //var relatedmission = _CIDbContext.Missions.Where(m => m.ThemeId == VolMission.ThemeId && m.MissionId != missionid).ToList();
-            //foreach (var item in relatedmission.Take(3))
-            //{
-            //    var relcity = _CIDbContext.Cities.FirstOrDefault(m => m.CityId == item.CityId);
-            //    var reltheme = _CIDbContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == item.ThemeId);
-            //    var relgoalobj = _CIDbContext.GoalMissions.FirstOrDefault(m => m.MissionId == item.MissionId);
-            //    string[] Startdate1 = item.StartDate.ToString().Split(" ");
-            //    string[] Enddate2 = item.EndDate.ToString().Split(" ");
-
-            //    relatedlist.Add(new VolunteeringVM
-            //    {
-            //        MissionId = item.MissionId,
-            //        Cityname = relcity.Name,
-            //        Themename = reltheme.Title,
-            //        Title = item.Title,
-            //        ShortDescription = item.ShortDescription,
-            //        StartDate = Startdate1[0],
-            //        EndDate = Enddate2[0],
-            //        Availability = item.Availability,
-            //        OrganizationName = item.OrganizationName,
-            //        GoalObjectiveText = relgoalobj.GoalObjectiveText,
-            //        MissionType = item.MissionType,
-
-
-            //    });
-            //}
-
-            //ViewBag.relatedmission = relatedlist.Take(3);
-
-            //List<VolunteeringVM> recentvolunteredlist = new List<VolunteeringVM>();
-
-            //var resentV = _CIDbContext.MissionApplications.FirstOrDefault(m => m.MissionId == missionid);
-            //var uname = _CIDbContext.Users.FirstOrDefault(m=>m.UserId == resentV.UserId);
-            //ViewBag.resentV = uname;
-            ////volunteeringVM.username = uname.FirstName;
-            //volunteeringVM.username= uname.FirstName;
-
-
-
-            //List<VolunteeringVM> recentvolunteredlist = new List<VolunteeringVM>();
-            ////var recentvolunttered = from U in CID.Users join MA in CiMainContext.MissionApplications on U.UserId equals MA.UserId where MA.MissionId == mission.MissionId select U;
-            //var recentvoluntered = from U in _CIDbContext.Users join MA in _CIDbContext.MissionApplications on U.UserId equals MA.UserId where MA.MissionId == missionid select U;
-            //foreach (var item in recentvoluntered)
-            //{
-            //    recentvolunteredlist.Add(new VolunteeringVM
-            //    {
-            //        username = item.FirstName,
-            //    });
-
-            //}
-            //ViewBag.recentvolunteered = recentvolunteredlist;
             return View(vMMission);
         }
 
@@ -229,11 +156,11 @@ namespace CI_Platform.Controllers
         [HttpPost]
         public void Sendmail(int missionid, long[] emailList)
         {
-            //var userId = HttpContext.Session.GetString("user");
             //ViewBag.UserId = int.Parse(userId);
 
             foreach (var i in emailList)
             {
+                var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                 var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
                 var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, mission = missionid }, Request.Scheme);
@@ -258,6 +185,7 @@ namespace CI_Platform.Controllers
 
                 };
                 smtpClient.Send(message);
+                _IUser.AddMissionInvite(userId,missionid,user.UserId);
             }
         }
 
@@ -287,7 +215,7 @@ namespace CI_Platform.Controllers
 
         }
 
-       
+
         public IActionResult applyMission(int missionid)
         {
             var userId = HttpContext.Session.GetString("user");
@@ -309,7 +237,7 @@ namespace CI_Platform.Controllers
             //    _CIDbContext.Add(mr);
             //}
             //_CIDbContext.SaveChanges();
-           return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
         }
 
     }

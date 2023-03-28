@@ -17,7 +17,7 @@ namespace CI.Controllers
 
         public UserController(CIDbContext CIDbContext, IUserInterface IUser)
         {
-            _IUser=IUser;
+            _IUser = IUser;
             _CIDbContext = CIDbContext;
         }
 
@@ -40,7 +40,7 @@ namespace CI.Controllers
 
             if (ModelState.IsValid)
             {
-                var user =  _IUser.Login(model.Email,model.Password);
+                var user = _IUser.Login(model.Email, model.Password);
                 var username = model.Email.Split("@")[0];
                 if (user != null)
                 {
@@ -48,6 +48,11 @@ namespace CI.Controllers
                     HttpContext.Session.SetString("userID", username);
                     HttpContext.Session.SetString("user", user.UserId.ToString());
                     HttpContext.Session.SetString("Firstname", user.FirstName);
+
+                    if (user.Avatar != null)
+                    {
+                        HttpContext.Session.SetString("Avtar", user.Avatar);
+                    }
 
                     return RedirectToAction("landingpage", "Landingpage", new { user.UserId });
                     // return RedirectToAction(nameof(HomeController.landingpage), "Home");
@@ -68,10 +73,10 @@ namespace CI.Controllers
             return View();
         }
         [HttpPost]
-       // public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
+        // public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
         public IActionResult Registration(User user)
         {
-           // var obj = _IUser.Registration(user.Email);
+            // var obj = _IUser.Registration(user.Email);
 
             //var userData = new User
             //{
@@ -112,13 +117,13 @@ namespace CI.Controllers
                 //var c = _IUser.Forget(model.Email);
                 //var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
                 var c = _IUser.Forget(model.Email);
-                if (c ==null)
+                if (c == null)
                 {
                     return RedirectToAction("Forget", "user");
                     //ViewBag.Forget = "Enter Valid Email";
                 }
 
-                var token = Guid.NewGuid().ToString(); 
+                var token = Guid.NewGuid().ToString();
 
                 var passwordReset = new PasswordReset
                 {
@@ -127,9 +132,9 @@ namespace CI.Controllers
                 };
 
                 //_IUser.AddPassToken(passwordReset.Email, passwordReset.Token);
-               _IUser.passwordResets(passwordReset.Email, passwordReset.Token);
-               // _CIDbContext.PasswordResets.Add(passwordReset);
-               //_CIDbContext.SaveChanges();
+                _IUser.passwordResets(passwordReset.Email, passwordReset.Token);
+                // _CIDbContext.PasswordResets.Add(passwordReset);
+                //_CIDbContext.SaveChanges();
 
                 var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
 
@@ -137,7 +142,7 @@ namespace CI.Controllers
                 var toAddress = new MailAddress(model.Email);
                 var subject = "Password reset request";
                 var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
-               
+
                 var message = new MailMessage(fromAddress, toAddress)
                 {
                     Subject = subject,
@@ -194,8 +199,8 @@ namespace CI.Controllers
                 }
 
                 // Find the password reset record by email and token
-               // var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
-               var passwordReset = _IUser.passwordResets(model.Email, model.Token);
+                // var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
+                var passwordReset = _IUser.passwordResets(model.Email, model.Token);
                 if (passwordReset == null)
                 {
                     return RedirectToAction("Logn", "Home");
@@ -207,7 +212,7 @@ namespace CI.Controllers
 
             }
 
-            return RedirectToAction("Login","User");
+            return RedirectToAction("Login", "User");
         }
 
     }

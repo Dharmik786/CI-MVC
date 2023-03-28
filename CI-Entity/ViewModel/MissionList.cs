@@ -1,4 +1,5 @@
 ﻿using CI_Entity.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace CI_Entity.ViewModel
 
         public List<GoalMission> goalMissions { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
+ 
 
         public List<Comment> comments { get; set; }
 
@@ -110,7 +112,7 @@ namespace CI_Entity.ViewModel
         public string title { get; set; }   
         public string editor1 { get; set; }
         public DateTime date { get; set; }
-
+        public List<IFormFile> attachment { get; set; }
 
     }
 }

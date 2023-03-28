@@ -19,18 +19,20 @@
     @{
         var firstname = Context.Session.GetString("Firstname");
         var userid = Context.Session.GetString("user");
+        var avtar = Context.Session.GetString("Avtar");
+
     }
     <!-- ------------------first navbar----------------------------------- -->
     <nav class="navbar navbar-expand-md navbar-light  header " aria-label="Eighth navbar example">
         <div class="container">
 
             <button class="btn btn-dark " type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                 <img src="/Image/list.png">
             </button>
 
             <div class="offcanvas offcanvas-start offcanvas1" data-bs-scroll="true" tabindex="-1"
-            id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                 id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
 
                 <div class="offcanvas-header">
                     <h2>CI-PLATFORM</h2>
@@ -43,8 +45,16 @@
                     {
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle link-dark border-0" href="#" id="navbarDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="/Image/user-img.png" alt="mdo" width="32" height="32" class="rounded-circle" />
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @if (avtar != null)
+                                {
+                                    <img src="@avtar" alt="mdo" width="32" height="32" class="rounded-circle">
+                                }
+                                else
+                                {
+                                    <img src="/Image/user1.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                                }
+
 
                                 @firstname
                             </a>
@@ -79,9 +89,18 @@
 
             <img src="/Image/logo.png" alt="CI-PLATFORM" class="me-5">
             <ul class="navbar-nav  first-nav  me-auto mb-2 mb-lg-0 ">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="StoriesListing">Story</a>
-                </li>
+                @if (userid != null)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="StoriesListing">Story</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" onclick="loginalert()">Story</a>
+                    </li>
+                }
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                        aria-expanded="false">Policy</a>
@@ -98,7 +117,14 @@
                 <div class="dropdown text-end user-profile ">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        <img src="/Image/user-img.png" alt="mdo" width="40" height="40" class="rounded-circle">
+                        @if (avtar != null)
+                        {
+                            <img src="@avtar" alt="mdo" width="40" height="40" class="rounded-circle">
+                        }
+                        else
+                        {
+                            <img src="/Image/user1.png" alt="mdo" width="40" height="40" class="rounded-circle">
+                        }
 
                         @firstname
                     </a>
@@ -136,7 +162,11 @@
     <script src="~/js/search.js"></script>
     @RenderBody()
 
-
+    <script>
+        function loginalert() {
+            alert("Login First");
+        }
+    </script>
 
 
 </body>

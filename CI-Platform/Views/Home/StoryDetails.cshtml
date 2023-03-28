@@ -1,4 +1,5 @@
 ﻿@using CI_Entity.ViewModel
+@using System.Web
 @model MissionList
 @{
     Layout = "_navbar1";
@@ -99,7 +100,8 @@
 
                     <div class="row mt-3">
                         <div class="col-12 ">
-                            @Model.storydetails.Title
+                            
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.storydetails.Description));
 
                         </div>
                     </div>
@@ -173,13 +175,6 @@
                 data: { 'emailList': mail, 'missionid': missionid },
                 success: function (result) {
                     alert("Recomendations sent successfully!")
-
-                        @*  alert("Recomendations sent successfully!");
-                        const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
-                        checkboxes.forEach((checkbox) => {
-                        checkbox.checked = false;
-                        });*@
-
                         send.innerHTML = "sent"
                 },
                 error: function () {

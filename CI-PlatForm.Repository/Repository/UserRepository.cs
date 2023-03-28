@@ -159,6 +159,17 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.SaveChanges();
             return tempFav;
         }
+        public MissionInvite AddMissionInvite(int FromUserId, int missionId, long Touserid)
+        {
+            MissionInvite mi = new MissionInvite();
+            mi.FromUserId = FromUserId;
+            mi.ToUserId = Touserid;
+            mi.MissionId = missionId;
+            mi.CreatedAt = DateTime.Now;
+            _CIDbContext.MissionInvites.Add(mi);
+            _CIDbContext.SaveChanges();
+            return mi;
+        }
 
         public Comment addcomment(int missionId, int userId, string cmt)
         {
@@ -225,6 +236,17 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.Stories.Add(st);
             _CIDbContext.SaveChanges();
             
+        }
+        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId)
+        {
+            var story = _CIDbContext.Stories.OrderBy(e=>e.CreatedAt).Where(e=>e.MissionId == missionId && e.UserId==userId).FirstOrDefault();
+
+            StoryMedium sm = new StoryMedium();
+            sm.StoryId = story.StoryId;
+            sm.StoryType = mediaType;
+            sm.StoryPath = mediaPath;
+            _CIDbContext.Add(sm);
+            _CIDbContext.SaveChanges();
         }
     }
 }
