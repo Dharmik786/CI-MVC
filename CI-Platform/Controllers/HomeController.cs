@@ -61,9 +61,9 @@ namespace CI_Platform.Controllers
         public IActionResult addStoryDetail(MissionList model)
         {
             var userId = HttpContext.Session.GetString("user");
-            _IUser.AddStory(model.missionId,Convert.ToInt32(userId),model.title,model.description,model.date);
+            _IUser.AddStory(model.missionId,Convert.ToInt32(userId),model.title,model.editor1, model.date);
 
-            return View();
+            return RedirectToAction("StoriesListing", "Home");
         }
         public IActionResult AddStory()
         {

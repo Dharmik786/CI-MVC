@@ -108,7 +108,7 @@ namespace CI_Entity.ViewModel
         //public int Ratingvalue { get; set; }
 
         public string title { get; set; }   
-        public string description { get; set; }
+        public string editor1 { get; set; }
         public DateTime date { get; set; }
 
 
