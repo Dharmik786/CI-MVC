@@ -163,9 +163,9 @@ namespace CI_Platform.Controllers
                 var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                 var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, mission = missionid }, Request.Scheme);
+                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, missionid = missionid }, Request.Scheme);
 
-                var fromAddress = new MailAddress("officehl1882@gmail.com", "Sender Name");
+                var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
                 var toAddress = new MailAddress(user.Email);
                 var subject = "Mission Request";
                 var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
@@ -180,7 +180,7 @@ namespace CI_Platform.Controllers
                 var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("officehl1882@gmail.com", "yedkuuhuklkqfzwx"),
+                    Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
                     EnableSsl = true
 
                 };

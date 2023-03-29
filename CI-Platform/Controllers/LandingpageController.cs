@@ -81,7 +81,7 @@ namespace CI_Platform.Controllers
             missionList.goalMissions = _IUser.goalMissions();
             missionList.users = _IUser.user();
             //missionList.userId = userId;
-            List<Mission> mission = _IUser.mission();
+            List<Mission> mission = _IUser.mission().ToList();
 
             missionList.missionApplications = _IUser.missionApplications();
             missionList.userId = Convert.ToInt32(userId);
@@ -89,6 +89,8 @@ namespace CI_Platform.Controllers
             missionList.favoriteMissions = _IUser.favoriteMissions();
             missionList.missionRatings = _IUser.MissionRatings();
             missionList.missionMedia = _IUser.missionMedia();
+            var fav = _IUser.favoriteMissions().ToList();
+            var msn = _IUser.mission().ToList();
 
 
             //Avg Rating
@@ -130,9 +132,22 @@ namespace CI_Platform.Controllers
                     mission = mission.OrderBy(mission => mission.StartDate).ToList();
                     break;
 
-                case "Theme":
+                case "Lowest Seats":
+                    mission = mission.OrderByDescending(mission => mission.Availability).ToList();
+                    break;
+
+                case "Highest Seats":
+                    mission = mission.OrderBy(mission => mission.Availability).ToList();
+                    break;
+
+                case "My Favourites":
+                    //mission = fav.Where(s => s.UserId == Convert.ToInt32(id)).ToList();
+                    break;
+
+                case "Registration deadline":
                     mission = mission.OrderBy(mission => mission.MissionType).ToList();
                     break;
+
                 default:
                     mission = mission.ToList();
                     break;
@@ -154,7 +169,7 @@ namespace CI_Platform.Controllers
                 {
                     mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
                 }
-                if(mission.Count() ==0)
+                if (mission.Count() == 0)
                 {
                     return PartialView("_NoMission");
                 }

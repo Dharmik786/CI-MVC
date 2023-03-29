@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page</title>
     
-    <link rel="stylesheet" href="~/css/landing.css" />
+    <link rel="stylesheet" href="/css/AddStory.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 </head>
@@ -25,12 +25,12 @@
         <div class="row">
         
             <div class="card col-12 col-lg-6 col-md-12 col-sm-12  ">
-                <div class="car1">
+                <div class="Container p-0">
 
                     <!-- Full-width images with number text -->
                     <div class="mySlides">
                         <div class="numbertext">1 / 6</div>
-                        <img src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png" style="width:100%">
+                        <img src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%">
                     </div>
 
                     <div class="mySlides">
@@ -40,19 +40,27 @@
 
                     <div class="mySlides">
                         <div class="numbertext">3 / 6</div>
-                        <img src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-2.png" style="width:100%">
+                        <img src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-1.png" style="width:100%">
+                    </div>
+                    <div class="mySlides">
+                        <div class="numbertext">3 / 6</div>
+                        <img src="/Image/img11.png" style="width:100%">
+                    </div>
+                    <div class="mySlides">
+                        <div class="numbertext">3 / 6</div>
+                        <img src ="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%">
                     </div>
 
                     <div class="mySlides">
                         <div class="numbertext">4 / 6</div>
-                        <img src="/Image/img11.png" style="width:100%">
+                        <img src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%">
                     </div>
 
 
 
                     <!-- Next and previous buttons -->
-                    @*<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>*@
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
                     <!-- Image text -->
                     <!-- Thumbnail images -->
@@ -69,13 +77,12 @@
                         <div class="column" style="width:25%">
                             <img class="demo cursor" src="/Image/img11.png" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
                         </div>
-
-                        @*<div class="column">
-                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
+                        <div class="column" style="width:25%">
+                        <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
                         </div>
-                        <div class="column">
-                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
-                        </div>*@
+                        <div class="column" style="width:25%">
+                        <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,7 +177,7 @@
             send.innerHTML = "Sending";
 
             $.ajax({
-                url: '/Volunteering/Sendmail',
+                url: '/Home/SendStorymail',
                 type: 'POST',
                 data: { 'emailList': mail, 'missionid': missionid },
                 success: function (result) {

@@ -28,7 +28,13 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="mySearch('Newest')">Newest</a></li>
                         <li><a class="dropdown-item" onclick="mySearch('Oldest')">Oldest </a></li>
-                        <li><a class="dropdown-item" onclick="mySearch('Theme')">Theme</a></li>
+                        <li><a class="dropdown-item" onclick="mySearch('Lowest Seats')">Lowest Seats</a></li>
+                        <li><a class="dropdown-item" onclick="mySearch('Highest Seats')">Highest Seats</a></li>
+                        @if (userId != null)
+                        {
+                            <li><a class="dropdown-item" onclick="mySearch('My Favourites')">My Favourites</a></li>
+                        }
+                        <li><a class="dropdown-item" onclick="mySearch('Registration deadline')">Registration deadline</a></li>
                     </ul>
 
 
@@ -56,12 +62,12 @@
 
     @foreach (var item in @Model.mission)
     {
-        
+
         <div class="missioncard col-12 col-md-6 col-lg-4 mb-2 " id="myItems">
             @{
                 var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId));
-                var isClosed =0 ;
-                if(item.StartDate < DateTime.Now )
+                var isClosed = 0;
+                if (item.StartDate < DateTime.Now)
                 {
                     isClosed = 1;
                 }
@@ -73,16 +79,16 @@
                     @{
                         var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == item.MissionId);
                     }
-                 
-                    @if(img.MediaPath!="")
+
+                    @if (img.MediaPath != "")
                     {
                         <img class="card-img-top card-img" src="@img.MediaPath" ;
                         @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
-                        alt="Card image cap">
+                             alt="Card image cap">
                     }
                     else
                     {
-                        <img class="card-img-top card-img" src="@img.Default" style="height:35vh" ;
+                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ;
                         @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
                              alt="Card image cap">
                     }
@@ -92,7 +98,7 @@
                         <div class="applied-div">Applied</div>
 
                     }
-                    @if(isClosed == 1)
+                    @if (isClosed == 1)
                     {
                         <div class="close-div">Closed</div>
                     }
@@ -102,19 +108,19 @@
 
                         @if (userId != null)
                         {
-                            <button class="mb-2 landing-page-btn-img "  onclick="addToFav(@item.MissionId)">
-                               @* @{
-                                    var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
-                                }
-                                @if (fav != null)
-                                {
-                                    <img src="~/Image/fill-heart.png">
-                                }
-                                else
-                                {
-                                    <img src="/Image/heart1.png">
-                                }*@
-                            <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
+                            <button class="mb-2 landing-page-btn-img " onclick="addToFav(@item.MissionId)">
+                                @* @{
+                        var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
+                        }
+                        @if (fav != null)
+                        {
+                        <img src="~/Image/fill-heart.png">
+                        }
+                        else
+                        {
+                        <img src="/Image/heart1.png">
+                        }*@
+                                <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
                             </button>
                             <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <img src="/Image/user.png" alt="">
@@ -328,11 +334,11 @@
             url: "/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
             success: function (result) {
-                @*location.reload()*@
-                console.log("Liked or Unliked mission.");
-               @* $('.add_fav').html($(result).find('.add_fav').html());*@
-                    
-            },
+    @*location.reload()*@
+                    console.log("Liked or Unliked mission.");
+    @* $('.add_fav').html($(result).find('.add_fav').html());*@
+
+                },
             error: function () {
                 alert("please login first.");
             }

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -63,6 +65,74 @@ namespace CI_Platform.Controllers
             return View();
         }
 
+        public IActionResult StoriesListing()
+        {
+            MissionList missionList = new MissionList();
+            missionList.stories = _IUser.stories();
+            missionList.users = _IUser.user();
+            missionList.mission = _IUser.mission();
+            missionList.missionThemes = _IUser.missionThemes();
+            missionList.storyMedia = _IUser.storyMedia();
+            return View(missionList);
+        }
+
+        public IActionResult StoryDetails(int storyId)
+        {
+            var userId = HttpContext.Session.GetString("user");
+            MissionList missionList = new MissionList();
+            missionList.stories = _IUser.stories();
+            missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
+            missionList.missionThemes = _IUser.missionThemes();
+
+            var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
+            missionList.storydetails = data;
+            return View(missionList);
+        }
+        [HttpPost]
+        public void SendStorymail(int missionid, long[] emailList)
+        {
+            //ViewBag.UserId = int.Parse(userId);
+
+            foreach (var i in emailList)
+            {
+                var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
+                var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
+               
+                var missionlink = Url.Action("StoryDetails", "Home", new { user = user.UserId, missionid = missionid }, Request.Scheme);
+
+                var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
+                var toAddress = new MailAddress(user.Email);
+                var subject = "Mission Request";
+                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
+
+                var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
+                    EnableSsl = true
+
+                };
+                smtpClient.Send(message);
+                //_IUser.AddMissionInvite(userId, missionid, user.UserId);
+            }
+        }
+        public IActionResult AddStory()
+        {
+            var userId = HttpContext.Session.GetString("user");
+            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
+
+            MissionList ms = new MissionList();
+            ms.mission = _IUser.mission();
+            ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+            return View(ms);
+        }
         [HttpPost]
         public IActionResult addStoryDetail(MissionList model)
         {
@@ -83,49 +153,12 @@ namespace CI_Platform.Controllers
                     }
                     var type = i.ContentType;
 
-                    //_IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId));
-                    _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FilePath, model.missionId, Convert.ToInt32(userId));
-
-
-                  // _homeRepository.AddStoryMedia(Convert.ToString(i.ContentType.Split("/")[1]), Convert.ToString(filename), (long)vmmission.missionId, uid);
+                    _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId));
                 }
             }
 
             return RedirectToAction("StoriesListing", "Home");
         }
-        public IActionResult AddStory()
-        {
-            var userId = HttpContext.Session.GetString("user");
-            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
-
-            MissionList ms = new MissionList();
-            ms.mission = _IUser.mission();
-            ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
-            return View(ms);
-        }
-        public IActionResult StoriesListing()
-        {
-            MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories();
-            missionList.users = _IUser.user();
-            missionList.mission = _IUser.mission();
-            missionList.missionThemes = _IUser.missionThemes();
-            return View(missionList);
-        }
-
-        public IActionResult StoryDetails(int storyId)
-        {
-            var userId = HttpContext.Session.GetString("user");
-            MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories();
-            missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
-            missionList.missionThemes = _IUser.missionThemes();
-
-            var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
-            missionList.storydetails = data;
-            return View(missionList);
-        }
-
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

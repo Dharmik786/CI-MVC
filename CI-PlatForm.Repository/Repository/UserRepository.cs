@@ -248,5 +248,9 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.Add(sm);
             _CIDbContext.SaveChanges();
         }
+        public List<StoryMedium> storyMedia()
+        {
+            return _CIDbContext.StoryMedia.ToList();
+        }
     }
 }
