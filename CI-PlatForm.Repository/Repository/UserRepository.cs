@@ -19,12 +19,21 @@ namespace CI_PlatForm.Repository.Repository
         {
             _CIDbContext = CIDbContext;
         }
-        public bool Registration(User user)
+        public bool Registration(string FirstName, string LastName, string Email, int PhoneNumber, string ConfirmPassword)
         {
-            var c = _CIDbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+  
+            var c = _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);
+            var userData = new User
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber,
+                Email = Email,
+                Password = ConfirmPassword,
+            };
             if (c == null)
             {
-                _CIDbContext.Users.Add(user);
+                _CIDbContext.Users.Add(userData);
                 _CIDbContext.SaveChanges();
                 return true;
             }

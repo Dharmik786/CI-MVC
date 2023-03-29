@@ -74,7 +74,7 @@ namespace CI.Controllers
         }
         [HttpPost]
         // public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
-        public IActionResult Registration(User user)
+        public IActionResult Registration(Registration user)
         {
             // var obj = _IUser.Registration(user.Email);
 
@@ -87,18 +87,20 @@ namespace CI.Controllers
             //    Password = Password,
 
             //};
-
-            if (_IUser.Registration(user))
+            if (ModelState.IsValid)
             {
-                //_CIDbContext.Users.Add(user);
-                //_CIDbContext.SaveChanges();
-                //_IUser.AddUser(user);
-                return RedirectToAction("Login", "User");
+                if (_IUser.Registration(user.FirstName,user.LastName,user.Email,user.PhoneNumber,user.ConfirmPassword)==true)
+                {
+                    //_CIDbContext.Users.Add(user);
+                    //_CIDbContext.SaveChanges();
+                    //_IUser.AddUser(user);
+                    return RedirectToAction("Login", "User");
 
-            }
-            else
-            {
-                ViewBag.RegEmail = "Email Exist";
+                }
+                else
+                {
+                    ViewBag.RegEmail = "Email Already Exist";
+                }
             }
             return View();
         }
