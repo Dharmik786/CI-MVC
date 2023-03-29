@@ -21,7 +21,7 @@ namespace CI_Platform.Models
         //[StringLength(10, ErrorMessage = "Phone number is invalid")]
         //[RegularExpression(@"^(\+\d{1, 2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$,ErrorMeaadae="")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Phone Number not valid")]
-        public int PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

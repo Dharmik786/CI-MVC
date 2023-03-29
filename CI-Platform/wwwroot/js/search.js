@@ -4,9 +4,7 @@ var carddisplay = document.getElementsByClassName("card");
 var theme = document.getElementsByClassName("theme-btn");
 var search = "";
 var sortValue = ""
-if (localStorage.getItem("view") === "list") {
-    list();
-}
+
 
 
 function list() {

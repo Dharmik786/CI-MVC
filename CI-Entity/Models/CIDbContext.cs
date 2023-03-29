@@ -905,14 +905,6 @@ public partial class CIDbContext : DbContext
             entity.Property(e => e.WhyIVolunteer)
                 .HasColumnType("text")
                 .HasColumnName("why_i_volunteer");
-
-            entity.HasOne(d => d.City).WithMany(p => p.Users)
-                .HasForeignKey(d => d.CityId)
-                .HasConstraintName("FK__users__city_id__47DBAE45");
-
-            entity.HasOne(d => d.Country).WithMany(p => p.Users)
-                .HasForeignKey(d => d.CountryId)
-                .HasConstraintName("FK__users__country_i__48CFD27E");
         });
 
         modelBuilder.Entity<UserSkill>(entity =>

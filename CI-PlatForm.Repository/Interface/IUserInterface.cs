@@ -10,7 +10,7 @@ namespace CI_PlatForm.Repository.Interface
 {
     public interface IUserInterface
     {
-        public bool Registration(string FirstName, string LastName, string Email, int PhoneNumber, string ConfirmPassword);
+        public bool Registration(string FirstName, string LastName, string Email, long PhoneNumber, string ConfirmPassword);
         public User Login(string Email, string Password);
         public User Forget(string Email);
 

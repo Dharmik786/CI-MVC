@@ -19,7 +19,7 @@ namespace CI_PlatForm.Repository.Repository
         {
             _CIDbContext = CIDbContext;
         }
-        public bool Registration(string FirstName, string LastName, string Email, int PhoneNumber, string ConfirmPassword)
+        public bool Registration(string FirstName, string LastName, string Email, long PhoneNumber, string ConfirmPassword)
         {
   
             var c = _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);

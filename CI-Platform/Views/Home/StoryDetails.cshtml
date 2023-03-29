@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page</title>
-    
+
     <link rel="stylesheet" href="/css/AddStory.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -23,7 +23,7 @@
 
     <div class="container mt-3">
         <div class="row">
-        
+
             <div class="card col-12 col-lg-6 col-md-12 col-sm-12  ">
                 <div class="Container p-0">
 
@@ -48,7 +48,7 @@
                     </div>
                     <div class="mySlides">
                         <div class="numbertext">3 / 6</div>
-                        <img src ="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%">
+                        <img src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%">
                     </div>
 
                     <div class="mySlides">
@@ -78,10 +78,10 @@
                             <img class="demo cursor" src="/Image/img11.png" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
                         </div>
                         <div class="column" style="width:25%">
-                        <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
+                            <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
                         </div>
                         <div class="column" style="width:25%">
-                        <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
+                            <img class="demo cursor" src="/Image/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
                         </div>
                     </div>
                 </div>
@@ -107,8 +107,7 @@
 
                     <div class="row mt-3">
                         <div class="col-12 ">
-                            
-                            @Html.Raw(HttpUtility.HtmlDecode(Model.storydetails.Description));
+                            @Model.storydetails.Title
 
                         </div>
                     </div>
@@ -159,36 +158,53 @@
 
             </div>
 
-           
+            <div class="col-12 col-lg-12">
+                <div class="container">
+
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+                        </div
+                    </nav>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.storydetails.Description));
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
 
-       
+
     </div>
 </body>
 <script src="~/js/volunteering.js"></script>
 
 <script>
-  function sendmail(missionid) {
-            const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
-            console.log(mail)
-            console.log(missionid)
-            var send = document.getElementById("sendmail");
-            send.innerHTML = "Sending";
+    function sendmail(missionid) {
+        const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+        console.log(mail)
+        console.log(missionid)
+        var send = document.getElementById("sendmail");
+        send.innerHTML = "Sending";
 
-            $.ajax({
-                url: '/Home/SendStorymail',
-                type: 'POST',
-                data: { 'emailList': mail, 'missionid': missionid },
-                success: function (result) {
-                    alert("Recomendations sent successfully!")
-                        send.innerHTML = "sent"
-                },
-                error: function () {
-                    // Handle error response from the server, e.g. show an error message to the user
-                    alert('Error: Could not recommend mission.');
-                }
-            });
-        }
+        $.ajax({
+            url: '/Home/SendStorymail',
+            type: 'POST',
+            data: { 'emailList': mail, 'missionid': missionid },
+            success: function (result) {
+                alert("Recomendations sent successfully!")
+                send.innerHTML = "sent"
+            },
+            error: function () {
+                // Handle error response from the server, e.g. show an error message to the user
+                alert('Error: Could not recommend mission.');
+            }
+        });
+    }
 </script>
 </html>

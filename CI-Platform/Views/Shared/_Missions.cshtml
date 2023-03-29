@@ -327,6 +327,10 @@
 
 
 <script>
+    if (localStorage.getItem("view") === "list") {
+        list();
+    }
+
     function addToFav(missonid) {
         debugger;
         $.ajax({
@@ -334,10 +338,8 @@
             url: "/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
             success: function (result) {
-    @*location.reload()*@
                     console.log("Liked or Unliked mission.");
     @* $('.add_fav').html($(result).find('.add_fav').html());*@
-
                 },
             error: function () {
                 alert("please login first.");
@@ -362,12 +364,6 @@
             data: { 'emailList': mail, 'missionid': missionid },
             success: function (result) {
                 alert("Recomendations sent successfully!")
-
-    @*  alert("Recomendations sent successfully!");
-                    const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
-                    checkboxes.forEach((checkbox) => {
-                    checkbox.checked = false;
-                    });*@
                     send.innerHTML = "sent"
             },
             error: function () {
