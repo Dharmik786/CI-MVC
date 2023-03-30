@@ -158,26 +158,14 @@
 
             </div>
 
-            <div class="col-12 col-lg-12">
-                <div class="container">
+        </div
 
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-                        </div
-                    </nav>
-
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            @Html.Raw(HttpUtility.HtmlDecode(Model.storydetails.Description));
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </div>
-                    </div>
-                </div>
-
+        <div class="row " style="border-color:aqua">
+            <div class="card container">                
+                   @Html.Raw(HttpUtility.HtmlDecode(Model.storydetails.Description));                
             </div>
+            
         </div>
-
 
 
     </div>

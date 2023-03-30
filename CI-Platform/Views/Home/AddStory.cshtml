@@ -30,7 +30,8 @@
                     <lable class="fs-6">Select mission</lable>
                     @if (userId != null)
                     {
-                        <select asp-for="missionId" class="form-select" aria-label="Default select example">
+                        var m = Model.missionId;
+                       <select asp-for="missionId" class="form-select"   aria-label="Default select example">
                             @foreach (var i in Model.missionApplications)
                             {
                                 <option value="@i.Mission.MissionId">@i.Mission.Title</option>
@@ -48,12 +49,12 @@
 
                 <div class=" form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="title">My Story Title</label>
-                    <input type="text" asp-for="title" placeholder="Enter Story Title" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                    <input type="text" asp-for="title" placeholder="Enter Story Title" value="@Model.title" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
                 </div>
 
                 <div class="form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="date">Date</label>
-                    <input type="datetime-local" asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                    <input type="datetime-local"  asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
                 </div>
 
             </div>
@@ -79,22 +80,22 @@
                 <p>Drag & drop photos here or <strong>Browse</strong></p>
                 <input type="file" class="file-input file" asp-for="attachment" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
             </div>
-            <output></output>
+            <output ></output>
 
 
             <div class="row flex-column flex-md-row mt-4 mb-2">
                 <div class="col-12 col-md-2 me-auto">
-                    <button class="w-100 bg-white rounded-5 py-2 canclebtn">cancel</button>
+                    <button class="w-100 bg-white rounded-5 py-2 canclebtn" type="submit" name="action" value="cancle">cancel</button>
                 </div>
                 <div class=" col-12 col-md-2 mt-2 mt-md-0 ">
-                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn">Save</button>
+                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit" name="action" value="save">Save</button>
                 </div>
 
                 <div class=" col-12 col-md-2 mt-2 mt-md-0">
-                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit">Submit</button>
+                    <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit" name="action" value="submit">Submit</button>
                 </div>
 
-
+                <input type="hidden" asp-for="storyId" value="@Model.storyId"/>
             </div>
 
         </form>
@@ -132,9 +133,9 @@
             let images = ""
             imagesArray.forEach((image, index) => {
                 images += `<div class="image">
-                                                 <img src="${URL.createObjectURL(image)}" alt="image">
-                                                 <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
-                                               </div>`
+                              <img src="${URL.createObjectURL(image)}" alt="image">
+                              <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
+                           </div>`
             })
             output.innerHTML = images
         }

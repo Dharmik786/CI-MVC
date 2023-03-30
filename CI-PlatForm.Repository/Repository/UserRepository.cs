@@ -21,7 +21,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public bool Registration(string FirstName, string LastName, string Email, long PhoneNumber, string ConfirmPassword)
         {
-  
+
             var c = _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);
             var userData = new User
             {
@@ -233,28 +233,77 @@ namespace CI_PlatForm.Repository.Repository
             return _CIDbContext.Stories.ToList();
         }
 
-        public void AddStory(long missionId,long userId, string title,string description, DateTime date)
+        public void SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
+        {
+            if (storyId == 0)
+            {
+                Story st = new Story();
+                st.MissionId = missionId;
+                st.UserId = userId;
+                st.Title = title;
+                st.Description = description;
+                st.Status = "1";
+                st.CreatedAt = date;
+                _CIDbContext.Stories.Add(st);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var st = _CIDbContext.Stories.FirstOrDefault(e => e.StoryId == storyId);
+                st.MissionId = missionId;
+                st.UserId = userId;
+                st.Title = title;
+                st.Description = description;
+                st.Status = "1";
+                st.CreatedAt = date;
+                _CIDbContext.Stories.Update(st);
+                _CIDbContext.SaveChanges();
+            }
+
+
+        }
+        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId, long storyId)
+        {
+            if (storyId == 0)
+            {
+                var story = _CIDbContext.Stories.OrderBy(e => e.CreatedAt).Where(e => e.MissionId == missionId && e.UserId == userId).FirstOrDefault();
+                StoryMedium sm = new StoryMedium();
+                sm.StoryId = story.StoryId;
+                sm.StoryType = mediaType;
+                sm.StoryPath = mediaPath;
+                _CIDbContext.Add(sm);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var story = _CIDbContext.Stories.OrderBy(e => e.CreatedAt).Where(e => e.MissionId == missionId && e.UserId == userId).FirstOrDefault();
+                var storyMedia = _CIDbContext.StoryMedia.Where(e => e.StoryId == storyId).ToList();
+                foreach(var i in storyMedia)
+                {
+                    _CIDbContext.StoryMedia.Remove(i);
+                    _CIDbContext.SaveChanges();
+                }
+                StoryMedium sm = new StoryMedium();
+                sm.StoryId = story.StoryId;
+                sm.StoryType = mediaType;
+                sm.StoryPath = mediaPath;
+                _CIDbContext.Add(sm);
+                _CIDbContext.SaveChanges();
+
+            }
+          
+
+        }
+        public void SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
         {
             Story st = new Story();
             st.MissionId = missionId;
-            st.UserId = userId; 
+            st.UserId = userId;
             st.Title = title;
             st.Description = description;
-            st.Status = "1";
+            st.Status = "DRAFT";
             st.CreatedAt = date;
             _CIDbContext.Stories.Add(st);
-            _CIDbContext.SaveChanges();
-            
-        }
-        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId)
-        {
-            var story = _CIDbContext.Stories.OrderBy(e=>e.CreatedAt).Where(e=>e.MissionId == missionId && e.UserId==userId).FirstOrDefault();
-
-            StoryMedium sm = new StoryMedium();
-            sm.StoryId = story.StoryId;
-            sm.StoryType = mediaType;
-            sm.StoryPath = mediaPath;
-            _CIDbContext.Add(sm);
             _CIDbContext.SaveChanges();
         }
         public List<StoryMedium> storyMedia()

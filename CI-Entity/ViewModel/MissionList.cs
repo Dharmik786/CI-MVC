@@ -113,6 +113,7 @@ namespace CI_Entity.ViewModel
         public string editor1 { get; set; }
         public DateTime date { get; set; }
         public List<IFormFile> attachment { get; set; }
+        public long storyId { get; set; }
 
     }
 }

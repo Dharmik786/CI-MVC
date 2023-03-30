@@ -68,7 +68,7 @@ namespace CI_Platform.Controllers
         public IActionResult StoriesListing()
         {
             MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories();
+            missionList.stories = _IUser.stories().Where(u => u.Status == "1").ToList();
             missionList.users = _IUser.user();
             missionList.mission = _IUser.mission();
             missionList.missionThemes = _IUser.missionThemes();
@@ -97,7 +97,7 @@ namespace CI_Platform.Controllers
             {
                 var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                 var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
-               
+
                 var missionlink = Url.Action("StoryDetails", "Home", new { user = user.UserId, missionid = missionid }, Request.Scheme);
 
                 var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
@@ -123,41 +123,120 @@ namespace CI_Platform.Controllers
                 //_IUser.AddMissionInvite(userId, missionid, user.UserId);
             }
         }
-        public IActionResult AddStory()
+        public IActionResult AddStory(int? storyId)
         {
             var userId = HttpContext.Session.GetString("user");
             var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
 
             MissionList ms = new MissionList();
-            ms.mission = _IUser.mission();
-            ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+
+            if (storyId != null)
+            {
+               // ms.stories = _IUser.stories().Where(e => e.StoryId == storyId).ToList();
+                ms.storyMedia = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+
+                var s = _IUser.stories().Where(e => e.StoryId == storyId).FirstOrDefault();
+                ms.missionId = s.MissionId;
+                ms.title = s.Title;
+                ms.editor1 = s.Description;
+                ms.date = s.CreatedAt;
+                ms.storyId = (long)storyId;
+
+                var sm = _IUser.storyMedia().Where(e => e.StoryId == s.StoryId).FirstOrDefault();
+              //    ms.attachment = sm.StoryMediaId;
+
+                ms.mission = _IUser.mission();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+            }
+            else
+            {
+                ms.mission = _IUser.mission();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+            }
             return View(ms);
         }
+
+        
         [HttpPost]
-        public IActionResult addStoryDetail(MissionList model)
+        public async Task<IActionResult> addStoryDetailAsync(MissionList model, string action,long storyId)
         {
-            var userId = HttpContext.Session.GetString("user");
-            _IUser.AddStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date);
-
-            foreach (var i in model.attachment)
+           
+            if (action == "submit")
             {
-                if (i != null)
+                var userId = HttpContext.Session.GetString("user");
+                _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date,model.storyId);
+
+                if (model.attachment != null)
                 {
-                    string UploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Image\\story");
-                    string FileName = i.FileName;
-                    string FilePath = Path.Combine(UploadsFolder, FileName);
-
-                    using (var FileStream = new FileStream(FilePath, FileMode.Create))
+                    foreach (var i in model.attachment)
                     {
-                        i.CopyTo(FileStream);
-                    }
-                    var type = i.ContentType;
+                        //string UploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Image\\story");
+                        //string FileName = i.FileName;
+                        //string FilePath = Path.Combine(UploadsFolder, FileName);
 
-                    _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId));
+                        //using (var FileStream = new FileStream(FilePath, FileMode.Create))
+                        //{
+                        //    i.CopyTo(FileStream);
+                        //}
+                        //var type = i.ContentType;
+
+                        var FileName = "";
+                        using (var ms = new MemoryStream())
+                        {
+                            await i.CopyToAsync(ms);
+                            var imageBytes = ms.ToArray();
+                            var base64String = Convert.ToBase64String(imageBytes);
+                            FileName = "data:image/png;base64," + base64String;
+                        }
+
+                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId);
+                    }
+                }
+
+            }
+            else if (action == "save")
+            {
+                var userId = HttpContext.Session.GetString("user");
+                _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date,model.storyId);
+
+                if (model.attachment != null)
+                {
+                    foreach (var i in model.attachment)
+                    {
+                        var FileName = "";
+                        using (var ms = new MemoryStream())
+                        {
+                            await i.CopyToAsync(ms);
+                            var imageBytes = ms.ToArray();
+                            var base64String = Convert.ToBase64String(imageBytes);
+                            FileName = "data:image/png;base64," + base64String;
+                        }
+
+                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId);
+                    }
                 }
             }
+            else
+            {
+                return RedirectToAction("StoriesListing", "Home");
+            }
+            //return View();
 
             return RedirectToAction("StoriesListing", "Home");
+        }
+
+        public IActionResult DraftStory()
+        {
+            var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
+
+            MissionList missionList = new MissionList();
+            missionList.stories = _IUser.stories().Where(u => u.Status == "DRAFT" && u.UserId == userId).ToList();
+            missionList.users = _IUser.user();
+            missionList.mission = _IUser.mission();
+            missionList.missionThemes = _IUser.missionThemes();
+            missionList.storyMedia = _IUser.storyMedia();
+            return View(missionList);
         }
 
 
