@@ -296,15 +296,32 @@ namespace CI_PlatForm.Repository.Repository
         }
         public void SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
         {
-            Story st = new Story();
-            st.MissionId = missionId;
-            st.UserId = userId;
-            st.Title = title;
-            st.Description = description;
-            st.Status = "DRAFT";
-            st.CreatedAt = date;
-            _CIDbContext.Stories.Add(st);
-            _CIDbContext.SaveChanges();
+            if (storyId == 0)
+            {
+                Story st = new Story();
+                st.MissionId = missionId;
+                st.UserId = userId;
+                st.Title = title;
+                st.Description = description;
+                st.Status = "DRAFT";
+                st.CreatedAt = date;
+                _CIDbContext.Stories.Add(st);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var story = _CIDbContext.Stories.Where(s=>s.StoryId== storyId).FirstOrDefault();
+                story.MissionId = missionId;
+                story.UserId = userId;
+                story.Title = title;
+                story.Description = description;
+                story.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(story);
+                _CIDbContext.SaveChanges();
+
+            }
+
+           
         }
         public List<StoryMedium> storyMedia()
         {
