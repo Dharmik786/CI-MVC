@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting.Internal;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -123,16 +124,16 @@ namespace CI_Platform.Controllers
                 //_IUser.AddMissionInvite(userId, missionid, user.UserId);
             }
         }
-        public IActionResult AddStory(int? storyId)
+        public IActionResult AddStory(long storyId)
         {
             var userId = HttpContext.Session.GetString("user");
             var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
 
             MissionList ms = new MissionList();
 
-            if (storyId != null)
+            if (storyId != 0)
             {
-               // ms.stories = _IUser.stories().Where(e => e.StoryId == storyId).ToList();
+                // ms.stories = _IUser.stories().Where(e => e.StoryId == storyId).ToList();
                 ms.storyMedia = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
                 ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
 
@@ -141,10 +142,10 @@ namespace CI_Platform.Controllers
                 ms.title = s.Title;
                 ms.editor1 = s.Description;
                 ms.date = s.CreatedAt;
-                ms.storyId = (long)storyId;
+                ms.storyId = storyId;
 
                 var sm = _IUser.storyMedia().Where(e => e.StoryId == s.StoryId).FirstOrDefault();
-              //    ms.attachment = sm.StoryMediaId;
+                //    ms.attachment = sm.StoryMediaId;
 
                 ms.mission = _IUser.mission();
                 ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
@@ -157,30 +158,24 @@ namespace CI_Platform.Controllers
             return View(ms);
         }
 
-        
         [HttpPost]
-        public async Task<IActionResult> addStoryDetailAsync(MissionList model, string action,long storyId)
+        public async Task<IActionResult> addStoryDetailAsync(MissionList model, string action, long storyId)
         {
-           
+
             if (action == "submit")
             {
                 var userId = HttpContext.Session.GetString("user");
-                _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date,model.storyId);
+                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
 
                 if (model.attachment != null)
                 {
+                    if (model.storyId != 0)
+                    {
+                        _IUser.RemoveMedia(storyId);
+                    }
+
                     foreach (var i in model.attachment)
                     {
-                        //string UploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Image\\story");
-                        //string FileName = i.FileName;
-                        //string FilePath = Path.Combine(UploadsFolder, FileName);
-
-                        //using (var FileStream = new FileStream(FilePath, FileMode.Create))
-                        //{
-                        //    i.CopyTo(FileStream);
-                        //}
-                        //var type = i.ContentType;
-
                         var FileName = "";
                         using (var ms = new MemoryStream())
                         {
@@ -190,7 +185,7 @@ namespace CI_Platform.Controllers
                             FileName = "data:image/png;base64," + base64String;
                         }
 
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId);
+                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
                     }
                 }
 
@@ -198,10 +193,15 @@ namespace CI_Platform.Controllers
             else if (action == "save")
             {
                 var userId = HttpContext.Session.GetString("user");
-                _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date,model.storyId);
+                var sId= _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
 
                 if (model.attachment != null)
                 {
+                    if (model.storyId != 0)
+                    {
+                        _IUser.RemoveMedia(storyId);
+                    }
+
                     foreach (var i in model.attachment)
                     {
                         var FileName = "";
@@ -213,7 +213,7 @@ namespace CI_Platform.Controllers
                             FileName = "data:image/png;base64," + base64String;
                         }
 
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId);
+                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
                     }
                 }
             }

@@ -240,5 +240,12 @@ namespace CI_Platform.Controllers
             return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
         }
 
+        public IActionResult cmtDelete(int cmtId,int missionId)
+        {
+            var userId = HttpContext.Session.GetString("user");
+            _IUser.cmtdetele(cmtId, int.Parse(userId));
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionId });
+        }
+
     }
 }

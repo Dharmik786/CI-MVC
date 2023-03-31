@@ -179,7 +179,6 @@
         console.log(missionid)
         var send = document.getElementById("sendmail");
         send.innerHTML = "Sending";
-
         $.ajax({
             url: '/Home/SendStorymail',
             type: 'POST',

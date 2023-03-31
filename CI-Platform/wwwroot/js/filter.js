@@ -36,15 +36,15 @@ function addElement(current, value) {
     createdTag.setAttribute('name', value);
     let crossButton = document.createElement('button');
     crossButton.classList.add("filter-close-button");
-    let cross = '&times;'
+    let cross = '&times';
 
     crossButton.addEventListener('click', function () {
         let elementToBeRemoved = document.getElementById(value);
 
-        console.log(elementToBeRemoved);
-        console.log(current);
         elementToBeRemoved.remove();
+        console.log(current);
         current.checked = false;
+        mySearch();
     })
 
     crossButton.innerHTML = cross;
@@ -53,6 +53,7 @@ function addElement(current, value) {
 
     createdTag.appendChild(crossButton);
     filtersSection.appendChild(createdTag);
+    mySearch();
 
 }
 
@@ -62,6 +63,7 @@ function removeElement(value) {
 
     let elementToBeRemoved = document.getElementById(value);
     filtersSection.removeChild(elementToBeRemoved);
+    mySearch();
 }
 
 //function myFunction() {

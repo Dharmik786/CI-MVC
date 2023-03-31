@@ -233,7 +233,7 @@ namespace CI_PlatForm.Repository.Repository
             return _CIDbContext.Stories.ToList();
         }
 
-        public void SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
+        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
         {
             if (storyId == 0)
             {
@@ -246,6 +246,7 @@ namespace CI_PlatForm.Repository.Repository
                 st.CreatedAt = date;
                 _CIDbContext.Stories.Add(st);
                 _CIDbContext.SaveChanges();
+                return st.StoryId;
             }
             else
             {
@@ -258,43 +259,32 @@ namespace CI_PlatForm.Repository.Repository
                 st.CreatedAt = date;
                 _CIDbContext.Stories.Update(st);
                 _CIDbContext.SaveChanges();
+                return st.StoryId;
             }
 
 
         }
-        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId, long storyId)
+        public void RemoveMedia(long StoryId)
         {
-            if (storyId == 0)
+            var storyMedia = _CIDbContext.StoryMedia.Where(e => e.StoryId == StoryId).ToList();
+            foreach (var s in storyMedia)
             {
-                var story = _CIDbContext.Stories.OrderBy(e => e.CreatedAt).Where(e => e.MissionId == missionId && e.UserId == userId).FirstOrDefault();
-                StoryMedium sm = new StoryMedium();
-                sm.StoryId = story.StoryId;
-                sm.StoryType = mediaType;
-                sm.StoryPath = mediaPath;
-                _CIDbContext.Add(sm);
+                _CIDbContext.StoryMedia.Remove(s);
                 _CIDbContext.SaveChanges();
             }
-            else
-            {
-                var story = _CIDbContext.Stories.OrderBy(e => e.CreatedAt).Where(e => e.MissionId == missionId && e.UserId == userId).FirstOrDefault();
-                var storyMedia = _CIDbContext.StoryMedia.Where(e => e.StoryId == storyId).ToList();
-                foreach(var i in storyMedia)
-                {
-                    _CIDbContext.StoryMedia.Remove(i);
-                    _CIDbContext.SaveChanges();
-                }
-                StoryMedium sm = new StoryMedium();
-                sm.StoryId = story.StoryId;
-                sm.StoryType = mediaType;
-                sm.StoryPath = mediaPath;
-                _CIDbContext.Add(sm);
-                _CIDbContext.SaveChanges();
+        }
+        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId, long storyId, long sId)
+        {
 
-            }
-          
+            StoryMedium sm = new StoryMedium();
+            sm.StoryId = sId;
+            sm.StoryType = mediaType;
+            sm.StoryPath = mediaPath;
+            _CIDbContext.Add(sm);
+            _CIDbContext.SaveChanges();
 
         }
-        public void SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
+        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
         {
             if (storyId == 0)
             {
@@ -307,10 +297,11 @@ namespace CI_PlatForm.Repository.Repository
                 st.CreatedAt = date;
                 _CIDbContext.Stories.Add(st);
                 _CIDbContext.SaveChanges();
+                return st.StoryId;
             }
             else
             {
-                var story = _CIDbContext.Stories.Where(s=>s.StoryId== storyId).FirstOrDefault();
+                var story = _CIDbContext.Stories.Where(s => s.StoryId == storyId).FirstOrDefault();
                 story.MissionId = missionId;
                 story.UserId = userId;
                 story.Title = title;
@@ -318,14 +309,22 @@ namespace CI_PlatForm.Repository.Repository
                 story.UpdatedAt = DateTime.Now;
                 _CIDbContext.Update(story);
                 _CIDbContext.SaveChanges();
+                return story.StoryId;
 
             }
 
-           
+
         }
         public List<StoryMedium> storyMedia()
         {
             return _CIDbContext.StoryMedia.ToList();
+        }
+
+        public void cmtdetele(int cmtId, int userId)
+        {
+            var cmt = _CIDbContext.Comments.Where(c=>c.CommentId==cmtId).FirstOrDefault();
+            _CIDbContext.Comments.Remove(cmt);
+            _CIDbContext.SaveChanges();
         }
     }
 }

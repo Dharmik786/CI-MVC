@@ -42,8 +42,11 @@ namespace CI_PlatForm.Repository.Interface
         public MissionApplication applymission(int missionId, int userId);
        public List<Story> stories();
        public List<StoryMedium> storyMedia();
-       public void SubmitStory(long missionId,long userId,string title,string description,DateTime date,long storyId);
-       public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId, long storyId);
-       public void SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+       public long SubmitStory(long missionId,long userId,string title,string description,DateTime date,long storyId);
+       public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId, long storyId,long sId);
+       public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+
+        public void RemoveMedia(long stroryId);
+        public void cmtdetele(int cmtId, int userId);
     }
 }
