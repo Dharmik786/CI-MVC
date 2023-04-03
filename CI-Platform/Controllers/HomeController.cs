@@ -66,184 +66,33 @@ namespace CI_Platform.Controllers
             return View();
         }
 
-        public IActionResult StoriesListing()
-        {
-            MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories().Where(u => u.Status == "1").ToList();
-            missionList.users = _IUser.user();
-            missionList.mission = _IUser.mission();
-            missionList.missionThemes = _IUser.missionThemes();
-            missionList.storyMedia = _IUser.storyMedia();
-            return View(missionList);
-        }
-
-        public IActionResult StoryDetails(int storyId)
+        public IActionResult VolunteeringTimesheet()
         {
             var userId = HttpContext.Session.GetString("user");
-            MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories();
-            missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
-            missionList.missionThemes = _IUser.missionThemes();
 
-            var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
-            missionList.storydetails = data;
-            return View(missionList);
-        }
-        [HttpPost]
-        public void SendStorymail(int missionid, long[] emailList)
-        {
-            //ViewBag.UserId = int.Parse(userId);
-
-            foreach (var i in emailList)
-            {
-                var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
-                var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
-
-                var missionlink = Url.Action("StoryDetails", "Home", new { user = user.UserId, missionid = missionid }, Request.Scheme);
-
-                var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
-                var toAddress = new MailAddress(user.Email);
-                var subject = "Mission Request";
-                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
-
-                var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
-
-                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
-                    EnableSsl = true
-
-                };
-                smtpClient.Send(message);
-                //_IUser.AddMissionInvite(userId, missionid, user.UserId);
-            }
-        }
-        public IActionResult AddStory(long storyId)
-        {
-            var userId = HttpContext.Session.GetString("user");
-            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
-
-            MissionList ms = new MissionList();
-
-            if (storyId != 0)
-            {
-                // ms.stories = _IUser.stories().Where(e => e.StoryId == storyId).ToList();
-                ms.storyMedia = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
-
-                var s = _IUser.stories().Where(e => e.StoryId == storyId).FirstOrDefault();
-                ms.missionId = s.MissionId;
-                ms.title = s.Title;
-                ms.editor1 = s.Description;
-                ms.date = s.CreatedAt;
-                ms.storyId = storyId;
-
-                var sm = _IUser.storyMedia().Where(e => e.StoryId == s.StoryId).FirstOrDefault();
-                //    ms.attachment = sm.StoryMediaId;
-
-                ms.mission = _IUser.mission();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
-            }
-            else
-            {
-                ms.mission = _IUser.mission();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
-            }
-            return View(ms);
+            MissionList m = new MissionList();
+            m.users = _IUser.user();
+            m.mission = _IUser.mission();
+            m.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
+            m.timesheets = _IUser.timesheets().Where(U=>U.UserId==Convert.ToInt64(userId)).ToList();
+            return View(m);
         }
 
         [HttpPost]
-        public async Task<IActionResult> addStoryDetailAsync(MissionList model, string action, long storyId)
+        public IActionResult AddTimeSheet(MissionList model)
         {
-
-            if (action == "submit")
-            {
-                var userId = HttpContext.Session.GetString("user");
-                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
-
-                if (model.attachment != null)
-                {
-                    if (model.storyId != 0)
-                    {
-                        _IUser.RemoveMedia(storyId);
-                    }
-
-                    foreach (var i in model.attachment)
-                    {
-                        var FileName = "";
-                        using (var ms = new MemoryStream())
-                        {
-                            await i.CopyToAsync(ms);
-                            var imageBytes = ms.ToArray();
-                            var base64String = Convert.ToBase64String(imageBytes);
-                            FileName = "data:image/png;base64," + base64String;
-                        }
-
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
-                    }
-                }
-
-            }
-            else if (action == "save")
-            {
-                var userId = HttpContext.Session.GetString("user");
-                var sId= _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
-
-                if (model.attachment != null)
-                {
-                    if (model.storyId != 0)
-                    {
-                        _IUser.RemoveMedia(storyId);
-                    }
-
-                    foreach (var i in model.attachment)
-                    {
-                        var FileName = "";
-                        using (var ms = new MemoryStream())
-                        {
-                            await i.CopyToAsync(ms);
-                            var imageBytes = ms.ToArray();
-                            var base64String = Convert.ToBase64String(imageBytes);
-                            FileName = "data:image/png;base64," + base64String;
-                        }
-
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
-                    }
-                }
-            }
-            else
-            {
-                return RedirectToAction("StoriesListing", "Home");
-            }
-            //return View();
-
-            return RedirectToAction("StoriesListing", "Home");
+            var userId = HttpContext.Session.GetString("user");
+            _IUser.AddTime(model.missionId, Convert.ToInt32(userId),model.hour,model.min,model.action,model.date,model.notes);
+            return RedirectToAction("VolunteeringTimeSheet","Home");
         }
 
-        public IActionResult DraftStory()
+        public IActionResult DeleteTimeSheet(int id)
         {
-            var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
-
-            MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories().Where(u => u.Status == "DRAFT" && u.UserId == userId).ToList();
-            missionList.users = _IUser.user();
-            missionList.mission = _IUser.mission();
-            missionList.missionThemes = _IUser.missionThemes();
-            missionList.storyMedia = _IUser.storyMedia();
-            return View(missionList);
+            _IUser.DeleteTimeSheet(id);
+            return RedirectToAction("VolunteeringTimeSheet","Home");
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

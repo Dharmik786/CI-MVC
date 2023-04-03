@@ -46,7 +46,9 @@ namespace CI_PlatForm.Repository.Interface
        public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId, long storyId,long sId);
        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
 
-        public void RemoveMedia(long stroryId);
+        public void RemoveMedia(long stroryId); 
         public void cmtdetele(int cmtId, int userId);
+        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes);
+        public void DeleteTimeSheet(int id);
     }
 }

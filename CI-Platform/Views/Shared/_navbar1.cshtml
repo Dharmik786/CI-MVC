@@ -10,8 +10,7 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="~/css/navbar.css" />
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true"/>
 
 </head>
 <body>
@@ -58,8 +57,9 @@
                                 @firstname
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Landingpage" asp-action="Landingpage">DashBoard</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="DraftStory">Draft Story</a></li>
+                                <li selected><a class="dropdown-item" asp-controller="Landingpage" asp-action="Landingpage">DashBoard</a></li>
+                                <li><a class="dropdown-item" asp-controller="Story" asp-action="DraftStory">Draft Story</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
@@ -90,7 +90,7 @@
             <ul class="navbar-nav  first-nav  me-auto mb-2 mb-lg-0 ">
                 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="StoriesListing">Story</a>
+                        <a class="nav-link active" aria-current="page" asp-controller="Story" asp-action="StoriesListing">Story</a>
                     </li>
                 
                 <li class="nav-item dropdown">
@@ -121,8 +121,9 @@
                         @firstname
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" asp-controller="Landingpage" asp-action="Landingpage">DashBoard</a></li>
-                        <li><a class="dropdown-item" asp-controller="Home" asp-action="DraftStory">Draft Story</a></li>
+                        <li ><a class="dropdown-item" asp-controller="Landingpage" asp-action="Landingpage">DashBoard</a></li>
+                        <li><a class="dropdown-item" asp-controller="Story" asp-action="DraftStory">Draft Story</a></li>
+                        <li><a class="dropdown-item" asp-controller="Home" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">

@@ -335,3 +335,13 @@ Button{
     background-color: transparent;
     border: none;
 }
+
+.dropdown ul li a:hover {
+    background: #2581DC;
+    color: #ffffff;
+}
+
+.dropdown ul li a::selection {
+    background-color: #4CAF50;
+    color: #fff;
+}

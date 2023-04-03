@@ -141,7 +141,7 @@ namespace CI_Platform.Controllers
                     break;
 
                 case "My Favourites":
-                    //mission = fav.Where(s => s.UserId == Convert.ToInt32(id)).ToList();
+                   // mission = fav.Where(u => u.UserId == userId).ToList();
                     break;
 
                 case "Registration deadline":

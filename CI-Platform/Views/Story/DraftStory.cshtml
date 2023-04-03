@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <div class="container-fluid p-0">
+    @*<div class="container-fluid p-0">
         <div class="story-header">
 
             <div class="img-div">
@@ -36,64 +36,74 @@
 
         </div>
 
-    </div>
+    </div>*@
 
     <div class="container grid-container mt-4">
 
         <div class="row ">
-
-            @foreach (var i in Model.stories)
+            @if(Model.stories.Count()!=0)
             {
-                <div class="missioncard col-12 col-md-6 col-lg-4 mb-2">
-                    <div class="card">
-                        @{
-                            var storyMedia = Model.storyMedia.FirstOrDefault(e => e.StoryId == i.StoryId);
-                        }
-                        <div class="img-event">
-
-                            @if (storyMedia != null)
-                            {
-                                <img class="card-img-top card-img"
-                                     src="@storyMedia.StoryPath"
-                                     alt="Card image cap">
+                <h1>Drafted Story</h1>
+                @foreach (var i in Model.stories)
+                {
+                    <div class="missioncard col-12 col-md-6 col-lg-4 mb-2">
+                        <div class="card">
+                            @{
+                                var storyMedia = Model.storyMedia.FirstOrDefault(e => e.StoryId == i.StoryId);
                             }
-                            else
-                            {
-                                <img class="card-img-top card-img"
-                                      src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                                      alt="Card image cap">
-                            }
+                            <div class="img-event">
 
-                            <div class="view-details-btn p-1"><button style="border-radius:25px"> <a href="/Home/StoryDetails?storyId=@i.StoryId" style="text-decoration:none;color:black">View Deatils</a><i class="bi bi-arrow-right"></i></button></div>
-                            <div><button class="theme-btn ">@i.Mission.Theme.Title</button></div>
+                                @if (storyMedia != null)
+                                {
+                                    <img class="card-img-top card-img"
+                                         src="@storyMedia.StoryPath"
+                                         alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img class="card-img-top card-img"
+                                         src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                                         alt="Card image cap">
+                                }
 
-                        </div>
-
-
-                        <div class="card-body m-2">
-                            <h5 class="card-title ct" >
-                                @i.Title
-                            </h5>
-                            <div class="card-text text-secondary ct2">
-
-                                @Html.Raw(HttpUtility.HtmlDecode(i.Description))
-
+                                <div class="view-details-btn p-1"><button style="border-radius:25px"> <a href="/Story/AddStory?storyId=@i.StoryId" style="text-decoration:none;color:black">Edit</a><i class="bi bi-arrow-right"></i></button></div>
+                                <div><button class="theme-btn ">@i.Mission.Theme.Title</button></div>
 
                             </div>
-                            <div class="d-flex">
-                                <img src="/Image/volunteer1.png" />
-                                <div class="d-flex justify-content-center m-3">@i.User.FirstName @i.User.LastName </div>
-                            </div>
 
+
+                            <div class="card-body m-2">
+                                <h5 class="card-title">
+                                    @i.Title
+                                </h5>
+                                <p class="card-text text-secondary">
+
+                                    @Html.Raw(HttpUtility.HtmlDecode(i.Description))
+
+
+                                </p>
+                                <div class="d-flex">
+                                    <img src="/Image/volunteer1.png" />
+                                    <div class="d-flex justify-content-center m-3">@i.User.FirstName @i.User.LastName </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div>
+                <h4>No Draft Story</h4>
                 </div>
             }
+           
 
 
 
 
-            <nav aria-label="Page navigation example">
+           @* <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Previous">
@@ -119,7 +129,7 @@
                         </a>
                     </li>
                 </ul>
-            </nav>
+            </nav>*@
 
         </div>
 

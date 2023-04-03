@@ -439,13 +439,13 @@
                                 @foreach (var i in Model.comments)
                                 {
                                     <div class="col-12 d-flex bg-white mt-3  align-items-center">
-                                        @if (i.User.Avatar != "")
+                                        @if (i.User.Avatar != null)
                                         {
                                             <img src="@i.User.Avatar" class="rounded-circle ">
                                         }
                                         else
                                         {
-                                            <img src="~/images/user1.png" class="comtuserimg ">
+                                            <img src="/Image/user1.png" class="comtuserimg ">
                                         }
                                         <div class=" ms-4 ">
                                             <label class="mx-1 fs-6">@i.User.LastName @i.User.FirstName</label><br>
@@ -456,7 +456,7 @@
                                         @if (i.User.UserId == Convert.ToInt32(userId))
                                         {
 
-                                            <div class="h-100 ms-auto me-2" id="@i.CommentId" onclick="cmtdelete(@i.CommentId,@Model.singleMission.MissionId)">
+                                            <div class="h-100 ms-auto me-2 d-flex align-items-center" id="@i.CommentId" onclick="cmtdelete(@i.CommentId,@Model.singleMission.MissionId)">
                                                 <img src="/Image/bin.png">
                                             </div>
                                         }

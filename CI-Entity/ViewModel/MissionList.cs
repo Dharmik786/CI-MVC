@@ -115,5 +115,13 @@ namespace CI_Entity.ViewModel
         public List<IFormFile> attachment { get; set; }
         public long storyId { get; set; }
 
+
+        public List<MissionApplication> Goal { get; set; }
+        public List<MissionApplication> Time { get; set; }
+        public string? notes { get;set; }
+        public int? hour { get; set; }
+        public int? min { get; set; }
+        public int? action { get; set; }
+
     }
 }

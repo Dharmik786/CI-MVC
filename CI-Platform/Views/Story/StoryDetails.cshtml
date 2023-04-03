@@ -180,7 +180,7 @@
         var send = document.getElementById("sendmail");
         send.innerHTML = "Sending";
         $.ajax({
-            url: '/Home/SendStorymail',
+            url: '/Story/SendStorymail',
             type: 'POST',
             data: { 'emailList': mail, 'missionid': missionid },
             success: function (result) {

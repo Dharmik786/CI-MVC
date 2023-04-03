@@ -127,7 +127,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public List<Timesheet> timesheets()
         {
-            return _CIDbContext.Timesheets.ToList();
+            return _CIDbContext.Timesheets.Where(e=>e.DeletedAt==null).ToList();
         }
         public List<Comment> comments()
         {
@@ -319,12 +319,50 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.StoryMedia.ToList();
         }
-
+    
         public void cmtdetele(int cmtId, int userId)
         {
             var cmt = _CIDbContext.Comments.Where(c=>c.CommentId==cmtId).FirstOrDefault();
             _CIDbContext.Comments.Remove(cmt);
             _CIDbContext.SaveChanges();
         }
+        public void AddTime(long missionId, int userId, int? hour, int? min,int? action, DateTime date, string? notes)
+        {
+            if (hour != null && min != null)
+            {
+                Timesheet ts = new Timesheet();
+                ts.MissionId = missionId;
+                ts.UserId = userId;
+                ts.DateVolunteered = date;
+                ts.Notes = notes;
+                ts.Status = "1";
+                ts.CreatedAt = DateTime.Now;
+                _CIDbContext.Timesheets.Add(ts);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                Timesheet ts = new Timesheet();
+                ts.MissionId = missionId;
+                ts.UserId = userId;
+                ts.DateVolunteered = date;
+                ts.Action = action;
+                ts.Notes = notes;
+                ts.Status = "1";
+                ts.CreatedAt = DateTime.Now;
+                _CIDbContext.Timesheets.Add(ts);
+                _CIDbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteTimeSheet(int id)
+        {
+            var time = _CIDbContext.Timesheets.Where(e=>e.TimesheetId==id).FirstOrDefault();
+            time.DeletedAt = DateTime.Now;
+            time.Status = "Deleted";
+            _CIDbContext.Update(time);
+            _CIDbContext.SaveChanges();
+        }
+
     }
 }
