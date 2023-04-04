@@ -124,3 +124,6 @@ div .media{
 /*    padding: 7px;*/
     /*margin: 10px;*/
 }
+.nav-tabs .nav-link.active {
+    border-bottom: 2px solid;
+}

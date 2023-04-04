@@ -1,4 +1,5 @@
-﻿using CI_Entity.Models;
+﻿using CI_Entities1.Models.ViewModel;
+using CI_Entity.Models;
 using CI_Entity.ViewModel;
 using CI_PlatForm.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,7 @@ namespace CI_Platform.Controllers
 
         }
 
-        public IActionResult _Missions(long userId, int missionid, string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme)
+        public IActionResult _Missions(long userId, int missionid, string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme,int jpg)
         {
             var id = HttpContext.Session.GetString("user");
 
@@ -93,21 +94,7 @@ namespace CI_Platform.Controllers
             var msn = _IUser.mission().ToList();
 
 
-            //Avg Rating
-            //int avgRating = 0;
-            //int rat = 0;
-            //var ratingList = missionList.missionRatings.Where(m => m.MissionId == missionList.singleMission.MissionId).ToList();
-
-            //if (ratingList.Count() > 0)
-            //{
-
-            //    foreach (var r in ratingList)
-            //    {
-            //        rat = rat + int.Parse(r.Rating);
-            //    }
-            //    avgRating = rat / ratingList.Count();
-            //}
-
+           
 
 
             //Seacrh
@@ -176,16 +163,19 @@ namespace CI_Platform.Controllers
             }
 
             //Pagination
-            int pageSize = 6;
-            int skip = (pageIndex ?? 0) * pageSize;
-            var Missions = mission.Skip(skip).Take(pageSize).ToList();
-            int totalMissions = mission.Count();
+            //int pageSize = 6;
+            //int skip = (pageIndex ?? 0) * pageSize;
+            //var Missions = mission.Skip(skip).Take(pageSize).ToList();
+            //int totalMissions = mission.Count();
 
-            ViewBag.TotalMission = totalMissions;
-            ViewBag.TotalPages = (int)Math.Ceiling(totalMissions / (double)pageSize);
-            ViewBag.CurrentPage = pageIndex ?? 0;
+            //ViewBag.TotalMission = totalMissions;
+            //ViewBag.TotalPages = (int)Math.Ceiling(totalMissions / (double)pageSize);
+            //ViewBag.CurrentPage = pageIndex ?? 0;
 
             missionList.mission = mission;
+
+            ViewBag.missionCount = missionList.mission.Count();            const int pageSize = 3;            if (jpg < 1)            {                jpg = 1;            }            int recsCount = missionList.mission.Count();            var pager = new Pager(recsCount, jpg, pageSize);            int recSkip = (jpg - 1) * pageSize;            var data = missionList.mission.Skip(recSkip).Take(pager.PageSize).ToList();            this.ViewBag.pager = pager;            ViewBag.missionTempDate = data;            missionList.mission = data.ToList();            ViewBag.TotalMission = recsCount;
+
 
             return PartialView("_Missions", missionList);
         }

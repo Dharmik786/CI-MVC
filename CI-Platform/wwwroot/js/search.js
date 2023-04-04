@@ -104,5 +104,26 @@ function mySearch(sortValue) {
 }
 
 
+function pagination(jpg) {
+    console.log(jpg);
+    $.ajax({
+        url: '/Landingpage/_Missions',
+        type: 'GET',
+        data: { 'jpg': jpg },
+        success: function (res) {
+            $("#missions").html(res);
+        },
+
+        error: function (res) {
+            alert("error");
+        }
+    });
+}
+
+$(document).ready(function () {
+    pagination(jpg = 1);
+    console.log("hello shubh");
+});
+
 
 
