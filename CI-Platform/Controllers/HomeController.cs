@@ -91,6 +91,17 @@ namespace CI_Platform.Controllers
             _IUser.DeleteTimeSheet(id);
             return RedirectToAction("VolunteeringTimeSheet","Home");
         }
+        [HttpPost]
+        public async Task<IActionResult> EditTimeSheet(int id)
+        {           
+            var timesheet = _IUser.timesheets().Where(e => e.TimesheetId == id).FirstOrDefault();
+            return Json(new { success = true, Timesheet = timesheet });
+        }
+
+        public IActionResult UserProfile()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

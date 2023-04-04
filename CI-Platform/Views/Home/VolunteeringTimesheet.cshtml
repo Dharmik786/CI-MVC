@@ -129,7 +129,7 @@
 
             </div>
 
-
+            @*-------------------------------------------------------**********************************************-------------------------------------------------------------------------------------------*@
             <div class="col-12 col-xl-5 col-lg-5   ms-0 ms-xl-4 ms-lg-4 mt-4 borderbox">
                 <div class="row cardtitleborder">
                     <div class="col-8  d-flex  align-items-center">
@@ -139,8 +139,8 @@
                         <button class="rounded-pill d-flex justify-content-center align-items-center py-2 px-4 ms-auto me-2 my-2  addbtn" data-bs-toggle="modal" data-bs-target="#GoalADDbtn">
                             <i class="bi bi-plus-lg me-2 "></i>
                             <span>  ADD</span>
-
                         </button>
+                        @*modal*@
                         <div class="modal fade" id="GoalADDbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog  modal-dialog-centered">
                                 <div class="modal-content">
@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div class="row mt-2">
                                                     <lable class="col-6 fs-6">Action</lable>
-                                                    <input  asp-for="action" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" type="text" />
+                                                    <input asp-for="action" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" type="text" />
                                                 </div>
                                                 <div class="row mt-1 ">
 
@@ -208,18 +208,72 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var i in Model.timesheets)
+                            @foreach (var i in Model.timesheets)
                             {
                                 <tr>
                                     <td> @i.Mission.Title</td>
                                     <td> @i.DateVolunteered.ToString().Split(" ")[0]</td>
                                     <td> @i.Action</td>
 
-                                    <td class="d-flex align-items-center mt-1"> <i class="bi bi-pencil-square editimg" ></i></td>
+                                    <td class="d-flex align-items-center mt-1">
+                                        <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#GoalEditbtn">
+                                            <i class="bi bi-pencil-square editimg" onclick="EditTimeSheet(@i.TimesheetId)"></i>
+                                        </button>
+                                    </td>
+
                                     <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="Delete(this.id)" /></td>
                                 </tr>
+                                @*modal*@
+                                <div class="modal fade" id="GoalEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog  modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <form asp-controller="Home" asp-action="AddTimeSheet" method="post">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Goal</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <lable class="col-6 fs-6">Mission</lable>
+                                                            <select asp-for="missionId" class=" datediv  py-1 ro col-12" aria-label="Default select example" id="mission">
+                                                                @foreach (var j in Model.missionApplications)
+                                                                {
+                                                                    <option value="@j.MissionId">@j.Mission.Title</option>
+                                                                }
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <lable class="col-6 fs-6">Action</lable>
+                                                            <input asp-for="action" id="Gaction" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" type="text" />
+                                                        </div>
+                                                        <div class="row mt-1 ">
+
+                                                            <label class=" col-8 fs-6"> Date of Volunteered</label>
+                                                            <input asp-for="date" type="datetime-local" id="dateVolunteered" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " />
+
+
+                                                        </div>
+                                                        <div class="row mt-1">
+                                                            <label class=" col-8 fs-6"> Enter Your Message</label>
+
+                                                            <textarea asp-for="notes" id="notes" class=" datediv rounded-1 mt-1 " placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="rounded-pill addbtn  px-3 py-1">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                             }
-                            
+
                         </tbody>
 
                     </table>
@@ -231,21 +285,6 @@
     </div>
 
 </body>
-
-<script>
-    function Delete(id){
-        $.ajax({
-            typr:"POST",
-            url:"/Home/DeleteTimeSheet",
-            data:{'id':id},
-            success: function (result) {
-                $('.tbl').html($(result).find('.tbl').html());
-            },
-            error: function () {
-                console.log("Erroor");
-            }
-        });
-    }
-</script>
+<script src="~/js/TimeSheet.js"></script>
 
 </html>
