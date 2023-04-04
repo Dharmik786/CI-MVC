@@ -138,14 +138,14 @@ namespace CI_Platform.Controllers
 
             if (action == "submit")
             {
-                var userId = HttpContext.Session.GetString("user");
+                var userId  = HttpContext.Session.GetString("user");
                 var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
 
                 if (model.attachment != null)
                 {
                     if (model.storyId != 0)
                     {
-                        _IUser.RemoveMedia(storyId);
+                        _IUser.RemoveMedia(storyId);    
                     }
 
                     foreach (var i in model.attachment)

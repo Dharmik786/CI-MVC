@@ -122,6 +122,7 @@ namespace CI_Entity.ViewModel
         public int? hour { get; set; }
         public int? min { get; set; }
         public int? action { get; set; }
+        public long Hidden { get; set; }
 
     }
 }

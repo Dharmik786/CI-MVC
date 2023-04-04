@@ -48,7 +48,7 @@ namespace CI_PlatForm.Repository.Interface
 
         public void RemoveMedia(long stroryId); 
         public void cmtdetele(int cmtId, int userId);
-        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes);
+        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes,long TimesheetId);
         public void DeleteTimeSheet(int id);
     }
 }

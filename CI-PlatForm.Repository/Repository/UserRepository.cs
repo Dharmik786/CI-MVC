@@ -319,40 +319,74 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.StoryMedia.ToList();
         }
-    
+        
         public void cmtdetele(int cmtId, int userId)
         {
             var cmt = _CIDbContext.Comments.Where(c=>c.CommentId==cmtId).FirstOrDefault();
             _CIDbContext.Comments.Remove(cmt);
             _CIDbContext.SaveChanges();
         }
-        public void AddTime(long missionId, int userId, int? hour, int? min,int? action, DateTime date, string? notes)
+        public void AddTime(long missionId, int userId, int? hour, int? min,int? action, DateTime date, string? notes, long TimesheetId)
         {
-            if (hour != null && min != null)
+            if (TimesheetId == null)
             {
-                Timesheet ts = new Timesheet();
-                ts.MissionId = missionId;
-                ts.UserId = userId;
-                ts.DateVolunteered = date;
-                ts.Notes = notes;
-                ts.Status = "1";
-                ts.CreatedAt = DateTime.Now;
-                _CIDbContext.Timesheets.Add(ts);
-                _CIDbContext.SaveChanges();
+                if (hour != null && min != null)
+                {
+                    Timesheet ts = new Timesheet();
+                    ts.MissionId = missionId;
+                    ts.UserId = userId;
+                    ts.TimesheetTime = hour + ":" + min;
+                    ts.DateVolunteered = date;
+                    ts.Notes = notes;
+                    ts.Status = "1";
+                    ts.CreatedAt = DateTime.Now;
+                    _CIDbContext.Timesheets.Add(ts);
+                    _CIDbContext.SaveChanges();
+                }
+                else
+                {
+                    Timesheet ts = new Timesheet();
+                    ts.MissionId = missionId;
+                    ts.UserId = userId;
+                    ts.DateVolunteered = date;
+                    ts.Action = action;
+                    ts.Notes = notes;
+                    ts.Status = "1";
+                    ts.CreatedAt = DateTime.Now;
+                    _CIDbContext.Timesheets.Add(ts);
+                    _CIDbContext.SaveChanges();
+                }
             }
             else
             {
-                Timesheet ts = new Timesheet();
-                ts.MissionId = missionId;
-                ts.UserId = userId;
-                ts.DateVolunteered = date;
-                ts.Action = action;
-                ts.Notes = notes;
-                ts.Status = "1";
-                ts.CreatedAt = DateTime.Now;
-                _CIDbContext.Timesheets.Add(ts);
-                _CIDbContext.SaveChanges();
+                if (hour != null && min != null)
+                {
+                    Timesheet ts = _CIDbContext.Timesheets.Where(e => e.TimesheetId == TimesheetId).FirstOrDefault();
+                    ts.MissionId = missionId;
+                    ts.UserId = userId;
+                    ts.TimesheetTime = hour + ":" + min;
+                    ts.DateVolunteered = date;
+                    ts.Notes = notes;
+                    ts.Status = "1";
+                    ts.UpdatedAt = DateTime.Now;
+                    _CIDbContext.Timesheets.Update(ts);
+                    _CIDbContext.SaveChanges();
+                }
+                else
+                {
+                    Timesheet ts = _CIDbContext.Timesheets.Where(e => e.TimesheetId == TimesheetId).FirstOrDefault();
+                    ts.MissionId = missionId;
+                    ts.UserId = userId;
+                    ts.DateVolunteered = date;
+                    ts.Action = action;
+                    ts.Notes = notes;
+                    ts.Status = "1";
+                    ts.UpdatedAt = DateTime.Now;
+                    _CIDbContext.Update(ts);
+                    _CIDbContext.SaveChanges();
+                }
             }
+           
         }
 
         public void DeleteTimeSheet(int id)

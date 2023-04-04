@@ -82,7 +82,7 @@ namespace CI_Platform.Controllers
         public IActionResult AddTimeSheet(MissionList model)
         {
             var userId = HttpContext.Session.GetString("user");
-            _IUser.AddTime(model.missionId, Convert.ToInt32(userId),model.hour,model.min,model.action,model.date,model.notes);
+            _IUser.AddTime(model.missionId, Convert.ToInt32(userId),model.hour,model.min,model.action,model.date,model.notes,model.Hidden);
             return RedirectToAction("VolunteeringTimeSheet","Home");
         }
 
@@ -92,11 +92,19 @@ namespace CI_Platform.Controllers
             return RedirectToAction("VolunteeringTimeSheet","Home");
         }
         [HttpPost]
-        public async Task<IActionResult> EditTimeSheet(int id)
+        public async Task<IActionResult> EditTimeTimeSheet(int id)
+        {
+            var timesheet = _IUser.timesheets().Where(e => e.TimesheetId == id).FirstOrDefault();
+            return Json(new { success = true, Timesheet = timesheet });
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> EditGoalTimeSheet(int id)
         {           
             var timesheet = _IUser.timesheets().Where(e => e.TimesheetId == id).FirstOrDefault();
             return Json(new { success = true, Timesheet = timesheet });
         }
+      
 
         public IActionResult UserProfile()
         {
