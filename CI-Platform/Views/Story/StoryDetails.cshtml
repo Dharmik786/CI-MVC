@@ -113,11 +113,26 @@
                     </div>
 
                     <div class="row justify-content-between mt-3">
-                        <button class="recom col-11 col-xl-6 col-md-5 col-lg-11 rounded-5 d-flex justify-content-center align-items-center bg-white py-2 ms-0 ms-xl-3 ms-lg-0 ms-md-3 "
+                        @{
+                            var userId = Context.Session.GetString("user");
+                        }
+                        @if(userId != null)
+                        {
+                            <button class="recom col-11 col-xl-6 col-md-5 col-lg-11 rounded-5 d-flex justify-content-center align-items-center bg-white py-2 ms-0 ms-xl-3 ms-lg-0 ms-md-3 "
                                 style="border-radius:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <img src="/Image/add1.png">
                             <span class="ms-2">Recomanded to Co-Worker</span>
-                        </button>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="recom col-11 col-xl-6 col-md-5 col-lg-11 rounded-5 d-flex justify-content-center align-items-center bg-white py-2 ms-0 ms-xl-3 ms-lg-0 ms-md-3 "
+                                style="border-radius:20px;" onclick="LoginAlert()">
+                            <img src="/Image/add1.png">
+                            <span class="ms-2">Recomanded to Co-Worker</span>
+                            </button>
+                        }
+
                         <a class="col-11 col-xl-5  col-lg-11 col-md-5  bg-white text-decoration-none mt-2  mt-xl-0 mt-lg-2 mt-md-0  mb-2 mb-md-0 p-0" style="text-decoration:none;color:orange" href="/Volunteering/Volunteering?missionid=@Model.storydetails.MissionId">
                             <button class="d-flex justify-content-center align-items-cente bg-white py-2 w-100" style="color:orange;border-color:orange;border-radius:20px;">
                                 <span class="">Open Mission</span>
@@ -192,6 +207,10 @@
                 alert('Error: Could not recommend mission.');
             }
         });
+    }
+
+    function LoginAlert(){
+        alert("Login First");
     }
 </script>
 </html>

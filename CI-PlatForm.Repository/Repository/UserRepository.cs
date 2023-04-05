@@ -1,6 +1,7 @@
 ﻿using CI_Entity.Models;
 using CI_Entity.ViewModel;
 using CI_PlatForm.Repository.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.SqlServer.Server;
 using NuGet.Common;
 using System;
@@ -413,6 +414,8 @@ namespace CI_PlatForm.Repository.Repository
                 _CIDbContext.SaveChanges();
             }
         }
+
+        
 
     }
 }

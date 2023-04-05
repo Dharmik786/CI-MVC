@@ -848,6 +848,10 @@ public partial class CIDbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Availablity)
+                .HasMaxLength(40)
+                .IsFixedLength()
+                .HasColumnName("availablity");
             entity.Property(e => e.Avatar)
                 .HasMaxLength(2048)
                 .IsUnicode(false)

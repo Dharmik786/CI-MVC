@@ -117,7 +117,6 @@ namespace CI_Platform.Controllers
             u.cities = _IUser.cities();
             u.countries = _IUser.countries();
 
-
             u.FirstName = user.FirstName;
             u.LastName = user.LastName;
             u.EmployeeId = user.EmployeeId;
@@ -125,13 +124,59 @@ namespace CI_Platform.Controllers
             u.Department = user.Department;
             u.MyProfile = user.ProfileText;
             u.WhyIVol = user.WhyIVolunteer;
-             u.Country = (int)user.CountryId;
-            u.City = (int)user.CityId;
-            //u.Availablity = user.Availablity;
+
+            if (user.CountryId != null && user.CityId != null)
+            {
+                u.Country = (int)user.CountryId;
+                u.City = (int)user.CityId;
+            }
+
+            u.Availablity = user.Availablity;
             u.LinkedIn = user.LinkedInUrl;
 
-            
             return View(u);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserProfile(UserProfile model)
+        {
+            var userId = HttpContext.Session.GetString("user");
+            UserProfile u = new UserProfile();
+            u.user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
+
+            var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
+
+//            if (model.Avatar != null)
+//            {
+//                var FileName = "";
+//                using (var ms = new MemoryStream())
+//                {
+//                    await model.Avatar.CopyToAsync(ms)
+//;
+//                    var imageBytes = ms.ToArray();
+//                    var base64String = Convert.ToBase64String(imageBytes);
+//                    FileName = "data:image/png;base64," + base64String;
+//                }
+//                user.Avatar = FileName;
+//            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.EmployeeId = model.EmployeeId;
+            user.Title = model.Title;
+            user.Department = model.Department;
+            user.ProfileText = model.MyProfile;
+            user.WhyIVolunteer = model.WhyIVol;
+            user.CountryId = (int)model.Country;
+            user.CityId = (int)model.City;
+            user.Availablity = model.Availablity;
+            user.LinkedInUrl = model.LinkedIn;
+            user.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(user);
+            _CIDbContext.SaveChanges();
+
+
+            return RedirectToAction("UserProfile", "Home");
         }
 
 

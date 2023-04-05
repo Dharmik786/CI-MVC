@@ -1,4 +1,5 @@
 ﻿using CI_Entity.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,7 +41,7 @@ namespace CI_Entity.ViewModel
         public int Country { get; set; }
         public string Availablity { get; set; }
         public string LinkedIn { get; set; }
-
+        public IFormFile Avatar { get; set; }
 
 
     }

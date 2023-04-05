@@ -1,5 +1,6 @@
 ﻿using CI_Entity.Models;
 using CI_Entity.ViewModel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,5 +54,6 @@ namespace CI_PlatForm.Repository.Interface
 
         public User GetUserByUserId(long userId);
         public void ChangePassword(string NewPsw, string CnfPsw,int UserId);
+      
     }
 }

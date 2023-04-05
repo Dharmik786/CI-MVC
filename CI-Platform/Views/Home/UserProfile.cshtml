@@ -18,14 +18,14 @@
 <body>
 
     <div class="container" style="margin-top:70px">
-        <form asp-action="UserProfile" asp-controller="Home" method="post">
+        <form asp-action="UserProfile" asp-controller="Home" method="post" enctype="multipart/form-data">
 
             <div class="row">
 
                 <div class="col-12 col-md-3 col-lg-2 user-profile-left-div d-flex flex-column align-items-center justify-content-center">
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        <div class="user-profile-div">
-
+                        <div class="user-profile-div d-grid">
+                            <input type="file" asp-for="Avatar" />
                             @if (Model.user.Avatar != null)
                             {
                                 <img src="@Model.user.Avatar" alt=""
@@ -72,10 +72,10 @@
                                        placeholder="Enter your employee id">
                             </div>
 
-                           @* <div class="mb-3 col-12 col-md-6">
-                                <label for="exampleFormControlInput1" class="form-label">Manager</label>
-                                <input type="text" class="form-control" asp-for="Manger"
-                                       placeholder="Enter your manager details">
+                            @* <div class="mb-3 col-12 col-md-6">
+                            <label for="exampleFormControlInput1" class="form-label">Manager</label>
+                            <input type="text" class="form-control" asp-for="Manger"
+                            placeholder="Enter your manager details">
                             </div>*@
 
                             <div class="mb-3 col-12 col-md-6">
@@ -135,16 +135,15 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <label for="exampleFormControlTextarea1" class="form-label">Availablity</label>
-                                <select class="form-select " aria-label="Default select example" id="user-country">
-                                    <option selected disabled>select your availablity</option>
-                                    <option value="1">India</option>
-                                    <option value="2">US</option>
-                                    <option value="3">Canada</option>
+                                <select class="form-select " aria-label="Default select example" asp-for="Availablity">
+                                    <option value="Daily">Daily</option>
+                                    <option value="Weekend">Weekend</option>
+                                    <option value="Weekend">Yearly</option>
                                 </select>
                             </div>
                             <div class="mb-3 col-12 col-md-6">
                                 <label for="exampleFormControlInput1" class="form-label">LinkedIn</label>
-                                <input type="email" class="form-control" asp-for="LinkedIn"
+                                <input type="text" class="form-control" asp-for="LinkedIn"
                                        placeholder="Enter LinkedIn url">
                             </div>
                         </div>
