@@ -114,22 +114,24 @@
 
                             @foreach (var i in Model.timesheets)
                             {
-                                if (i.Mission.MissionType == "Time")
-                                {
-                                    <tr>
-                                        <td>@i.MissionId @i.Mission.Title</td>
-                                        <td> @i.DateVolunteered.ToString().Split(" ")[0]</td>
-                                        <td> @i.TimesheetTime.ToString().Split(":")[0]</td>
-                                        <td> @i.TimesheetTime.ToString().Split(":")[1]</td>
+                                 if (i.Mission.MissionType == "Time")
+                                    {
+                                        <tr>
+                                            <td>@i.MissionId @i.Mission.Title</td>
+                                            <td> @i.DateVolunteered.ToString().Split(" ")[0]</td>
+                                            <td> @i.TimesheetTime.ToString().Split(":")[0]</td>
+                                            <td> @i.TimesheetTime.ToString().Split(":")[1]</td>
 
-                                        <td class="d-flex align-items-center mt-1">
-                                            <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn">
-                                                <i class="bi bi-pencil-square editimg" onclick="EditTimeSheet(@i.TimesheetId)"></i>
-                                            </button>
-                                        </td>
-                                        <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="TimeDelete(this.id)" /></td>
-                                    </tr>
-                                }
+                                            <td class="d-flex align-items-center mt-1">
+                                                <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn">
+                                                    <i class="bi bi-pencil-square editimg" onclick="EditTimeSheet(@i.TimesheetId)"></i>
+                                                </button>
+                                            </td>
+                                            <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="TimeDelete(this.id)" /></td>
+                                        </tr>
+                                    }
+                                
+                               
                                   @*modal*@
                                 <div class="modal fade " id="TimeEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog  modal-dialog-centered">
@@ -222,7 +224,7 @@
                                                     <select asp-for="missionId" class=" datediv  py-1 ro col-12" aria-label="Default select example">
                                                         @foreach (var i in Model.missionApplications)
                                                         {
-                                                            if (i.Mission.MissionType == "Time")
+                                                            if (i.Mission.MissionType == "Goal")
                                                             {
                                                                 <option value="@i.MissionId">@i.MissionId @i.Mission.Title</option>
                                                             }

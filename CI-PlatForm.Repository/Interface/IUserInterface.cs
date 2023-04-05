@@ -50,5 +50,8 @@ namespace CI_PlatForm.Repository.Interface
         public void cmtdetele(int cmtId, int userId);
         public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes,long TimesheetId);
         public void DeleteTimeSheet(int id);
+
+        public User GetUserByUserId(long userId);
+        public void ChangePassword(string NewPsw, string CnfPsw,int UserId);
     }
 }

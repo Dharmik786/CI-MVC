@@ -86,6 +86,10 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.Users.ToList();
         }
+        public User? GetUserByUserId(long userId)
+        {
+            return _CIDbContext.Users.Where(e=>e.UserId == userId).FirstOrDefault();
+        }
 
         public List<Country> countries()
         {
@@ -328,7 +332,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public void AddTime(long missionId, int userId, int? hour, int? min,int? action, DateTime date, string? notes, long TimesheetId)
         {
-            if (TimesheetId == null)
+            if (TimesheetId == 0)
             {
                 if (hour != null && min != null)
                 {
@@ -398,6 +402,17 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.SaveChanges();
         }
 
-        
+        public void ChangePassword(string NewPsw,string CnfPsw,int Userid)
+        {
+            User u = _CIDbContext.Users.Where(u=>u.UserId==Userid).FirstOrDefault();
+            if (u != null)
+            {
+                u.Password = NewPsw;
+                u.UpdatedAt=DateTime.Now;
+                _CIDbContext.Update(u);
+                _CIDbContext.SaveChanges();
+            }
+        }
+
     }
 }

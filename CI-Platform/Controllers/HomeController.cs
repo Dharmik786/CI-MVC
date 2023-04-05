@@ -74,7 +74,7 @@ namespace CI_Platform.Controllers
             m.users = _IUser.user();
             m.mission = _IUser.mission();
             m.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
-            m.timesheets = _IUser.timesheets().Where(U=>U.UserId==Convert.ToInt64(userId)).ToList();
+            m.timesheets = _IUser.timesheets().Where(U => U.UserId == Convert.ToInt64(userId)).ToList();
             return View(m);
         }
 
@@ -82,14 +82,14 @@ namespace CI_Platform.Controllers
         public IActionResult AddTimeSheet(MissionList model)
         {
             var userId = HttpContext.Session.GetString("user");
-            _IUser.AddTime(model.missionId, Convert.ToInt32(userId),model.hour,model.min,model.action,model.date,model.notes,model.Hidden);
-            return RedirectToAction("VolunteeringTimeSheet","Home");
+            _IUser.AddTime(model.missionId, Convert.ToInt32(userId), model.hour, model.min, model.action, model.date, model.notes, model.Hidden);
+            return RedirectToAction("VolunteeringTimeSheet", "Home");
         }
 
         public IActionResult DeleteTimeSheet(int id)
         {
             _IUser.DeleteTimeSheet(id);
-            return RedirectToAction("VolunteeringTimeSheet","Home");
+            return RedirectToAction("VolunteeringTimeSheet", "Home");
         }
         [HttpPost]
         public async Task<IActionResult> EditTimeTimeSheet(int id)
@@ -97,18 +97,63 @@ namespace CI_Platform.Controllers
             var timesheet = _IUser.timesheets().Where(e => e.TimesheetId == id).FirstOrDefault();
             return Json(new { success = true, Timesheet = timesheet });
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> EditGoalTimeSheet(int id)
-        {           
+        {
             var timesheet = _IUser.timesheets().Where(e => e.TimesheetId == id).FirstOrDefault();
             return Json(new { success = true, Timesheet = timesheet });
         }
-      
+
+
 
         public IActionResult UserProfile()
         {
-            return View();
+            var userId = HttpContext.Session.GetString("user");
+
+            UserProfile u = new UserProfile();
+            u.user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
+            var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
+            u.cities = _IUser.cities();
+            u.countries = _IUser.countries();
+
+
+            u.FirstName = user.FirstName;
+            u.LastName = user.LastName;
+            u.EmployeeId = user.EmployeeId;
+            u.Title = user.Title;
+            u.Department = user.Department;
+            u.MyProfile = user.ProfileText;
+            u.WhyIVol = user.WhyIVolunteer;
+             u.Country = (int)user.CountryId;
+            u.City = (int)user.CityId;
+            //u.Availablity = user.Availablity;
+            u.LinkedIn = user.LinkedInUrl;
+
+            
+            return View(u);
+        }
+
+
+        [HttpPost]
+        public bool ChangePassword(string oldPsw, string NewPsw, string CnfPsw)
+        {
+            var userId = HttpContext.Session.GetString("user");
+
+            UserProfile u = new UserProfile();
+            u.user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
+
+            if (oldPsw != u.user.Password)
+            {
+                return false;
+            }
+            else
+            {
+                _IUser.ChangePassword(NewPsw, CnfPsw, Convert.ToInt32(userId));
+                return true;
+            }
+
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

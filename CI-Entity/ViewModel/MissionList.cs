@@ -18,7 +18,7 @@ namespace CI_Entity.ViewModel
         public List<MissionMedium> missionMedia { get; set; }
         public List<FavoriteMission> favoriteMissions { get; set; }
         public List<User> Users { get; set; }
-
+        public User user { get; set; }
         public List<GoalMission> goalMissions { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
  

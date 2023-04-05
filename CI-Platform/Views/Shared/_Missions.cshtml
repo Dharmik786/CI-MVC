@@ -118,18 +118,18 @@
                         @if (userId != null)
                         {
                             <button class="mb-2 landing-page-btn-img " onclick="addToFav(@item.MissionId)">
-                                @* @{
-                        var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
-                        }
-                        @if (fav != null)
-                        {
-                        <img src="~/Image/fill-heart.png">
-                        }
-                        else
-                        {
-                        <img src="/Image/heart1.png">
-                        }*@
-                                <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
+                               @* @{
+                                    var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
+                                }
+                                @if (fav != null)
+                                {
+                                    <img src="~/Image/fill-heart.png">
+                                }
+                                else
+                                {
+                                    <img src="/Image/heart1.png">
+                                }*@
+                             <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
                             </button>
                             <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <img src="/Image/user.png" alt="">
@@ -232,7 +232,8 @@
                         <div class="rule mt-2">
                             <hr>
                             <button class="date-btn mt-1 p-1" style="border: 1px solid #eaeaea;">
-                                From @item.StartDate.ToString().Split(" ")[0] to @item.EndDate.ToString().Split(" ")[0]</button>
+                                From @item.StartDate.ToString().Split(" ")[0] to @item.EndDate.ToString().Split(" ")[0]
+                            </button>
                             <hr>
                         </div>
                     }
@@ -348,15 +349,14 @@
     }
 
     function addToFav(missonid) {
-        debugger;
         $.ajax({
             type: 'GET',
             url: "/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
             success: function (result) {
-                    console.log("Liked or Unliked mission.");
+                console.log("Liked or Unliked mission.");
     @* $('.add_fav').html($(result).find('.add_fav').html());*@
-                },
+                    },
             error: function () {
                 alert("please login first.");
             }
@@ -380,7 +380,7 @@
             data: { 'emailList': mail, 'missionid': missionid },
             success: function (result) {
                 alert("Recomendations sent successfully!")
-                    send.innerHTML = "sent"
+                send.innerHTML = "sent"
             },
             error: function () {
                 // Handle error response from the server, e.g. show an error message to the user
