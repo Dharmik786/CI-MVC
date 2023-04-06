@@ -5,8 +5,7 @@ namespace CI_Platform.Models
     public class Registration
     {
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please Provide First Name")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "First Name Should be min 2 and max 20 length")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The Old Password field is required.")]
         public string FirstName { get; set; }
 
         [Required]
@@ -33,9 +32,6 @@ namespace CI_Platform.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword
-        {
-            get; set;
-        }
+        public string ConfirmPassword { get; set; }
     }
 }

@@ -76,7 +76,7 @@
             @{
                 var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId));
                 var isClosed = 0;
-                if (item.StartDate < DateTime.Now)
+                if (item.EndDate < DateTime.Now)
                 {
                     isClosed = 1;
                 }

@@ -12,6 +12,7 @@ namespace CI_Entity.ViewModel
     public class UserProfile
     {
         public User user { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please Provide Old Password")]
         public string OldPsw { get; set; }
 
         [Required]
@@ -28,7 +29,8 @@ namespace CI_Entity.ViewModel
 
         public List<Country> countries { get; set; }
         public List<City> cities { get; set; }
-
+        public List<Skill> skills { get; set; }
+        public List<UserSkill> Userskills { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmployeeId { get; set; }

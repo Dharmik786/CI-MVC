@@ -715,6 +715,9 @@ public partial class CIDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Views)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("views");
 
             entity.HasOne(d => d.Mission).WithMany(p => p.Stories)
                 .HasForeignKey(d => d.MissionId)
@@ -853,8 +856,7 @@ public partial class CIDbContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("availablity");
             entity.Property(e => e.Avatar)
-                .HasMaxLength(2048)
-                .IsUnicode(false)
+                .HasColumnType("text")
                 .HasColumnName("avatar");
             entity.Property(e => e.CityId).HasColumnName("city_id");
             entity.Property(e => e.CountryId).HasColumnName("country_id");

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -113,10 +114,26 @@ namespace CI_Platform.Controllers
 
             UserProfile u = new UserProfile();
             u.user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
-            var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.cities = _IUser.cities();
             u.countries = _IUser.countries();
+            u.skills = _IUser.GetAllskill();
+            u.Userskills = _IUser.GetUserSkill(Convert.ToInt32(userId));
 
+            var allskills = _IUser.GetAllskill();
+            ViewBag.allskills = allskills;
+            var skills = from US in _CIDbContext.UserSkills
+                         join S in _CIDbContext.Skills on US.SkillId equals S.SkillId
+                         select new { US.SkillId, S.SkillName, US.UserId };
+            var uskills = skills.Where(e => e.UserId == Convert.ToInt32(userId)).ToList();
+            ViewBag.userskills = uskills;
+            foreach (var skill in uskills)
+            {
+                var rskill = allskills.FirstOrDefault(e => e.SkillId == skill.SkillId);
+                allskills.Remove(rskill);
+            }
+            ViewBag.remainingSkills = allskills;
+
+            var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.FirstName = user.FirstName;
             u.LastName = user.LastName;
             u.EmployeeId = user.EmployeeId;
@@ -146,19 +163,18 @@ namespace CI_Platform.Controllers
 
             var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
 
-//            if (model.Avatar != null)
-//            {
-//                var FileName = "";
-//                using (var ms = new MemoryStream())
-//                {
-//                    await model.Avatar.CopyToAsync(ms)
-//;
-//                    var imageBytes = ms.ToArray();
-//                    var base64String = Convert.ToBase64String(imageBytes);
-//                    FileName = "data:image/png;base64," + base64String;
-//                }
-//                user.Avatar = FileName;
-//            }
+            if (model.Avatar != null)
+            {
+                var FileName = "";
+                using (var ms = new MemoryStream())
+                {
+                    await model.Avatar.CopyToAsync(ms);
+                    var imageBytes = ms.ToArray();
+                    var base64String = Convert.ToBase64String(imageBytes);
+                    FileName = "data:image/png;base64," + base64String;
+                }
+                user.Avatar = FileName;
+            }
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
@@ -179,6 +195,28 @@ namespace CI_Platform.Controllers
             return RedirectToAction("UserProfile", "Home");
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> SaveUserSkills(long[] selectedSkills)
+        {
+            var userid = HttpContext.Session.GetString("user");
+            long id = Convert.ToInt64(userid);
+            var abc = _CIDbContext.UserSkills.Where(e => e.UserId == id).ToList();
+            _CIDbContext.RemoveRange(abc);
+            _CIDbContext.SaveChanges();
+            foreach (var skills in selectedSkills)
+            {
+
+
+                _IUser.AddUserSkills(skills, Convert.ToInt32(userid));
+
+
+            }
+
+            return RedirectToAction("UserProfile", "Home");
+
+
+        }
 
         [HttpPost]
         public bool ChangePassword(string oldPsw, string NewPsw, string CnfPsw)

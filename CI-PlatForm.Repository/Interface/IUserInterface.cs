@@ -46,7 +46,7 @@ namespace CI_PlatForm.Repository.Interface
        public long SubmitStory(long missionId,long userId,string title,string description,DateTime date,long storyId);
        public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId, long storyId,long sId);
        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
-
+        public void DraftDelete(int storyId);
         public void RemoveMedia(long stroryId); 
         public void cmtdetele(int cmtId, int userId);
         public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes,long TimesheetId);
@@ -54,6 +54,8 @@ namespace CI_PlatForm.Repository.Interface
 
         public User GetUserByUserId(long userId);
         public void ChangePassword(string NewPsw, string CnfPsw,int UserId);
-      
+        public List<Skill> GetAllskill();
+        public List<UserSkill> GetUserSkill(int userId);
+        public void AddUserSkills(long SkillId,int UserId);
     }
 }

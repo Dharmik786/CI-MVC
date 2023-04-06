@@ -11,7 +11,6 @@
 </head>
 <body>
     <!-- ------------------first navbar----------------------------------- -->
-    
     <!------------------------------------------------ second navbar----------------------------------- -->
 
     <nav class="navbar navbar-expand-md navbar-lighte header2" aria-label="Second navbar example">
@@ -111,28 +110,21 @@
                            aria-expanded="false">
                             Skill
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item p-0 mt-1" href="#">
-                                    <input type="checkbox" value="Skill1" name="Skill1" id=""
-                                           class="ms-3 checkbox ">Skill1
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item p-0 mt-1" href="#">
-                                    <input type="checkbox" value="Skill2" name="Skill2" id=""
-                                           class="ms-3 checkbox ">Skill2
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item p-0 mt-1" href="#">
-                                    <input type="checkbox" value="Skill3" name="Skill3" id=""
-                                           class="ms-3 checkbox ">Skill3
-                                </a>
-                            </li>
+                        <ul class="dropdown-menu" style="height:200px; overflow-y:auto;">
+                            @if (ViewBag.skills != null)
+                            {
+                                @foreach (var item in ViewBag.skills)
+                                {
+                                    <li>
+
+                                        <a class="dropdown-item p-0 mt-1" href="#">
+                                            <input type="checkbox" id="" class="checkbox ms-3 " id="@item.Title" value="@item.Title">
+                                            @item.Title
+                                        </a>
+
+                                    </li>
+                                }
+                            }
                         </ul>
                     </li>
 

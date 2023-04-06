@@ -6,24 +6,126 @@ function ChangePsw() {
     var oldPsw = document.getElementById('inputPassword1').value;
     var NewPsw = document.getElementById('inputPassword2').value;
     var CnfPsw = document.getElementById('inputPassword3').value;
-   
-    $.ajax({
-        type: "POST",
-        url: "/Home/ChangePassword",
-        data: { 'oldPsw': oldPsw, 'NewPsw': NewPsw, 'CnfPsw': CnfPsw },
-        success: function (result) {
-            if (result == true) {
-                alert("Password Change SuccessFully");
-                document.getElementById("PswClose").click();
+
+    if (oldPsw == "") {
+        alert("First Enter Old Password")
+    }
+
+    else if (NewPsw == "") {
+        alert("Please Enter New Password")
+    }
+    else if (CnfPsw == "") {
+        alert("Please Enter Confrim Password")
+    }
+    else if (NewPsw != CnfPsw) {
+        alert("Passowrd and Confrim Password Does not Match");
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: "/Home/ChangePassword",
+            data: { 'oldPsw': oldPsw, 'NewPsw': NewPsw, 'CnfPsw': CnfPsw },
+            success: function (result) {
+                if (result == true) {
+                    document.getElementById("PswClose").click();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Password Change SuccessFully',
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
+                }
+                else if (result == false) {
+                    alert("Your Old Passoword is Incorrect")
+                }
+            },
+            error: function () {
+                console.log("Erroor");
             }
-            else if (result == false) {
-                alert("Your Old Passoword is Incorrect")
-            }
-        },
-        error: function () {
-            console.log("Erroor");
-        }
-    });
-   
+        });
+    }
+
+
+
 }
 
+document.getElementById('imgDiv').addEventListener("click", e => {
+    document.getElementById('inputImg').click();
+});
+
+document.getElementById('inputImg').addEventListener("change", e => {
+    const reader = new FileReader(); // Create a new FileReader object
+    reader.onload = function () {
+        document.getElementById('imgDiv').src = reader.result; // Set the source of the image tag to the selected image
+    }
+    reader.readAsDataURL(e.target.files[0]); // Read the selected file as a data URL
+});
+
+
+
+function ved1() {
+    var a = document.getElementById("s1");
+    var c = document.getElementById("s2");
+
+    for (var i = 0; i < a.length; i++) {
+        if (a.options[i].selected == true) {
+            a.options[i].selected = false
+            c.add(a.options[i])
+
+            ved1()
+        }
+
+    }
+}
+function ved2() {
+    var a = document.getElementById("s1");
+    var c = document.getElementById("s2");
+
+    for (var i = 0; i < c.length; i++) {
+        if (c.options[i].selected == true) {
+            c.options[i].selected = false
+            a.add(c.options[i])
+            ved2()
+        }
+    }
+}
+function ved3() {
+    var a = document.getElementById("s1");
+    var c = document.getElementById("s2");
+    for (var i = 0; i < a.length;) {
+        c.add(a.options[c, i])
+    }
+}
+function ved4() {
+    var a = document.getElementById("s1");
+    var c = document.getElementById("s2");
+    for (var i = 0; i < c.length;) {
+        a.add(c.options[a, i])
+    }
+}
+document.getElementById('skillSave').addEventListener("click", e => {
+    var selectedSkills = [];
+    const skillsSelected = $('#s2 option');
+
+    for (var i = 0; i < skillsSelected.length; i++) {
+        selectedSkills.push(skillsSelected[i].value);
+    }
+
+    console.log(selectedSkills);
+    $.ajax({
+        url: '/Home/SaveUserSkills',
+        type: 'POST',
+        data: { selectedSkills: selectedSkills },
+
+        success: function (response) {
+
+            $('#userskilldiv').html($(response).find('#userskilldiv').html());
+            document.getElementById('close').click();
+
+        },
+        error: function () {
+            alert("could not comment");
+        }
+    });
+});

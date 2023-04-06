@@ -1,9 +1,14 @@
 ﻿function TimeDelete(id) {
+
     $.ajax({
         type: "POST",
         url: "/Home/DeleteTimeSheet",
         data: { 'id': id },
         success: function (result) {
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success')
             $('.tbl1').html($(result).find('.tbl1').html());
         },
         error: function () {
@@ -17,6 +22,10 @@ function GoalDelete(id) {
         url: "/Home/DeleteTimeSheet",
         data: { 'id': id },
         success: function (result) {
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success')
             $('.tbl').html($(result).find('.tbl').html());
         },
         error: function () {

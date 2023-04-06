@@ -411,11 +411,11 @@
                         <div class="row mt-2">
 
                             <div class="row mt-3">
-                               @* <div class="">
-                                    <textarea maxlength="100" style="width:100%" placeholder="Enter Your Comment.." id="comment"></textarea>
+                                @* <div class="">
+                                <textarea maxlength="100" style="width:100%" placeholder="Enter Your Comment.." id="comment"></textarea>
                                 </div>*@
-                                <div class="form-floating  mt-2" >
-                                    <textarea class="form-control "  placeholder="Leave a comment here" id="comment" style="height: 100px" name="comment"></textarea>
+                                <div class="form-floating  mt-2">
+                                    <textarea class="form-control " placeholder="Leave a comment here" id="comment" style="height: 100px" name="comment"></textarea>
                                     <label for="floatingTextarea2">Comments</label>
                                 </div>
                                 @if (userId != null)
@@ -441,7 +441,7 @@
                                     <div class="col-12 d-flex bg-white mt-3  align-items-center">
                                         @if (i.User.Avatar != null)
                                         {
-                                            <img src="@i.User.Avatar" class="rounded-circle ">
+                                            <img src="@i.User.Avatar" class="rounded-circle " style="width:100px;height:100px;">
                                         }
                                         else
                                         {
@@ -589,19 +589,15 @@
                     console.log("aefsda");
                     $('.recentvol').html($(response).find('.recentvol').html());
                     $('#avgrating').html($(response).find('#avgrating').html());
-
                 },
                 error: function () {
                     alert("could not like mission");
                 }
             });
         }
-
-
         function loginalert() {
             alert("login first");
         }
-
         function addToFav(missonid) {
             $.ajax({
                 type: 'GET',
@@ -614,11 +610,8 @@
                 error: function () {
                     alert("please login first.");
                 }
-
             });
-
         }
-
         function PostComment(missionid) {
             var cmt = document.getElementById("comment").value;
             console.log(cmt)
@@ -632,27 +625,21 @@
                     console.log("comment posted")
                 },
                 error: function () {
-
                 }
-
             });
-
         }
-
         function sendmail(missionid) {
             const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
             console.log(mail)
             console.log(missionid)
             var send = document.getElementById("sendmail");
             send.innerHTML = "Sending";
-
             $.ajax({
                 url: '/Volunteering/Sendmail',
                 type: 'POST',
                 data: { 'emailList': mail, 'missionid': missionid },
                 success: function (result) {
                     alert("Recomendations sent successfully!")
-
         @*  alert("Recomendations sent successfully!");
                         const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
                         checkboxes.forEach((checkbox) => {
@@ -666,17 +653,13 @@
                 }
             });
         }
-
         function Rating(starid, missionid) {
-
             console.log(starid)
-
             $.ajax({
                 type: 'POST',
                 url: "/Volunteering/Rating",
                 data: { 'missonid': missionid, 'starid': starid },
                 success: function (result) {
-
                     $('.avgRate').html($(result).find('.avgRate').html());
                     $('.rating').html($(result).find('.rating').html());
                     console.log("Rating Done")
@@ -684,12 +667,8 @@
                 error: function () {
                     console.log("Erroor");
                 }
-
             });
-
-
         }
-
         function applyMission(missionid) {
             debugger;
             $.ajax({
@@ -699,19 +678,15 @@
                 success: function (res) {
         @* alert("mission applied");*@
                         $('#applydiv').html($(res).find('#applydiv').html());
-
                 }
-
             });
         }
-
         function cmtdelete(cmtid, missionid) {
             console.log(cmtid)
             $.ajax({
                 type: 'POST',
                 url: "/Volunteering/cmtDelete",
                 data: { 'cmtId': cmtid, 'missionId': missionid },
-
                 success: function (res) {
                     console.log("comt delete")
                     $('.cmtdiv').html($(res).find('.cmtdiv').html());
@@ -721,6 +696,5 @@
                 }
             });
         }
-
     </script>
 </html>

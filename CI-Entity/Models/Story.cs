@@ -13,6 +13,8 @@ public partial class Story
 
     public string? Title { get; set; }
 
+    public long? Views { get; set; }
+
     public string? Description { get; set; }
 
     public string? Status { get; set; }

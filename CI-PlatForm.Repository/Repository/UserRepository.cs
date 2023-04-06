@@ -142,6 +142,10 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.MissionApplications.ToList();
         }
+        public List<Skill> GetAllskill()
+        {
+            return _CIDbContext.Skills.ToList();
+        }
         public FavoriteMission addfav(int missionId, int userId)
         {
             var fav = new FavoriteMission
@@ -324,7 +328,22 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.StoryMedia.ToList();
         }
-        
+        public void DraftDelete(int storyId)
+        {
+            var story = _CIDbContext.Stories.Where(e => e.StoryId == storyId).FirstOrDefault();
+            var stroryMedia = _CIDbContext.StoryMedia.Where(e => e.StoryId == story.StoryId).ToList();
+            if(storyMedia != null)
+            {
+                foreach (var s in stroryMedia)
+                {
+                    _CIDbContext.Remove(s);
+                }
+            }
+            
+            _CIDbContext.Remove(story);
+            _CIDbContext.SaveChanges();
+        }
+
         public void cmtdetele(int cmtId, int userId)
         {
             var cmt = _CIDbContext.Comments.Where(c=>c.CommentId==cmtId).FirstOrDefault();
@@ -415,7 +434,17 @@ namespace CI_PlatForm.Repository.Repository
             }
         }
 
-        
-
+        public List<UserSkill> GetUserSkill(int userId)
+        {
+            return _CIDbContext.UserSkills.Where(e => e.UserId == userId).ToList();
+        }
+        public void AddUserSkills(long SkillId, int UserId)
+        {
+           UserSkill skill = new UserSkill();
+            skill.SkillId = SkillId;
+            skill.UserId = UserId;
+            _CIDbContext.Add(skill);
+            _CIDbContext.SaveChanges();
+        }
     }
 }

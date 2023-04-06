@@ -41,9 +41,12 @@ namespace CI_Platform.Controllers
             missionList.stories = _IUser.stories();
             missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             missionList.missionThemes = _IUser.missionThemes();
-
+            
             var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
+            data.Views = data.Views + 1;
             missionList.storydetails = data;
+            _CIDbContext.Update(data);
+            _CIDbContext.SaveChanges();
             return View(missionList);
         }
         [HttpPost]
@@ -212,6 +215,10 @@ namespace CI_Platform.Controllers
             return View(missionList);
         }
 
-
+        public bool DraftDelete(int storyId)
+        {
+            _IUser.DraftDelete(storyId);
+            return true;
+        }
     }
 }

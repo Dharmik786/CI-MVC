@@ -19,29 +19,11 @@
 </head>
 <body>
 
-    @*<div class="container-fluid p-0">
-        <div class="story-header">
-
-            <div class="img-div">
-                <img src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png" class="story-img">
-            </div>
-
-            <div class="img-btn-div">
-                <p class="story-text">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, similique? Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Perspiciatis molestiae quasi fugit adipisci repudiandae consequatur.
-                </p>
-                <a asp-controller="Home" asp-action="AddStory"><button class="sys-btn">Share your Story <i class="bi bi-arrow-right"></i></button></a>
-            </div>
-
-        </div>
-
-    </div>*@
 
     <div class="container grid-container mt-4">
 
-        <div class="row ">
-            @if(Model.stories.Count()!=0)
+        <div class="row" id="Draft">
+            @if (Model.stories.Count() != 0)
             {
                 <h1>Drafted Story</h1>
                 @foreach (var i in Model.stories)
@@ -65,8 +47,8 @@
                                          src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
                                          alt="Card image cap">
                                 }
-
-                                <div class="view-details-btn p-1"><button style="border-radius:25px"> <a href="/Story/AddStory?storyId=@i.StoryId" style="text-decoration:none;color:black">Edit</a><i class="bi bi-arrow-right"></i></button></div>
+                                <div class="view-details-btn p-1"><button style="border-radius:25px" class="vbtn"> <a href="/Story/AddStory?storyId=@i.StoryId" style="text-decoration:none;color:black">Edit</a><i class="bi bi-arrow-right"></i></button></div>
+                                <div><img src="~/Image/bin.png" class="delete-btn" onclick="DraftDelete(@i.StoryId)" /></div>
                                 <div><button class="theme-btn ">@i.Mission.Theme.Title</button></div>
 
                             </div>
@@ -95,46 +77,69 @@
             else
             {
                 <div>
-                <h4>No Draft Story</h4>
+                    <h4>No Draft Story</h4>
                 </div>
             }
-           
 
 
 
 
-           @* <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+
+            @* <nav aria-label="Page navigation example">
+            <ul class="pagination">
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&lt;</span>
+            </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&gt;</span>
+            </a>
+            </li>
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+            </ul>
             </nav>*@
 
         </div>
 
     </div>
-
-
 </body>
+
+<script>
+    function DraftDelete(storyId) {
+     
+        $.ajax({
+            url: '/Story/DraftDelete',
+            type: 'POST',
+            data: { 'storyId': storyId },
+            success: function (result) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Draft Deleted',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+                location.reload();
+            },
+            error: function () {
+                alert('Error: Could not recommend mission.');
+            }
+        });
+    }
+</script>
+
 </html>

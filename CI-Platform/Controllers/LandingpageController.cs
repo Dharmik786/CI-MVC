@@ -41,7 +41,7 @@ namespace CI_Platform.Controllers
             missionList.missionApplications = _IUser.missionApplications();
             missionList.userId = Convert.ToInt32(userId);
             missionList.missionMedia = _IUser.missionMedia();
-
+            missionList.skills = _IUser.skills();
 
             List<City> city = _IUser.cities();
             ViewBag.City = city;
@@ -54,6 +54,9 @@ namespace CI_Platform.Controllers
 
             List<GoalMission> goalMissions = _IUser.goalMissions();
             ViewBag.GoalMissions = goalMissions;
+
+            List<Skill> skills = _IUser.GetAllskill();
+            ViewBag.skills = skills;
 
             missionList.favoriteMissions = _IUser.favoriteMissions();
             //Pagination

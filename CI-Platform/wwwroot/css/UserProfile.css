@@ -132,3 +132,11 @@ input:focus, textarea:focus, select:focus {
         outline: none !important;
         box-shadow: none !important;
     }
+
+.skillimg {
+    background-color: white;
+}
+
+select[multiple]:focus option:checked {
+    background: #F88634 linear-gradient(0deg, #F88634 0%, #F88634 100%);
+}
