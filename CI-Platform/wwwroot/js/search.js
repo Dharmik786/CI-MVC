@@ -6,7 +6,6 @@ var search = "";
 var sortValue = ""
 
 
-
 function list() {
     localStorage.setItem("view", "list");
     for (i = 0; i < card.length; i++) {

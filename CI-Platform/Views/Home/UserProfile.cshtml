@@ -154,11 +154,13 @@
                         <hr>
                         <div class="user-skill-list-div" id="userskilldiv">
                             <ul class="user-skills-list">
+                               
                                 @if (Model.Userskills != null)
                                 {
                                     foreach(var i in Model.Userskills)
                                     {
                                         <li>@i.Skill.SkillName</li>
+                                       
                                     }
                                 }
                             </ul>

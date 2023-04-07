@@ -442,7 +442,7 @@ namespace CI_PlatForm.Repository.Repository
         {
            UserSkill skill = new UserSkill();
             skill.SkillId = SkillId;
-            skill.UserId = UserId;
+            skill.UserId = UserId; 
             _CIDbContext.Add(skill);
             _CIDbContext.SaveChanges();
         }

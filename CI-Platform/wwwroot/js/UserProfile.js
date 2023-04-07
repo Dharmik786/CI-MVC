@@ -1,7 +1,10 @@
 ﻿$('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
 })
-
+var loader = document.getElementById('preloader');
+window.addEventListener("load", function () {
+    loader.style.display = "none";
+})
 function ChangePsw() {
     var oldPsw = document.getElementById('inputPassword1').value;
     var NewPsw = document.getElementById('inputPassword2').value;

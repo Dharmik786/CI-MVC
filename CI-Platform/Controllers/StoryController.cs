@@ -56,32 +56,41 @@ namespace CI_Platform.Controllers
 
             foreach (var i in emailList)
             {
-                var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
-                var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
-
-                var missionlink = Url.Action("StoryDetails", "Story", new { user = user.UserId, missionid = missionid }, Request.Scheme);
-
-                var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
-                var toAddress = new MailAddress(user.Email);
-                var subject = "Mission Request";
-                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
-
-                var message = new MailMessage(fromAddress, toAddress)
+                try
                 {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
+                    var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
+                    var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                    var missionlink = Url.Action("StoryDetails", "Story", new { user = user.UserId, missionid = missionid }, Request.Scheme);
+
+                    var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
+                    var toAddress = new MailAddress(user.Email);
+                    var subject = "Mission Request";
+                    var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
+
+                    var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    };
+
+                    var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
+                        EnableSsl = true
+
+                    };
+                    smtpClient.Send(message);
+                    //_IUser.AddMissionInvite(userId, missionid, user.UserId);
+                }
+                catch (Exception ex)
                 {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
-                    EnableSsl = true
+                        
+                }
 
-                };
-                smtpClient.Send(message);
-                //_IUser.AddMissionInvite(userId, missionid, user.UserId);
+
             }
         }
         public IActionResult AddStory(long storyId)
@@ -121,6 +130,7 @@ namespace CI_Platform.Controllers
                         ms.attachment.Add(file);
                     }
                 }
+                ms.storyMedia = _IUser.storyMedia().Where(e=>e.StoryId == storyId).ToList();    
 
                 //var sm = _IUser.storyMedia().Where(e => e.StoryId == s.StoryId).FirstOrDefault();
                 //    ms.attachment = sm.StoryMediaId;

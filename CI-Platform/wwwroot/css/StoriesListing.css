@@ -13,7 +13,14 @@
    /* z-index: 1;
     overflow: hidden;*/
 }
-    
+
+#preloader {
+    background: white url(/Image/Pre.gif) no-repeat center center;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+}
 
 
 .img-btn-div {

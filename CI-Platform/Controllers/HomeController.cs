@@ -133,6 +133,12 @@ namespace CI_Platform.Controllers
             }
             ViewBag.remainingSkills = allskills;
 
+           List<UserSkill> us = _IUser.GetUserSkill(Convert.ToInt32(userId));
+           List<Skill> s = _IUser.GetAllskill();
+            
+           
+
+
             var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.FirstName = user.FirstName;
             u.LastName = user.LastName;
@@ -206,16 +212,9 @@ namespace CI_Platform.Controllers
             _CIDbContext.SaveChanges();
             foreach (var skills in selectedSkills)
             {
-
-
                 _IUser.AddUserSkills(skills, Convert.ToInt32(userid));
-
-
             }
-
             return RedirectToAction("UserProfile", "Home");
-
-
         }
 
         [HttpPost]

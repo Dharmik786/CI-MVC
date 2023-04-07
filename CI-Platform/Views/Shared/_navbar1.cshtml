@@ -21,6 +21,7 @@
         var avtar = Context.Session.GetString("Avtar");
 
     }
+    <div id="preloader"></div>
     <!-- ------------------first navbar----------------------------------- -->
     <nav class="navbar navbar-expand-md navbar-light  header " aria-label="Eighth navbar example">
         <div class="container">
@@ -159,6 +160,10 @@
         function loginalert() {
             alert("Login First");
         }
+        var loader = document.getElementById('preloader');
+        window.addEventListener("load", function () {
+            loader.style.display = "none";
+        })
     </script>
 
 

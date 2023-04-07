@@ -104,11 +104,11 @@ hr {
     font-weight: 500;
     color: black !important;
 }
-div .cmnt{
+div .cmnt {
     overflow: auto;
     height: 300px;
     width: 100%;
-    background-color:gray;
+    background-color: #706c6c0f;
 }
 div .media{
     background-color:white;

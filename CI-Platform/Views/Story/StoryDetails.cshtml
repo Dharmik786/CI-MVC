@@ -199,8 +199,14 @@
             type: 'POST',
             data: { 'emailList': mail, 'missionid': missionid },
             success: function (result) {
-                alert("Recomendations sent successfully!")
-                send.innerHTML = "sent"
+                send.innerHTML = "sent";
+                Swal.fire({
+                position:'top-end',
+                icon: 'success',
+                title: 'Story Send Successfully',
+                showConfirmButton: false,
+                timer: 1500
+                })
             },
             error: function () {
                 // Handle error response from the server, e.g. show an error message to the user

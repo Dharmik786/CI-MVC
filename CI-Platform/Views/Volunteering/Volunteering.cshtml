@@ -19,7 +19,6 @@
 </head>
 
 <body>
-
     <div class="container mt-3">
         <div class="row">
             @{
@@ -82,7 +81,7 @@
                 </div>
             </div>
 
-            <div class="card col-12 col-lg-6 col-md-12 col-sm-12">
+            <div class="card col-12 col-lg-6 col-md-12 col-sm-12" style="border:none;">
 
                 <div class="card-body">
                     <div class="card-title fs-5">
@@ -239,31 +238,31 @@
                                 int count = 0;
                                 @for (var i = 1; i <= Model.userRate; i++)
                                 {
-                                    <i class="bi bi-star-fill" style="color:yellow" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                    <i class="bi bi-star-fill" style="color:yellow;font-size:27px;" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
                                     count++;
                                 }
                                 @for (var i = count + 1; i <= 5; i++)
                                 {
-                                    <i class="bi bi-star-fill" id="@i" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                    <i class="bi bi-star-fill" id="@i" style="font-size:27px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
                                 }
                             }
                             else
                             {
 
-                                <i class="bi bi-star-fill" id="1" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                                <i class="bi bi-star-fill" id="2" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                                <i class="bi bi-star-fill" id="3" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                                <i class="bi bi-star-fill" id="4" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
-                                <i class="bi bi-star-fill" id="5" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="1" style="font-size:24px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="2" style="font-size:24px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="3" style="font-size:24px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="4" style="font-size:24px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
+                                <i class="bi bi-star-fill" id="5" style="font-size:24px;" onclick="Rating(this.id,@Model.singleMission.MissionId)"></i>
                             }
                         }
                         else
                         {
-                            <i class="bi bi-star-fill" id="1" onclick="loginalert()"></i>
-                            <i class="bi bi-star-fill" id="2" onclick="loginalert()"></i>
-                            <i class="bi bi-star-fill" id="3" onclick="loginalert()"></i>
-                            <i class="bi bi-star-fill" id="4" onclick="loginalert()"></i>
-                            <i class="bi bi-star-fill" id="5" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="1" style="font-size:27px;" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="2" style="font-size:27px;" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="3" style="font-size:27px;" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="4" style="font-size:27px;" onclick="loginalert()"></i>
+                            <i class="bi bi-star-fill" id="5" style="font-size:27px;" onclick="loginalert()"></i>
                         }
 
 
@@ -535,21 +534,22 @@
                     <div class="card-body">
                         <div class="row">
 
-
-                            @foreach (var i in ViewBag.recentvolunteered)
+                            @if (Model.missionApplications != null)
                             {
-                                <div class="col-4  ">
-                                    <div class=" ms-4 me-2 text-decoration-none text-black justify-content-center ">
-                                        <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:16vh;" />
-                                        <label id="" class="text-center">@i.User.FirstName @i.User.LastName</label>
+                                @foreach (var i in Model.missionApplications)
+                                {
+                                    <div class="col-4  ">
+                                        <div class=" ms-4 me-2 text-decoration-none text-black justify-content-center ">
+                                            <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:16vh;" />
+                                            <label id="" class="text-center">@i.User.FirstName @i.User.LastName</label>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             }
-
 
                         </div>
                         <div class="row text-center">
-                            <div class="col-2">
+                            @*<div class="col-2">
                                 @if (ViewBag.PageIndex > 1)
                                 {
 
@@ -564,7 +564,7 @@
                                     <button class="page-link" onclick="recent(@ViewBag.PageIndex + 1,@Model.singleMission.MissionId)"><img src="/Image/right-arrow1.png" alt=""></button>
 
                                 }
-                            </div>
+                            </div>*@
                         </div>
 
                     </div>

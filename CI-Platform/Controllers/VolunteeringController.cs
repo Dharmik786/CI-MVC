@@ -25,7 +25,7 @@ namespace CI_Platform.Controllers
             _IUser = IUser;
         }
 
-        public IActionResult Volunteering(long id, int missionid,int pageIndex=1)
+        public IActionResult Volunteering(long id, int missionid, int pageIndex = 1)
         {
             var userId = HttpContext.Session.GetString("user");
             //ViewBag.UserId = int.Parse(userId);
@@ -67,7 +67,14 @@ namespace CI_Platform.Controllers
             vMMission.singleMission = data;
 
             vMMission.relatedMission = _IUser.mission().Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
-
+            if (userId != null)
+            {
+                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid && e.UserId != Convert.ToInt32(userId)).ToList();
+            }
+            else
+            {
+                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid ).ToList();
+            }
 
 
             int avgRating = 0;
@@ -87,20 +94,20 @@ namespace CI_Platform.Controllers
 
             vMMission.avgrating = avgRating;
 
-          
 
-            int pageSize = 2; // Set the page size to 9
-            var volunteers = vMMission.recentVolunteering; // Retrieve all volunteers from data source
-            int totalCount = volunteers.Count(); // Get the total number of volunteers
-            int skip = (pageIndex - 1) * pageSize;
-            var volunteersOnPage = volunteers.Skip(skip).Take(pageSize).ToList(); // Get the volunteers for the current page
 
-            ViewBag.TotalCount = totalCount;
-            ViewBag.PageSize = pageSize;
-            ViewBag.PageIndex = pageIndex;
-            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-            ViewBag.TotalVol = vMMission.recentVolunteering.Count();
-            ViewBag.recentvolunteered = volunteersOnPage;
+            //int pageSize = 2; // Set the page size to 9
+            //var volunteers = vMMission.recentVolunteering; // Retrieve all volunteers from data source
+            //int totalCount = volunteers.Count(); // Get the total number of volunteers
+            //int skip = (pageIndex - 1) * pageSize;
+            //var volunteersOnPage = volunteers.Skip(skip).Take(pageSize).ToList(); // Get the volunteers for the current page
+
+            //ViewBag.TotalCount = totalCount;
+            //ViewBag.PageSize = pageSize;
+            //ViewBag.PageIndex = pageIndex;
+            //ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            //ViewBag.TotalVol = vMMission.recentVolunteering.Count();
+            //ViewBag.recentvolunteered = volunteersOnPage;
 
             return View(vMMission);
         }
@@ -185,7 +192,7 @@ namespace CI_Platform.Controllers
 
                 };
                 smtpClient.Send(message);
-                _IUser.AddMissionInvite(userId,missionid,user.UserId);
+                _IUser.AddMissionInvite(userId, missionid, user.UserId);
             }
         }
 
@@ -240,7 +247,7 @@ namespace CI_Platform.Controllers
             return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
         }
 
-        public IActionResult cmtDelete(int cmtId,int missionId)
+        public IActionResult cmtDelete(int cmtId, int missionId)
         {
             var userId = HttpContext.Session.GetString("user");
             _IUser.cmtdetele(cmtId, int.Parse(userId));

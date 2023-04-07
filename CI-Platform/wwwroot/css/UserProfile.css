@@ -1,6 +1,13 @@
 ﻿body {
 }
 
+#preloader {
+    background: white url(/Image/Pre.gif) no-repeat center center;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+}
 .user-password-cancel-btn {
     border-radius: 30px;
     border-color: #757575;

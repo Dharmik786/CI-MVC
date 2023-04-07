@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="~/css/AddStory.css" asp-append-version="true" />
 </head>
 <body>
+    <div id="preloader"></div>
     @{
         var userId = Context.Session.GetString("user");
     }
@@ -80,7 +81,18 @@
                 <p>Drag & drop photos here or <strong>Browse</strong></p>
                 <input type="file" class="file-input file" asp-for="attachment" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
             </div>
-            <output></output>
+            <output>
+                @if (Model.storyMedia != null)
+                {
+                    foreach (var m in Model.storyMedia)
+                    {
+                        <div class="image">
+                            <img src="@m.StoryPath" alt="image">
+                            <span onclick="deleteImage(0)" style="color:black;">×</span>
+                        </div>
+                    }
+                }
+            </output>
 
 
             <div class="row flex-column flex-md-row mt-4 mb-2">
@@ -107,6 +119,7 @@
         const input = document.querySelector(".file")
         const output = document.querySelector("output")
         let imagesArray = []
+
         input.addEventListener("change", () => {
             const files = input.files
             for (let i = 0; i < files.length; i++) {
@@ -141,6 +154,11 @@
         function loginalert() {
             alert("login first");
         }
+
+        var loader = document.getElementById('preloader');
+        window.addEventListener("load", function () {
+            loader.style.display = "none";
+        })
     </script>
 
 

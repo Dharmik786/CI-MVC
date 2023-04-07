@@ -1,39 +1,102 @@
 ﻿function TimeDelete(id) {
 
-    $.ajax({
-        type: "POST",
-        url: "/Home/DeleteTimeSheet",
-        data: { 'id': id },
-        success: function (result) {
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success')
-            $('.tbl1').html($(result).find('.tbl1').html());
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
         },
-        error: function () {
-            console.log("Erroor");
+        buttonsStyling: true
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this timesheet!",
+        icon: 'warning',
+        width: '300',
+        height: '100',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeleteTimeSheet",
+                data: { 'id': id },
+                success: function (result) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success')
+                    $('.tbl1').html($(result).find('.tbl1').html());
+                },
+                error: function () {
+                    console.log("Erroor");
+                }
+            });
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+
+            )
         }
-    });
-}
-function GoalDelete(id) {
-    $.ajax({
-        type: "POST",
-        url: "/Home/DeleteTimeSheet",
-        data: { 'id': id },
-        success: function (result) {
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success')
-            $('.tbl').html($(result).find('.tbl').html());
-        },
-        error: function () {
-            console.log("Erroor");
-        }
-    });
+    })
 }
 
+function GoalDelete(id) {
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: true
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this timesheet!",
+        icon: 'warning',
+        width: '300',
+        height: '100',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeleteTimeSheet",
+                data: { 'id': id },
+                success: function (result) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success')
+                    $('.tbl').html($(result).find('.tbl').html());
+                },
+                error: function () {
+                    console.log("Erroor");
+                }
+            });
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+
+            )
+        }
+    })
+}
 
 function EditTimeSheet(id) {
     $.ajax({
