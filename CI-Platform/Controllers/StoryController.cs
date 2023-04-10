@@ -98,7 +98,7 @@ namespace CI_Platform.Controllers
             var userId = HttpContext.Session.GetString("user");
             var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
 
-            MissionList ms = new MissionList();
+            StoryModel ms = new StoryModel();
 
             if (storyId != 0)
             {
@@ -146,7 +146,7 @@ namespace CI_Platform.Controllers
             return View(ms);
         }
         [HttpPost]
-        public async Task<IActionResult> addStoryDetailAsync(MissionList model, string action, long storyId)
+        public async Task<IActionResult> addStoryDetailAsync(StoryModel model, string action, long storyId)
         {
 
             if (action == "submit")

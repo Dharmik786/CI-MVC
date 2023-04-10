@@ -1,5 +1,5 @@
-﻿@using CI_Entity.ViewModel
-@model MissionList
+﻿ @using CI_Entity.ViewModel
+@model StoryModel
 @{
     Layout = "_navbar1";
 }
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="~/css/AddStory.css" asp-append-version="true" />
 </head>
 <body>
-    <div id="preloader"></div>
     @{
         var userId = Context.Session.GetString("user");
     }
@@ -35,7 +34,7 @@
                         <select asp-for="missionId" class="form-select" aria-label="Default select example">
                             @foreach (var i in Model.missionApplications)
                             {
-                                <option value="@i.Mission.MissionId">@i.Mission.Title</option>
+                                <option value="@i.Mission.MissionId">@i.Mission.MissionId @i.Mission.Title</option>
                             }
                         </select>
                     }
@@ -51,11 +50,14 @@
                 <div class=" form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="title">My Story Title</label>
                     <input type="text" asp-for="title" placeholder="Enter Story Title" value="@Model.title" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                    <span asp-validation-for="title" class="text-danger"></span>
                 </div>
 
                 <div class="form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="date">Date</label>
                     <input type="datetime-local" asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                    <span asp-validation-for="date" class="text-danger"></span>
+
                 </div>
 
             </div>
@@ -64,6 +66,8 @@
                 <label class="fs-5 ">My Story</label>
                 <div class="col-12 mt-2">
                     <textarea class="" asp-for="editor1" name="editor1"></textarea>
+                    <span asp-validation-for="editor1" class="text-danger"></span>
+
                 </div>
             </div>
 
@@ -113,6 +117,13 @@
         </form>
     </div>
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
     <script>
         CKEDITOR.replace('editor1');
         const inputDiv = document.querySelector(".input-div")

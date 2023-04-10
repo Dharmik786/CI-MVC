@@ -217,7 +217,7 @@
                             @for (int i = Model.avgrating; i < 5; i++)
                             {
                                 <img src="~/Image/star-empty.png" />
-                            }
+                            } 
 
 
 
@@ -346,6 +346,9 @@
 <script>
     if (localStorage.getItem("view") === "list") {
         list();
+    }
+    else{
+        grid();
     }
 
     function addToFav(missonid) {

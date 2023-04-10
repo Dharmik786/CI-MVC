@@ -311,43 +311,43 @@
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId && e.UserId == Model.userId);
                         var isClosed = 0;
-                        if (Model.singleMission.StartDate < DateTime.Now)
+                        if (Model.singleMission.EndDate < DateTime.Now)
                         {
                             isClosed = 1;
                         }
                     }
                     <div id="applydiv">
-                        @*@if (isClosed == 1)
+                        @if (isClosed == 1)
                         {
-                        <div class="d-flex justify-content-center">
-                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Mission Closed</button>
-                        </div>
+                            <div class="d-flex justify-content-center">
+                                <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Mission Closed</button>
+                            </div>
                         }
                         else
-                        {*@
-                        @if (userId != null)
                         {
-                            @if (applied == null)
+                            @if (userId != null)
                             {
-                                <div class="d-flex justify-content-center">
-                                    <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
-                                </div>
+                                @if (applied == null)
+                                {
+                                    <div class="d-flex justify-content-center">
+                                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex justify-content-center">
+                                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
+                                    </div>
+                                }
                             }
                             else
                             {
                                 <div class="d-flex justify-content-center">
-                                    <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
+                                    <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="loginalert()">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
                                 </div>
                             }
-                        }
-                        else
-                        {
-                            <div class="d-flex justify-content-center">
-                                <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="loginalert()">Apply Now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/Image/right-arrow.png" /></button>
-                            </div>
-                        }
 
-                        @*}*@
+                        }
                     </div>
                 </div>
 
@@ -414,9 +414,10 @@
                                 <textarea maxlength="100" style="width:100%" placeholder="Enter Your Comment.." id="comment"></textarea>
                                 </div>*@
                                 <div class="form-floating  mt-2">
-                                    <textarea class="form-control " placeholder="Leave a comment here" id="comment" style="height: 100px" name="comment"></textarea>
+                                    <textarea class="form-control " placeholder="Leave a comment here" id="comment" style="height: 100px" name="comment" onkeyup="EnterCmt()"></textarea>
                                     <label for="floatingTextarea2">Comments</label>
                                 </div>
+                                    <span id="cmtError" class="d-none text-danger">Please Write Comment</span>
                                 @if (userId != null)
                                 {
                                     <button class="Apply-btn ms-2 mt-2" onclick="PostComment(@Model.singleMission.MissionId)">Post Comment</button>
@@ -426,9 +427,6 @@
                                     <button class="Apply-btn ms-2 mt-2" onclick="loginalert()">Post Comment</button>
                                 }
                             </div>
-
-                            @*  <partial name="_Comment"></partial>*@
-
 
                             <div class="card cmnt mt-3 ">
                                 @{
@@ -534,13 +532,13 @@
                     <div class="card-body">
                         <div class="row">
 
-                            @if (Model.missionApplications != null)
+                            @if (Model.recentVolunteering != null)
                             {
-                                @foreach (var i in Model.missionApplications)
+                                @foreach (var i in Model.recentVolunteering)
                                 {
                                     <div class="col-4  ">
                                         <div class=" ms-4 me-2 text-decoration-none text-black justify-content-center ">
-                                            <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:16vh;" />
+                                            <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:16vh; height:16vh;" />
                                             <label id="" class="text-center">@i.User.FirstName @i.User.LastName</label>
                                         </div>
                                     </div>
@@ -549,22 +547,22 @@
 
                         </div>
                         <div class="row text-center">
-                            @*<div class="col-2">
-                                @if (ViewBag.PageIndex > 1)
-                                {
+                            <div class="col-2">
+                            @if (ViewBag.PageIndex > 1)
+                            {
 
-                                    <button class="page-link" onclick="recent(@ViewBag.PageIndex - 1,@Model.singleMission.MissionId)"><img src="/Image/left.png" alt=""></button>
+                            <button class="page-link" onclick="recent(@ViewBag.PageIndex - 1,@Model.singleMission.MissionId)"><img src="/Image/left.png" alt=""></button>
 
-                                }
+                            }
                             </div>
                             <div class="col-8">@ViewBag.TotalVol Recent Volunteers</div>
                             <div class="col-2">
-                                @if (ViewBag.PageIndex < ViewBag.TotalPages)
-                                {
-                                    <button class="page-link" onclick="recent(@ViewBag.PageIndex + 1,@Model.singleMission.MissionId)"><img src="/Image/right-arrow1.png" alt=""></button>
+                            @if (ViewBag.PageIndex < ViewBag.TotalPages)
+                            {
+                            <button class="page-link" onclick="recent(@ViewBag.PageIndex + 1,@Model.singleMission.MissionId)"><img src="/Image/right-arrow1.png" alt=""></button>
 
-                                }
-                            </div>*@
+                            }
+                            </div>
                         </div>
 
                     </div>
@@ -615,7 +613,13 @@
         function PostComment(missionid) {
             var cmt = document.getElementById("comment").value;
             console.log(cmt)
-            debugger;
+            if(cmt==""){
+                var cmtErr = document.getElementById('cmtError');
+                $('#cmtError').removeClass('d-none');
+                $('#cmtError').addClass('d-inline!important');
+            }
+            else
+            {
             $.ajax({
                 type: 'GET',
                 url: "/Volunteering/PostComment",
@@ -627,6 +631,7 @@
                 error: function () {
                 }
             });
+            }
         }
         function sendmail(missionid) {
             const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
@@ -695,6 +700,9 @@
                     console.log("Erroor");
                 }
             });
+        }
+        function EnterCmt(){
+            $('#cmtError').addClass('d-none')
         }
     </script>
 </html>

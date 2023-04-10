@@ -1,6 +1,7 @@
 using CI_Entity.Models;
 using CI_PlatForm.Repository.Interface;
 using CI_PlatForm.Repository.Repository;
+using Microsoft.CodeAnalysis.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CIDbContext>();
 builder.Services.AddScoped<IUserInterface,UserRepository>();
 
-builder.Services.AddSession();
+builder.Services.AddSession(Option => { 
+
+Option.IdleTimeout=TimeSpan.FromHours(10);
+});
 
 var app = builder.Build();
 

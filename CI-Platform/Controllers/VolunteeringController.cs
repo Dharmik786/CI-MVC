@@ -69,7 +69,7 @@ namespace CI_Platform.Controllers
             vMMission.relatedMission = _IUser.mission().Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
             if (userId != null)
             {
-                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid && e.UserId != Convert.ToInt32(userId)).ToList();
+                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid && e.UserId == Convert.ToInt32(userId)).ToList();
             }
             else
             {
@@ -96,18 +96,18 @@ namespace CI_Platform.Controllers
 
 
 
-            //int pageSize = 2; // Set the page size to 9
-            //var volunteers = vMMission.recentVolunteering; // Retrieve all volunteers from data source
-            //int totalCount = volunteers.Count(); // Get the total number of volunteers
-            //int skip = (pageIndex - 1) * pageSize;
-            //var volunteersOnPage = volunteers.Skip(skip).Take(pageSize).ToList(); // Get the volunteers for the current page
+            int pageSize = 2; // Set the page size to 9
+            var volunteers = vMMission.recentVolunteering; // Retrieve all volunteers from data source
+            int totalCount = volunteers.Count(); // Get the total number of volunteers
+            int skip = (pageIndex - 1) * pageSize;
+            var volunteersOnPage = volunteers.Skip(skip).Take(pageSize).ToList(); // Get the volunteers for the current page
 
-            //ViewBag.TotalCount = totalCount;
-            //ViewBag.PageSize = pageSize;
-            //ViewBag.PageIndex = pageIndex;
-            //ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-            //ViewBag.TotalVol = vMMission.recentVolunteering.Count();
-            //ViewBag.recentvolunteered = volunteersOnPage;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            ViewBag.TotalVol = vMMission.recentVolunteering.Count();
+            ViewBag.recentvolunteered = volunteersOnPage;
 
             return View(vMMission);
         }
