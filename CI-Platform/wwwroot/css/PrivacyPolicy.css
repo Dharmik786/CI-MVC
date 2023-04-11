@@ -1,0 +1,29 @@
+﻿.policysidebar {
+    background-color: #F88634 !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: black;
+    background-color: #ffffff!important;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: none;
+}
+
+.nav-pills .nav-link {
+    background: 0 0;
+    border: 0;
+    border-radius: 0.25rem;
+    color: black;
+}
+
+.privacyTitle a:hover, .privacyTitle a:active {
+    color: black !important;
+    font-weight: 500;
+}
+
+#titlePolicyTab {
+    position: sticky !important;
+    top: 30px !important;
+}

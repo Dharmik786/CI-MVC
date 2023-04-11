@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
     <link rel="stylesheet" href="/css/UserProfile.css" asp-append-version="true" />
 </head>
 
@@ -282,10 +281,9 @@
                 <form>
                     <div class="modal-body">
 
-                        <input type="password" asp-for="OldPsw" id="inputPassword1" class=" form-control "
+                        <input type="password" asp-for="OldPsw" id="inputPassword1" class=" form-control" onkeydown="oldp()"
                                aria-labelledby="passwordHelpBlock" placeholder="Enter old Password">
-                        <span asp-validation-for="OldPsw" class="text-danger"></span>
-                        <span>@ViewBag.oldPswEroor</span>
+                        <span id="old" class="d-none text-danger">Please Enter Old Password</span>
 
                         <input type="password" asp-for="Password" id="inputPassword2" class=" form-control mt-2"
                                aria-labelledby="passwordHelpBlock" placeholder="Enter new Password">
@@ -313,8 +311,8 @@
 
 
     <hr>
-    <div class="container user-profile-footer d-flex align-items-center">
-        <div class="me-3 user-profile-privacy-policy">Privacy Policy</div>
+    <div class="container user-profile-footer d-flex align-items-center mb-3">
+        <a class="me-3 user-profile-privacy-policy" asp-controller="Home" asp-action="Policy">Privacy Policy</a>
         <div class="user-profile-contact-us">Contact Us</div>
     </div>
 

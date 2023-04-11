@@ -52,10 +52,10 @@
 
 
                 <div class="me-2 mt-1">
-                    <button onclick="grid()" class="grid"><img src="/Image/grid.png"></button>
+                    <button onclick="grid()" id="grid"><img src="/Image/grid.png"></button>
                 </div>
                 <div class="mt-1 me-4">
-                    <button onclick="list()" class="list"><img src="/Image/list.png" alt="list"></button>
+                    <button onclick="list()" id="list"><img src="/Image/list.png" alt="list"></button>
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
 
 @*-------------------------------------------------Missions-----------------------------------------------------------*@
 
-<div class="row " id="myItem">
+<div class="row " id="myItem" >
 
     @foreach (var item in @Model.mission)
     {
@@ -91,15 +91,11 @@
 
                     @if (img.MediaPath != "")
                     {
-                        <img class="card-img-top card-img" src="@img.MediaPath" ;
-                        @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
-                             alt="Card image cap">
+                        <img class="card-img-top card-img" src="@img.MediaPath" ; alt="Card image cap">
                     }
                     else
                     {
-                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ;
-                        @* src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"*@
-                             alt="Card image cap">
+                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
                     }
 
                     @if (applied != null)
@@ -118,18 +114,8 @@
                         @if (userId != null)
                         {
                             <button class="mb-2 landing-page-btn-img " onclick="addToFav(@item.MissionId)">
-                               @* @{
-                                    var fav = Model.favoriteMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
-                                }
-                                @if (fav != null)
-                                {
-                                    <img src="~/Image/fill-heart.png">
-                                }
-                                else
-                                {
-                                    <img src="/Image/heart1.png">
-                                }*@
-                             <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
+
+                                <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@item.MissionId"></i>
                             </button>
                             <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <img src="/Image/user.png" alt="">
@@ -154,10 +140,10 @@
                                     <div class="modal-body overflow-y-auto" style="height:200px;">
                                         @foreach (var u in Model.users)
                                         {
-                                            <div>
-                                                <img src="/Image/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
-                                                <label class=" ms-4 mt-2 me-auto"> @u.LastName @u.FirstName</label>
-                                                <input class="form-check-input me-2 mt-2" type="checkbox" id="@u.UserId" name="mail">
+                                            <div class="col-12 d-flex my-1">
+                                                <img src="/Image/volunteer1.png" class="rounded-5 col-3 d-flex me-auto" style="border-radius:50%;width:50px;height:50px">
+                                                <label class="me-auto col-8 d-flex align-items-center"> @u.LastName @u.FirstName</label>
+                                                <input class="form-check-input col-1 mt-2" type="checkbox" id="@u.UserId" name="mail">
                                             </div>
                                         }
                                     </div>
@@ -170,13 +156,7 @@
                         </div>
                     </div>
 
-
-
-
-
-
                     <div><button class="theme-btn ">@item.Theme.Title</button></div>
-                    <!-- <button class="theme-btn ">Environment</button> -->
                 </div>
 
 
@@ -212,12 +192,12 @@
 
                             @for (int i = 1; i <= Model.avgrating; i++)
                             {
-                                <img src="/Image/selected-star.png" />
+                                <img src="/Image/selected-star.png" style="width: 28px;" />
                             }
                             @for (int i = Model.avgrating; i < 5; i++)
                             {
-                                <img src="~/Image/star-empty.png" />
-                            } 
+                                <img src="~/Image/star-empty.png" style="width: 32px;" />
+                            }
 
 
 
@@ -282,18 +262,28 @@
                         @if (userId != null)
                         {
 
-                            @if (applied == null)
+                            @if (isClosed == 1)
                             {
                                 <button class="Apply-btn p-2">
-                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
                                 </button>
                             }
                             else
                             {
-                                <button class="Apply-btn p-2">
-                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Already applied &nbsp;</a>
-                                </button>
+                                @if (applied == null)
+                                {
+                                    <button class="Apply-btn p-2">
+                                        <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="Apply-btn p-2">
+                                        <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Already applied &nbsp;</a>
+                                    </button>
+                                }
                             }
+
                         }
                         else
                         {
@@ -309,6 +299,276 @@
         </div>
     }
 </div>
+
+
+
+
+
+<div class="container list-view " id="list-view" >
+    <div>
+
+        @foreach (var i in Model.mission)
+        {
+
+
+            <div class="card col-12">
+                <div class="card-img-container col-3 p-0">
+                    @{
+                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == i.MissionId);
+                    }
+
+                    @if (img.MediaPath != "")
+                    {
+                        <img src="@img.MediaPath" height="100%" class="card-img-top" alt="wait">
+
+                    }
+                    else
+                    {
+                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
+                    }
+
+                    @{
+                        var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId));
+                        var isClosed = 0;
+                        if (i.EndDate < DateTime.Now)
+                        {
+                            isClosed = 1;
+                        }
+                        bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
+                    }
+
+                    @if (applied != null)
+                    {
+                        <div class="applied-div">Applied</div>
+
+                    }
+                    @if (isClosed == 1)
+                    {
+                        <div class="close-div">Closed</div>
+                    }
+                    <div class="top-right">
+                        <img src="/Image/pin.png" />@i.City.Name
+                    </div>
+
+                    <div class="landing-page-bottom-right d-flex flex-column add_fav">
+
+                        @if (userId != null)
+                        {
+                            <button class="mb-2 landing-page-btn-img " onclick="addToFav(@i.MissionId)">
+
+                                <i class="bi bi-heart-fill" style="@(isFavrouite ? "color:#F88634;" : "color:white;")" id="heart-@i.MissionId"></i>
+                            </button>
+                            <button class="landing-page-btn-img" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
+                                <img src="/Image/user.png" alt="">
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="mb-2 landing-page-btn-img" disabled> <img src="/Image/heart.png"> </button>
+
+                            <button class="landing-page-btn-img" type="button" disabled>
+                                <img src="/Image/user.png" alt="">
+                            </button>
+
+                        }
+                        <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Send Recommend TO</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body overflow-y-auto" style="height:200px;">
+                                        @foreach (var u in Model.users)
+                                        {
+                                            <div>
+                                                <img src="/Image/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
+                                                <label class=" ms-4 mt-2 me-auto"> @u.LastName @u.FirstName</label>
+                                                <input class="form-check-input me-2 mt-2" type="checkbox" id="@u.UserId" name="mail">
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary d-inline" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary d-inline" id="sendmail" onclick="sendmail(@i.MissionId)">Send Mission</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text text-center px-2" id="theme-btn">
+                        <span>@i.Theme.Title</span>
+                    </div>
+                </div>
+
+                <div class="col-9 p-2">
+                    @*city, theme, organization and rating *@
+                    <div class="row py-2">
+                        <div class="col-9">
+                            <img class="px-2" src="/Image/pin1.png" />@i.City.Name
+                            <img class="px-2" src="/Image/web.png"> @i.Theme.Title
+                            <img class="px-2" src="/Image/organization.png">@i.OrganizationName
+                        </div>
+                        <div class="col-3 justify-content-end d-inline-flex py-2">
+                            @{
+                                int avgRating = 0;
+                                int rat = 0;
+                                var ratingList = Model.missionRatings.Where(m => m.MissionId == i.MissionId).ToList();
+
+                                if (ratingList.Count() > 0)
+                                {
+
+                                    foreach (var r in ratingList)
+                                    {
+                                        rat = rat + int.Parse(r.Rating);
+                                    }
+                                    avgRating = rat / ratingList.Count();
+                                }
+                                ViewBag.rat = ratingList.Count();
+
+                                Model.avgrating = avgRating;
+                            }
+
+                            @for (int j = 1; j <= Model.avgrating; j++)
+                            {
+                                <img src="/Image/selected-star.png" style="width:25px;" />
+                            }
+                            @for (int j = Model.avgrating; j < 5; j++)
+                            {
+                                <img src="~/Image/star-empty.png" />
+                            }
+
+                        </div>
+                    </div>
+                    @*title, description, date and acheievd area *@
+                    <h5 class="">@i.Title</h5>
+                    <p class="">@i.ShortDescription</p>
+                    <div class="row">
+                        <div class="col-12">
+
+
+                            <div class="row">
+
+
+                                <div class="col-lg-2 col-6 d-inline-flex p-0">
+                                    <div class="p-3 px-2">
+                                        <img class="" src="/Image/Seats-left.png" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h6 class=" mb-0">@i.Availability</h6>
+                                        <small>Seat Left</small>
+                                    </div>
+                                </div>
+
+
+                                @if (i.MissionType == "Time")
+                                {
+                                    <div class="col-lg-2 col-6 d-inline-flex px-0">
+                                        <div class="p-3 px-2">
+                                            <img class="" src="/Image/deadline.png" />
+                                        </div>
+                                        <div class="p-2 w-100">
+                                            <div>
+                                                <div>@i.EndDate.ToString().Split(" ")[0]</div>
+                                            </div>
+                                            <small>Registarction Deadline</small>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-2 col-6 d-inline-flex px-0">
+                                        <div class="p-3 px-2">
+                                            <img class="" src="/Image/achieved.png" />
+                                        </div>
+                                        <div class="w-100">
+                                            <div class="progress mt-3 w-75">
+                                                <div class="progress-bar" role="progressbar" style="width:20%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <small>Acheived</small>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                                <div class="col-lg-2 col-6 d-inline-flex px-0">
+                                    <div class="p-3 px-2">
+                                        <img class="" src="/Image/calender.png" />
+                                    </div>
+                                    <div class="mt-2 px-1">
+                                        <small class="pt-3 mb-0">From @i.StartDate.Value.ToShortDateString()</small><br>
+                                        <small>Untill @i.EndDate.Value.ToShortDateString()</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-6 d-inline-flex px-0">
+                                    <div class="p-3 px-2">
+                                        <img class="" src="/Image/skill.png" />
+                                    </div>
+                                    <div class="">
+                                        <h6 class="pt-3 mb-0">Skill</h6>
+                                        @*@foreach (var j in missionSkill)
+                                    {
+                                    <small>@j.Skill.SkillName, </small>
+                                    }*@
+                                        <small>j.Skill.SkillName, </small>
+                                    </div>
+                                </div>
+
+
+                                <div class=" col-lg-4 col-6 d-inline-flex px-0" style="width: max-content;height: fit-content;margin-left: auto;margin-right: 25px; margin-top: 20px;">
+                                    @if (isClosed == 1)
+                                    {
+                                        <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                            View Details <img src="~/Image/right-arrow.png" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @if (userId != null)
+                                        {
+                                            @if (applied == null)
+                                            {
+                                                <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                                    Apply <img src="~/Image/right-arrow.png" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                                    View Details <img src="~/Image/right-arrow.png" />
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                                View Details <img src="~/Image/right-arrow.png" />
+                                            </a>
+                                        }
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
 
 @if (pager.TotalPages > 0)
 {
@@ -347,9 +607,7 @@
     if (localStorage.getItem("view") === "list") {
         list();
     }
-    else{
-        grid();
-    }
+    
 
     function addToFav(missonid) {
         $.ajax({
@@ -359,7 +617,7 @@
             success: function (result) {
                 console.log("Liked or Unliked mission.");
     @* $('.add_fav').html($(result).find('.add_fav').html());*@
-                    },
+                                                                    },
             error: function () {
                 alert("please login first.");
             }

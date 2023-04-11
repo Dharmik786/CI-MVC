@@ -5,13 +5,18 @@ var loader = document.getElementById('preloader');
 window.addEventListener("load", function () {
     loader.style.display = "none";
 })
+
+function oldp() {
+    $('#old').addClass('d-none');
+}
 function ChangePsw() {
     var oldPsw = document.getElementById('inputPassword1').value;
     var NewPsw = document.getElementById('inputPassword2').value;
     var CnfPsw = document.getElementById('inputPassword3').value;
 
     if (oldPsw == "") {
-        alert("First Enter Old Password")
+        $('#old').removeClass('d-none');
+        $('#old').addClass('d-inline!important');
     }
 
     else if (NewPsw == "") {

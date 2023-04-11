@@ -213,11 +213,12 @@
                                     <div class="modal-body overflow-y-auto" style="height:200px;">
                                         @foreach (var u in Model.users)
                                         {
-                                            <div class=" userlistdiv align-items-center d-flex my-3">
+                                            <div class="userlistdiv align-items-center d-flex my-3">
                                                 <img src="/Image/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
                                                 <label class=" ms-4 mt-2 me-auto"> @u.LastName @u.FirstName</label>
                                                 <input class="form-check-input me-2 mt-2" type="checkbox" id="@u.UserId" name="mail">
                                             </div>
+                                            <hr />
                                         }
                                     </div>
                                     <div class="modal-footer">
@@ -478,7 +479,7 @@
             </div>
 
             @*Deatils*@
-            <div class="col-lg-4 ms-0">
+            <div class="col-lg-4 ms-0"> 
 
                 @*information*@
                 <div class="card" style="">
@@ -526,19 +527,19 @@
                 </div>
 
                 @*Recent Volunteer*@
-                <div class=" card volunteering-sec-2-right-down mt-3">
+                <div id="recentvol" class=" card volunteering-sec-2-right-down mt-3">
                     <div class=" card-header vol-sec-2-right-2nd-header"><h4>Recent Volunteers</h4></div>
                     <hr>
                     <div class="card-body">
                         <div class="row">
 
-                            @if (Model.recentVolunteering != null)
+                            @if (ViewBag.recentvolunteered != null)
                             {
-                                @foreach (var i in Model.recentVolunteering)
+                                @foreach (var i in ViewBag.recentvolunteered)
                                 {
                                     <div class="col-4  ">
                                         <div class=" ms-4 me-2 text-decoration-none text-black justify-content-center ">
-                                            <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:16vh; height:16vh;" />
+                                            <img src="@i.User.Avatar" class="involveduserprofile rounded-circle" style="width:10vh; height:10       vh;" />
                                             <label id="" class="text-center">@i.User.FirstName @i.User.LastName</label>
                                         </div>
                                     </div>
@@ -585,7 +586,7 @@
                 data: { pageindex: index, missionId: missionid },
                 success: function (response) {
                     console.log("aefsda");
-                    $('.recentvol').html($(response).find('.recentvol').html());
+                    $('#recentvol').html($(response).find('#recentvol').html());
                     $('#avgrating').html($(response).find('#avgrating').html());
                 },
                 error: function () {
