@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -118,6 +120,12 @@ namespace CI_Platform.Controllers
             u.countries = _IUser.countries();
             u.skills = _IUser.GetAllskill();
             u.Userskills = _IUser.GetUserSkill(Convert.ToInt32(userId));
+            
+            var r = from row1 in u.skills.AsEnumerable()
+                               where !u.Userskills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
+                               select row1;
+            
+            u.RemainingSkill = r.ToList();
 
             var allskills = _IUser.GetAllskill();
             ViewBag.allskills = allskills;

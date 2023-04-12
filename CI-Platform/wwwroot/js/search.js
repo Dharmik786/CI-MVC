@@ -66,19 +66,17 @@ $(document).ready(function () {
 
 
 //search
-function mySearch(sortValue) {
+function mySearch(jpg) {
+
+    
+    console.log(jpg);
+    var id = $(".sortSelect").val();
+    console.log(id);
 
     var Search = $("input[name='searchQuery']").val();
-    //if (Search == '')
-    //    Search = '';
-    console.log(Search)
-
 
     var country = [];
 
-    //$('#countryDropdown').find("input:checked").each(function (i, ob) {
-    //    country.push($(ob).val());
-    //});
     $("input[type='checkbox'][name='country']:checked").each(function () {
         country.push($(this).val());
     });
@@ -100,11 +98,14 @@ function mySearch(sortValue) {
     $.ajax({
         url: "/Landingpage/_Missions",
         type: "POST",
-        data: { 'search': Search, 'sortValue': sortValue, 'country': country, 'city': city, 'theme': theme },
+        data: { 'search': Search, 'sortValue': id, 'country': country, 'city': city, 'theme': theme, 'jpg': jpg },
 
         success: function (res) {
             $("#missions").html('');
             $("#missions").html(res);
+            $("#countMission1").html($("#countMission2").html());
+            $("#countMission2").hide();
+
            
         },
         error: function () {
@@ -133,7 +134,7 @@ function pagination(jpg) {
 
 $(document).ready(function () {
     pagination(jpg = 1);
-    console.log("hello shubh");
+    console.log("Pagination");
 });
 
 

@@ -33,6 +33,7 @@ namespace CI_Entity.ViewModel
         public List<MissionApplication> missionApplications { get; set; }
         public List<Story> stories { get; set; }
         public Mission singleMission { get; set; }
+        public int missionCount { get; set; }
 
         public int avgrating { get; set; }
         public long missionId { get; set; }

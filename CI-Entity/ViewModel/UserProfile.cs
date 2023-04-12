@@ -30,6 +30,7 @@ namespace CI_Entity.ViewModel
         public List<Country> countries { get; set; }
         public List<City> cities { get; set; }
         public List<Skill> skills { get; set; }
+        public List<Skill> RemainingSkill { get; set; }
         public List<UserSkill> Userskills { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

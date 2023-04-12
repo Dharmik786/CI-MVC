@@ -244,21 +244,59 @@
         </div>
     </nav>
 
+
+
+
     @* <partial name="_navbar1"/>*@
     <div class="filters-section d-flex align-items-center flex-wrap justify-content-center mt-2">
     </div>
 
 
+    <div class="container grid-container mt-2">
+        <div class="row mb-2">
+            <div class="d-flex">
+                <div class="firstdiv me-auto d-flex tmdiv">
+                    <div id="countMission1"></div>
+                </div>
+
+                <div class="sort-list-grid d-flex">
+
+                    <div class="dropdown sort me-2 mt-1">
+                        <select class="btn dropdown d-flex sortSelect me-2 ms-0 " onchange="mySearch()">
+                            <option selected>Sort By</option>
+                            <option value="Newest">Newest</option>
+                            <option value="Oldest">Oldest</option>
+                            <option value="Lowest Seats">Lowest Seats</option>
+                            <option value="Highest Seats">Highest Seats</option>
+                            <option value="Registration deadline">Registration deadline</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="me-2 mt-1">
+                        <button onclick="grid()" id="grid"><img src="/Image/grid.png"></button>
+                    </div>
+                    <div class="mt-1 me-4">
+                        <button onclick="list()" id="list"><img src="/Image/list.png" alt="list"></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
     <div class="container" id="missions"></div>
 
+   
+    <partial name="_Footer"></partial>
 
 
 
-
-
-    <hr />
-    <footer class="container mb-3"><a asp-action="NoMissionFound" class="text-secondary">Privacy Policy</a></footer>
-
+   
+   
     <script src="~/js/search.js"></script>
 
     <script src="~/js/filter.js"></script>

@@ -15,10 +15,7 @@ namespace CI_Entities1.Models.ViewModel
         public int StartPage { get; private set; }
         public int EndPage { get; private set; }
 
-        public Pager()
-        {
-
-        }
+        public Pager(){ }
         public Pager(int totalItems, int page, int pageSize = 4)
         {
             int totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);

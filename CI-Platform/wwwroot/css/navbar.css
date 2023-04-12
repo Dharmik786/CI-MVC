@@ -5,7 +5,15 @@
     position: fixed;
     z-index: 100;
 }
+.input {
+    padding: 5px;
+    margin-bottom: 5px;
+    outline: none;
+}
 
+.form,.label {
+    margin: 10px;
+}
 .applied-div {
     position: absolute;
     left: 0px;

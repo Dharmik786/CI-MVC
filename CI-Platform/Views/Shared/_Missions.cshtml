@@ -16,58 +16,11 @@
     }
 }
 
-<div class="container grid-container mt-2">
-    <div class="row mb-2">
-        <div class="d-flex">
-            <div class="firstdiv me-auto d-flex">
-                <p class="fs-4 me-2">Explore</p>
-                <h4>@ViewBag.TotalMission mission</h4>
-            </div>
 
-            <div class="sort-list-grid d-flex">
-
-                <div class="dropdown sort me-2 mt-1">
-
-                    <button class=" btn dropdown d-flex " type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-
-                        <span class="sortby me-5 ">@ViewBag.sort By</span>
-                        <img src="/Image/drop-down.png" alt="" class="sortaerrow">
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="mySearch('Newest')">Newest</a></li>
-                        <li><a class="dropdown-item" onclick="mySearch('Oldest')">Oldest </a></li>
-                        <li><a class="dropdown-item" onclick="mySearch('Lowest Seats')">Lowest Seats</a></li>
-                        <li><a class="dropdown-item" onclick="mySearch('Highest Seats')">Highest Seats</a></li>
-                        @if (userId != null)
-                        {
-                            <li><a class="dropdown-item" onclick="mySearch('My Favourites')">My Favourites</a></li>
-                        }
-                        <li><a class="dropdown-item" onclick="mySearch('Registration deadline')">Registration deadline</a></li>
-                    </ul>
-
-
-                </div>
-
-
-
-                <div class="me-2 mt-1">
-                    <button onclick="grid()" id="grid"><img src="/Image/grid.png"></button>
-                </div>
-                <div class="mt-1 me-4">
-                    <button onclick="list()" id="list"><img src="/Image/list.png" alt="list"></button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-
+<div id="countMission2" style="display:none;"><span class="fs-5"><b>Explore</b> @ViewBag.TM Mission</span></div>
 @*-------------------------------------------------Missions-----------------------------------------------------------*@
 
-<div class="row " id="myItem" >
+<div class="row " id="myItem">
 
     @foreach (var item in @Model.mission)
     {
@@ -76,11 +29,15 @@
             @{
                 var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId));
                 var isClosed = 0;
-                if (item.EndDate < DateTime.Now)
+                
+                bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
+                var MissionEndDate = item.EndDate.ToString().Split(" ")[0];
+                DateTime EndDate = DateTime.Parse(MissionEndDate).Date;
+                DateTime Deadline = EndDate.AddDays(-5);
+                if (Deadline < DateTime.Now)
                 {
                     isClosed = 1;
                 }
-                bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == item.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
             }
             <div class="card">
 
@@ -239,7 +196,8 @@
                         {
                             <div class="ms-auto"><img src="/Image//deadline.png" class="mt-2"></div>
                             <div class="ms-2">
-                                @item.EndDate.ToString().Split(" ")[0] <p>Deadline</p>
+
+                                @Deadline.ToString().Split(" ")[0] <p>Deadline</p>
                             </div>
                         }
                         else
@@ -247,11 +205,12 @@
 
                             <div class="ms-auto me-2"><img src="/Image/achieved.png" class="mt-2"></div>
                             <div class="ms-2 me-5" stye="width:100%">
-                                <div class="progress mt-2" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-warning" style="width: 25%">25%</div>
+                                <div class="progress mt-3 w-75">
+                                    <div class="progress-bar" role="progressbar" style="width:20%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                <fs-5>8000</fs-5>
+                                <small>Acheived</small>
                             </div>
+
                         }
 
                     </div>
@@ -304,7 +263,7 @@
 
 
 
-<div class="container list-view " id="list-view" >
+<div class="container list-view " id="list-view">
     <div>
 
         @foreach (var i in Model.mission)
@@ -330,11 +289,15 @@
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId));
                         var isClosed = 0;
-                        if (i.EndDate < DateTime.Now)
+
+                        bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
+                        var MissionEndDate = i.EndDate.ToString().Split(" ")[0];
+                        DateTime EndDate = DateTime.Parse(MissionEndDate).Date;
+                        DateTime Deadline = EndDate.AddDays(-5);
+                        if (Deadline < DateTime.Now)
                         {
                             isClosed = 1;
                         }
-                        bool isFavrouite = (userId != null) ? Model.favoriteMissions.Any(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId)) : false;
                     }
 
                     @if (applied != null)
@@ -469,7 +432,7 @@
                                         </div>
                                         <div class="p-2 w-100">
                                             <div>
-                                                <div>@i.EndDate.ToString().Split(" ")[0]</div>
+                                                <div>@Deadline.ToString().Split(" ")[0]</div>
                                             </div>
                                             <small>Registarction Deadline</small>
                                         </div>
@@ -576,25 +539,25 @@
         @if (pager.CurrentPage > 1)
         {
             <li class="mx-1">
-                <a class="page-link text-muted" onclick="pagination(jpg=1)"><span aria-hidden="true">&laquo;</span></a>
+                <a class="page-link text-muted" onclick='mySearch(jpg=1)'><span aria-hidden="true">&laquo;</span></a>
             </li>
             <li class="page-item mx-1">
-                <a class="page-link text-muted" onclick="pagination(jpg=@(pager.CurrentPage-1))"><span aria-hidden="true">&lsaquo;</span></a>
+                <a class="page-link text-muted" onclick='mySearch(jpg=@(pager.CurrentPage-1))'><span aria-hidden="true">&lsaquo;</span></a>
             </li>
         }
         @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
         {
             <li class="page-item mx-1 @(pge==pager.CurrentPage ? "active":"")">
-                <a class="page-link text-muted" onclick="pagination(jpg=@pge)">@pge</a>
+                <a class="page-link text-muted" onclick='mySearch(jpg=@pge)'>@pge</a>
             </li>
         }
         @if (pager.CurrentPage < pager.TotalPages)
         {
             <li class="page-item mx-1">
-                <a class="page-link text-muted" onclick="pagination(jpg=@(pager.CurrentPage+1))"><span aria-hidden="true">&rsaquo;</span></a>
+                <a class="page-link text-muted" onclick='mySearch(jpg=@(pager.CurrentPage+1))'><span aria-hidden="true">&rsaquo;</span></a>
             </li>
             <li class="mx-1">
-                <a class="page-link text-muted" onclick="pagination(jpg=@(pager.TotalPages))"><span aria-hidden="true">&raquo;</span></a>
+                <a class="page-link text-muted" onclick='mySearch(jpg=@(pager.TotalPages))'><span aria-hidden="true">&raquo;</span></a>
             </li>
         }
 
@@ -607,7 +570,7 @@
     if (localStorage.getItem("view") === "list") {
         list();
     }
-    
+
 
     function addToFav(missonid) {
         $.ajax({
@@ -617,7 +580,7 @@
             success: function (result) {
                 console.log("Liked or Unliked mission.");
     @* $('.add_fav').html($(result).find('.add_fav').html());*@
-                                                                    },
+                                                                        },
             error: function () {
                 alert("please login first.");
             }

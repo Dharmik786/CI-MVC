@@ -181,18 +181,19 @@
                                             <br />
                                             <div class="row d-flex m-0 p-0">
                                                 <select multiple style="height:300px;" id="s1" class="  px-0 col-12 col-md-5 ">
-                                                    @if (ViewBag.userskills != null)
+                                                    
+                                                    @if (Model.Userskills != null)
                                                     {
-                                                        @foreach (var it in ViewBag.remainingSkills)
+                                                        @foreach (var it in Model.RemainingSkill)
                                                         {
                                                             <option value=@it.SkillId>@it.SkillName</option>
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        @if (ViewBag.allskills != null)
+                                                        @if (Model.skills != null)
                                                         {
-                                                            @foreach (var i in ViewBag.allskills)
+                                                            @foreach (var i in Model.skills)
                                                             {
                                                                 <option value=@i.SkillId>@i.SkillName</option>
                                                             }
@@ -310,11 +311,7 @@
     </div>
 
 
-    <hr>
-    <div class="container user-profile-footer d-flex align-items-center mb-3">
-        <a class="me-3 user-profile-privacy-policy" asp-controller="Home" asp-action="Policy">Privacy Policy</a>
-        <div class="user-profile-contact-us">Contact Us</div>
-    </div>
+    <partial name="_Footer">
 
 
 
