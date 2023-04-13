@@ -47,7 +47,7 @@
                                          src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
                                          alt="Card image cap">
                                 }
-                                <div class="view-details-btn p-1"><button style="border-radius:25px" class="vbtn"> <a href="/Story/AddStory?storyId=@i.StoryId" style="text-decoration:none;color:black">Edit</a><i class="bi bi-arrow-right"></i></button></div>
+                                <div class="view-details-btn p-1"><button style="border-radius:25px" class="vbtn"> <a href="/User/Story/AddStory?storyId=@i.StoryId" style="text-decoration:none;color:black">Edit</a><i class="bi bi-arrow-right"></i></button></div>
                                 <div><img src="~/Image/bin.png" class="delete-btn" onclick="DraftDelete(@i.StoryId)" /></div>
                                 <div><button class="theme-btn ">@i.Mission.Theme.Title</button></div>
 
@@ -122,7 +122,7 @@
     function DraftDelete(storyId) {
      
         $.ajax({
-            url: '/Story/DraftDelete',
+            url: '/User/Story/DraftDelete',
             type: 'POST',
             data: { 'storyId': storyId },
             success: function (result) {

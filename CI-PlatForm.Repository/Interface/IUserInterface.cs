@@ -57,5 +57,6 @@ namespace CI_PlatForm.Repository.Interface
         public List<Skill> GetAllskill();
         public List<UserSkill> GetUserSkill(int userId);
         public void AddUserSkills(long SkillId,int UserId);
+        public Admin GetAdminDetails(string email, string password);
     }
 }

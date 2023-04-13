@@ -592,7 +592,7 @@
 
         function recent(index, missionid) {
             $.ajax({
-                url: '/Volunteering/Volunteering',
+                url: '/User/Volunteering/Volunteering',
                 type: 'POST',
                 data: { pageindex: index, missionId: missionid },
                 success: function (response) {
@@ -611,7 +611,7 @@
         function addToFav(missonid) {
             $.ajax({
                 type: 'GET',
-                url: "/Volunteering/addToFavourite",
+                    url: "/User/Volunteering/addToFavourite",
                 data: { 'missonid': missonid },
                 success: function (res) {
                     $('.addFav').html($(res).find('.addFav').html());
@@ -633,7 +633,7 @@
             else {
                 $.ajax({
                     type: 'GET',
-                    url: "/Volunteering/PostComment",
+                        url: "/User/Volunteering/PostComment",
                     data: { 'missonid': missionid, 'cmt': cmt },
                     success: function (res) {
                         $('.cmtdiv').html($(res).find('.cmtdiv').html());
@@ -651,7 +651,7 @@
             var send = document.getElementById("sendmail");
             send.innerHTML = "Sending";
             $.ajax({
-                url: '/Volunteering/Sendmail',
+                    url: '/User/Volunteering/Sendmail',
                 type: 'POST',
                 data: { 'emailList': mail, 'missionid': missionid },
                 success: function (result) {
@@ -673,7 +673,7 @@
             console.log(starid)
             $.ajax({
                 type: 'POST',
-                url: "/Volunteering/Rating",
+                    url: "/User/Volunteering/Rating",
                 data: { 'missonid': missionid, 'starid': starid },
                 success: function (result) {
                     $('.avgRate').html($(result).find('.avgRate').html());
@@ -689,7 +689,7 @@
             debugger;
             $.ajax({
                 type: 'POST',
-                url: "/Volunteering/applyMission",
+                    url: "/User/Volunteering/applyMission",
                 data: { 'missionid': missionid },
                 success: function (res) {
         @* alert("mission applied");*@
@@ -701,7 +701,7 @@
             console.log(cmtid)
             $.ajax({
                 type: 'POST',
-                url: "/Volunteering/cmtDelete",
+                    url: "/User/Volunteering/cmtDelete",
                 data: { 'cmtId': cmtid, 'missionId': missionid },
                 success: function (res) {
                     console.log("comt delete")

@@ -10,8 +10,9 @@ using System.Net;
 using CI_Entity.ViewModel;
 using CI_PlatForm.Repository.Interface;
 
-namespace CI_Platform.Controllers
+namespace CI_Platform.Areas.User.Controllers
 {
+    [Area("User")]
     public class VolunteeringController : Controller
     {
         private readonly CIDbContext _CIDbContext;
@@ -43,7 +44,7 @@ namespace CI_Platform.Controllers
             vMMission.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             vMMission.timesheets = _IUser.timesheets();
 
-            MissionRating ratin = vMMission.missionRatings.FirstOrDefault(e => (e.MissionId == missionid) && (e.UserId == Convert.ToInt32(userId)));
+            MissionRating ratin = vMMission.missionRatings.FirstOrDefault(e => e.MissionId == missionid && e.UserId == Convert.ToInt32(userId));
             vMMission.userRate = ratin != null ? int.Parse(ratin.Rating) : 0;
 
 
@@ -66,14 +67,14 @@ namespace CI_Platform.Controllers
             var data = vMMission.mission.FirstOrDefault(e => e.MissionId == missionid);
             vMMission.singleMission = data;
 
-            vMMission.relatedMission = _IUser.mission().Where(e => (e.ThemeId == data.ThemeId) && (e.MissionId != missionid)).ToList();
+            vMMission.relatedMission = _IUser.mission().Where(e => e.ThemeId == data.ThemeId && e.MissionId != missionid).ToList();
             if (userId != null)
             {
                 vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid && e.UserId == Convert.ToInt32(userId)).ToList();
             }
             else
             {
-                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid ).ToList();
+                vMMission.missionApplications = _IUser.missionApplications().Where(e => e.MissionId == missionid).ToList();
             }
 
 
@@ -170,7 +171,7 @@ namespace CI_Platform.Controllers
                 var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                 var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, missionid = missionid }, Request.Scheme);
+                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, missionid }, Request.Scheme);
 
                 var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
                 var toAddress = new MailAddress(user.Email);
@@ -244,7 +245,7 @@ namespace CI_Platform.Controllers
             //    _CIDbContext.Add(mr);
             //}
             //_CIDbContext.SaveChanges();
-            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid = missionid });
+            return RedirectToAction("Volunteering", new { id = int.Parse(userId), missionid });
         }
 
         public IActionResult cmtDelete(int cmtId, int missionId)

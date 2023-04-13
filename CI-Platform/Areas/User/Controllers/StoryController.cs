@@ -8,14 +8,15 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using System.Text;
 using MimeTypes.Core;
 
-namespace CI_Platform.Controllers
+namespace CI_Platform.Areas.User.Controllers
 {
+    [Area("User")]
     public class StoryController : Controller
     {
         private readonly CIDbContext _CIDbContext;
         private readonly IUserInterface _IUser;
         [Obsolete]
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public StoryController(CIDbContext CIDbContext, IUserInterface Iuser, IHostingEnvironment IHostingEnvironment)
         {
@@ -41,7 +42,7 @@ namespace CI_Platform.Controllers
             missionList.stories = _IUser.stories();
             missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             missionList.missionThemes = _IUser.missionThemes();
-            
+
             var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
             data.Views = data.Views + 1;
             missionList.storydetails = data;
@@ -61,7 +62,7 @@ namespace CI_Platform.Controllers
                     var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                     var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                    var missionlink = Url.Action("StoryDetails", "Story", new { user = user.UserId, missionid = missionid }, Request.Scheme);
+                    var missionlink = Url.Action("StoryDetails", "Story", new { user = user.UserId, missionid }, Request.Scheme);
 
                     var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
                     var toAddress = new MailAddress(user.Email);
@@ -87,7 +88,7 @@ namespace CI_Platform.Controllers
                 }
                 catch (Exception ex)
                 {
-                        
+
                 }
 
 
@@ -96,7 +97,7 @@ namespace CI_Platform.Controllers
         public IActionResult AddStory(long storyId)
         {
             var userId = HttpContext.Session.GetString("user");
-            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId)));
+            var storyTitle = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId));
 
             StoryModel ms = new StoryModel();
 
@@ -104,13 +105,13 @@ namespace CI_Platform.Controllers
             {
                 // ms.stories = _IUser.stories().Where(e => e.StoryId == storyId).ToList();
                 ms.storyMedia = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
 
                 var s = _IUser.stories().Where(e => e.StoryId == storyId).FirstOrDefault();
                 ms.missionId = s.MissionId;
                 ms.title = s.Title;
                 ms.editor1 = s.Description;
-                ms.date = s.CreatedAt; 
+                ms.date = s.CreatedAt;
                 ms.storyId = storyId;
 
                 var sm = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
@@ -130,18 +131,18 @@ namespace CI_Platform.Controllers
                         ms.attachment.Add(file);
                     }
                 }
-                ms.storyMedia = _IUser.storyMedia().Where(e=>e.StoryId == storyId).ToList();    
+                ms.storyMedia = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
 
                 //var sm = _IUser.storyMedia().Where(e => e.StoryId == s.StoryId).FirstOrDefault();
                 //    ms.attachment = sm.StoryMediaId;
 
                 ms.mission = _IUser.mission();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
             }
             else
             {
                 ms.mission = _IUser.mission();
-                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == (Convert.ToInt32(userId))).ToList();
+                ms.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
             }
             return View(ms);
         }
@@ -151,14 +152,14 @@ namespace CI_Platform.Controllers
 
             if (action == "submit")
             {
-                var userId  = HttpContext.Session.GetString("user");
+                var userId = HttpContext.Session.GetString("user");
                 var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
 
                 if (model.attachment != null)
                 {
                     if (model.storyId != 0)
                     {
-                        _IUser.RemoveMedia(storyId);    
+                        _IUser.RemoveMedia(storyId);
                     }
 
                     foreach (var i in model.attachment)

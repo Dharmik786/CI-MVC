@@ -31,7 +31,7 @@ function ChangePsw() {
     else {
         $.ajax({
             type: "POST",
-            url: "/Home/ChangePassword",
+            url: "/User/Home/ChangePassword",
             data: { 'oldPsw': oldPsw, 'NewPsw': NewPsw, 'CnfPsw': CnfPsw },
             success: function (result) {
                 if (result == true) {
@@ -58,7 +58,7 @@ function ChangePsw() {
 
 }
 
-document.getElementById('imgDiv').addEventListener("click", e => {
+document.getElementById('imgDiv').addEventListener("click", e => { 
     document.getElementById('inputImg').click();
 });
 
@@ -122,7 +122,7 @@ document.getElementById('skillSave').addEventListener("click", e => {
 
     console.log(selectedSkills);
     $.ajax({
-        url: '/Home/SaveUserSkills',
+        url: '/User/Home/SaveUserSkills',
         type: 'POST',
         data: { selectedSkills: selectedSkills },
 

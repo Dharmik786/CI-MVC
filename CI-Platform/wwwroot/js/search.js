@@ -96,7 +96,7 @@ function mySearch(jpg) {
     console.log(theme)
 
     $.ajax({
-        url: "/Landingpage/_Missions",
+        url: "/User/Landingpage/_Missions",
         type: "POST",
         data: { 'search': Search, 'sortValue': id, 'country': country, 'city': city, 'theme': theme, 'jpg': jpg },
 
@@ -119,7 +119,7 @@ function mySearch(jpg) {
 function pagination(jpg) {
     console.log(jpg);
     $.ajax({
-        url: '/Landingpage/_Missions',
+        url: '/User/Landingpage/_Missions',
         type: 'GET',
         data: { 'jpg': jpg },
         success: function (res) {

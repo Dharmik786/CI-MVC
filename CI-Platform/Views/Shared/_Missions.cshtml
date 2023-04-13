@@ -224,7 +224,7 @@
                             @if (isClosed == 1)
                             {
                                 <button class="Apply-btn p-2">
-                                    <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                    <a href="/User/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
                                 </button>
                             }
                             else
@@ -232,13 +232,13 @@
                                 @if (applied == null)
                                 {
                                     <button class="Apply-btn p-2">
-                                        <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                        <a href="/User/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Apply &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
                                     </button>
                                 }
                                 else
                                 {
                                     <button class="Apply-btn p-2">
-                                        <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Already applied &nbsp;</a>
+                                        <a href="/User/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;Already applied &nbsp;</a>
                                     </button>
                                 }
                             }
@@ -247,7 +247,7 @@
                         else
                         {
                             <button class="Apply-btn p-2">
-                                <a href="/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
+                                <a href="/User/Volunteering/Volunteering?missionid=@item.MissionId" style="text-decoration:none;color:orange"> &nbsp;View Details &nbsp;&nbsp;<img src="/Image/right-arrow.png"></a>
                             </button>
                         }
 
@@ -483,7 +483,7 @@
                                 <div class=" col-lg-4 col-6 d-inline-flex px-0" style="width: max-content;height: fit-content;margin-left: auto;margin-right: 25px; margin-top: 20px;">
                                     @if (isClosed == 1)
                                     {
-                                        <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                        <a href="/User/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
                                             View Details <img src="~/Image/right-arrow.png" />
                                         </a>
                                     }
@@ -493,20 +493,20 @@
                                         {
                                             @if (applied == null)
                                             {
-                                                <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                                <a href="/User/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
                                                     Apply <img src="~/Image/right-arrow.png" />
                                                 </a>
                                             }
                                             else
                                             {
-                                                <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                                <a href="/User/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
                                                     View Details <img src="~/Image/right-arrow.png" />
                                                 </a>
                                             }
                                         }
                                         else
                                         {
-                                            <a href="/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
+                                            <a href="/User/Volunteering/Volunteering?missionid=@i.MissionId" style="text-decoration:none;border:2px solid orange!important" id="login-btn" class="form-control my-1 w-auto px-4 login-btn">
                                                 View Details <img src="~/Image/right-arrow.png" />
                                             </a>
                                         }
@@ -575,7 +575,7 @@
     function addToFav(missonid) {
         $.ajax({
             type: 'GET',
-            url: "/Volunteering/addToFavourite",
+            url: "/User/Volunteering/addToFavourite",
             data: { 'missonid': missonid },
             success: function (result) {
                 console.log("Liked or Unliked mission.");
@@ -599,7 +599,7 @@
         send.innerHTML = "Sending";
 
         $.ajax({
-            url: '/Volunteering/Sendmail',
+            url: '/User/Volunteering/Sendmail',
             type: 'POST',
             data: { 'emailList': mail, 'missionid': missionid },
             success: function (result) {

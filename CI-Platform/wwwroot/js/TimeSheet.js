@@ -22,7 +22,7 @@
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: "/Home/DeleteTimeSheet",
+                url: "/User/Home/DeleteTimeSheet",
                 data: { 'id': id },
                 success: function (result) {
                     Swal.fire(
@@ -72,7 +72,7 @@ function GoalDelete(id) {
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: "/Home/DeleteTimeSheet",
+                url: "/User/Home/DeleteTimeSheet",
                 data: { 'id': id },
                 success: function (result) {
                     Swal.fire(
@@ -101,7 +101,7 @@ function GoalDelete(id) {
 function EditTimeSheet(id) {
     $.ajax({
         type: "POST",
-        url: "/Home/EditGoalTimeSheet",
+        url: "/User/Home/EditGoalTimeSheet",
         data: { id: id },
         success: function (result) {
 
@@ -134,7 +134,7 @@ function EditTimeSheet(id) {
 function EditGoalSheet(id) {
     $.ajax({
         type: "POST",
-        url: "/Home/EditGoalTimeSheet",
+        url: "/User/Home/EditGoalTimeSheet",
         data: { id: id },
         success: function (result) {
 

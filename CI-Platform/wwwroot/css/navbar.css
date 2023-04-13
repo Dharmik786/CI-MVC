@@ -1,10 +1,4 @@
-﻿#preloader {
-    background: white url(/Image/Pre.gif) no-repeat center center;
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    z-index: 100;
-}
+﻿ 
 .input {
     padding: 5px;
     margin-bottom: 5px;
@@ -196,29 +190,29 @@
     position: relative;
 }
 
-.landing-page-top-right {
-    position: absolute;
-    top: 8px;
-    right: 16px;
-    padding: 5px 10px;
-    border-radius: 30px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    font-size: 14px;
-}
+    .landing-page-top-right {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        padding: 5px 10px;
+        border-radius: 30px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+    }
 
-.landing-page-bottom-right {
-    position: absolute;
-    bottom: 25px;
-    right: 21px;
-}
+    .landing-page-bottom-right {
+        position: absolute;
+        bottom: 25px;
+        right: 21px;
+    }
 
-.landing-page-btn-img {
-    border: none;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 30px;
-    padding: 6px;
-}
+    .landing-page-btn-img {
+        border: none;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 30px;
+        padding: 6px;
+    }
 
 .rule {
     display: flex;

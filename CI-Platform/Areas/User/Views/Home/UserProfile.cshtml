@@ -24,7 +24,7 @@
                 <div class="col-12 col-md-3 col-lg-2 user-profile-left-div d-flex flex-column align-items-center justify-content-center">
                     <div class="d-flex flex-column align-items-center justify-content-center">
                         <div class="user-profile-div d-grid">
-                            <input type="file" asp-for="Avatar" style="display:none;" id="inputImg"/>
+                            <input type="file" asp-for="Avatar" style="display:none;" id="inputImg" />
                             @if (Model.user.Avatar != null)
                             {
                                 <img src="@Model.user.Avatar" id="imgDiv"
@@ -153,13 +153,13 @@
                         <hr>
                         <div class="user-skill-list-div" id="userskilldiv">
                             <ul class="user-skills-list">
-                               
+
                                 @if (Model.Userskills != null)
                                 {
-                                    foreach(var i in Model.Userskills)
+                                    foreach (var i in Model.Userskills)
                                     {
                                         <li>@i.Skill.SkillName</li>
-                                       
+
                                     }
                                 }
                             </ul>
@@ -168,7 +168,7 @@
                             Add Skills
                         </button>
 
-  <!------------------------------------------- Skill Modal------------------------------------------------------------------------------- -->
+                        <!------------------------------------------- Skill Modal------------------------------------------------------------------------------- -->
                         <div class="modal fade" id="addskillmodal" tabindex="-1" aria-labelledby="addskillmodalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -181,7 +181,7 @@
                                             <br />
                                             <div class="row d-flex m-0 p-0">
                                                 <select multiple style="height:300px;" id="s1" class="  px-0 col-12 col-md-5 ">
-                                                    
+
                                                     @if (Model.Userskills != null)
                                                     {
                                                         @foreach (var it in Model.RemainingSkill)
@@ -255,7 +255,7 @@
                         </div>
 
 
- <!------------------------------------------------------------------------------------------------------------------>
+                        <!------------------------------------------------------------------------------------------------------------------>
                     </div>
                     <div class="d-flex justify-content-end mt-5">
                         <button class="user-profile-save-btn" type="submit">Save</button>
@@ -311,7 +311,62 @@
     </div>
 
 
-    <partial name="_Footer">
+
+    <div style="bottom: 10px;margin-top: 10px;">
+        <hr class="m-0" />
+        <footer>
+            <div class="container d-flex mb-2 mt-2">
+                <div class="mx-2"><a asp-controller="Home" asp-action="Policy" style="text-decoration:none;">Privacy Policy</a></div>
+
+                <!-- Button trigger modal -->
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" style="border:none;background-color:white;">
+                    Contact Us
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form asp-controller="Home" asp-action="ContactUs" method="post">
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <label for="exampleFormControlTextarea1" class="form-label col-6">User Name</label>
+                                                <input type="text" value="@Model.Name" class=" form-control  col-12 " placeholder="User Name" disabled>
+
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="exampleFormControlTextarea1" class="form-label col-6">Email</label>
+                                                <input type="email" value="@Model.Email" class=" form-control  col-12" placeholder="Email" disabled>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="exampleFormControlTextarea1" class="form-label col-6">subject</label>
+                                                <input type="text" class=" form-control  col-12 " placeholder="subject">
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="exampleFormControlTextarea1" class="form-label col-6"> Message</label>
+                                                <textarea class="form-control col-12" placeholder="Message"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary d-inline" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary d-inline">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
 
 
 

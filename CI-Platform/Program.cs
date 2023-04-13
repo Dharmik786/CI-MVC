@@ -36,6 +36,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Landingpage}/{action=Landingpage}/{id?}");
+    pattern: "{area=User}/{controller=Landingpage}/{action=Landingpage}/{id?}");
+   // pattern: "{area=Admin}/{controller=Admin}/{action=Admin}/{id?}");
 
 app.Run();

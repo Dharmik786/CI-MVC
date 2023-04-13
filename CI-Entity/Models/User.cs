@@ -37,6 +37,8 @@ public partial class User
 
     public string Status { get; set; } = null!;
 
+    public long? RoleId { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -56,6 +58,8 @@ public partial class User
     public virtual ICollection<MissionInvite> MissionInviteToUsers { get; } = new List<MissionInvite>();
 
     public virtual ICollection<MissionRating> MissionRatings { get; } = new List<MissionRating>();
+
+    public virtual Role? Role { get; set; }
 
     public virtual ICollection<Story> Stories { get; } = new List<Story>();
 

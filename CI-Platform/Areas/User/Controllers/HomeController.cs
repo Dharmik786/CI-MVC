@@ -18,8 +18,9 @@ using System.Security.Cryptography;
 using System.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
-namespace CI_Platform.Controllers
+namespace CI_Platform.Areas.User.Controllers
 {
+    [Area("User")]
     public class HomeController : Controller
     {
 
@@ -27,7 +28,7 @@ namespace CI_Platform.Controllers
         private readonly CIDbContext _CIDbContext;
         private readonly IUserInterface _IUser;
         [Obsolete]
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public HomeController(CIDbContext CIDbContext, IUserInterface Iuser, IHostingEnvironment IHostingEnvironment)
         {
@@ -120,11 +121,11 @@ namespace CI_Platform.Controllers
             u.countries = _IUser.countries();
             u.skills = _IUser.GetAllskill();
             u.Userskills = _IUser.GetUserSkill(Convert.ToInt32(userId));
-            
+
             var r = from row1 in u.skills.AsEnumerable()
-                               where !u.Userskills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
-                               select row1;
-            
+                    where !u.Userskills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
+                    select row1;
+
             u.RemainingSkill = r.ToList();
 
             var allskills = _IUser.GetAllskill();
@@ -141,20 +142,22 @@ namespace CI_Platform.Controllers
             }
             ViewBag.remainingSkills = allskills;
 
-           List<UserSkill> us = _IUser.GetUserSkill(Convert.ToInt32(userId));
-           List<Skill> s = _IUser.GetAllskill();
-            
-           
+            List<UserSkill> us = _IUser.GetUserSkill(Convert.ToInt32(userId));
+            List<Skill> s = _IUser.GetAllskill();
+
+
 
 
             var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.FirstName = user.FirstName;
-            u.LastName = user.LastName;
+            u.LastName = user.LastName; 
             u.EmployeeId = user.EmployeeId;
             u.Title = user.Title;
             u.Department = user.Department;
             u.MyProfile = user.ProfileText;
             u.WhyIVol = user.WhyIVolunteer;
+            u.Email = user.Email;
+            u.Name = user.FirstName + " " + user.LastName;
 
             if (user.CountryId != null && user.CityId != null)
             {
@@ -197,8 +200,8 @@ namespace CI_Platform.Controllers
             user.Department = model.Department;
             user.ProfileText = model.MyProfile;
             user.WhyIVolunteer = model.WhyIVol;
-            user.CountryId = (int)model.Country;
-            user.CityId = (int)model.City;
+            user.CountryId = model.Country;
+            user.CityId = model.City;
             user.Availablity = model.Availablity;
             user.LinkedInUrl = model.LinkedIn;
             user.UpdatedAt = DateTime.Now;
@@ -246,7 +249,8 @@ namespace CI_Platform.Controllers
 
         }
 
-
+        [HttpPost]
+        public IActionResult
 
 
 

@@ -33,7 +33,7 @@ function showSlides(n) {
 //Rating
 function addRating(starId, missionId, Id) {
     $.ajax({
-        url: '/Volunteering/Addrating',
+        url: '/User/Volunteering/Addrating',
         type: 'POST',
         data: { missionId: missionId, Id: Id, rating: starId },
 

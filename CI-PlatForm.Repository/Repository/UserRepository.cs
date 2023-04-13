@@ -47,6 +47,11 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password).FirstOrDefault();
         }
+        public Admin GetAdminDetails(string email, string password)
+        {
+            return _CIDbContext.Admins.Where(e => e.Email == email && e.Password == password).FirstOrDefault();
+        }
+
         public User Forget(string Email)
         {
             return _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);

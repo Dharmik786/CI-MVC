@@ -8,8 +8,9 @@ using System.Net;
 using System.Net.Mail;
 using Forget = CI_Platform.Models.Forget;
 
-namespace CI.Controllers
+namespace CI_Platform.Areas.User.Controllers
 {
+    [Area("User")]
     public class UserController : Controller
     {
         private readonly CIDbContext _CIDbContext;
@@ -40,29 +41,39 @@ namespace CI.Controllers
 
             if (ModelState.IsValid)
             {
+                var admin = _IUser.GetAdminDetails(model.Email, model.Password);
                 var user = _IUser.Login(model.Email, model.Password);
                 var username = model.Email.Split("@")[0];
-                if (user != null)
+
+                if (admin != null)
                 {
-
-                    HttpContext.Session.SetString("userID", username);
-                    HttpContext.Session.SetString("user", user.UserId.ToString());
-                    HttpContext.Session.SetString("Firstname", user.FirstName);
-
-                    if (user.Avatar != null)
-                    {
-                        HttpContext.Session.SetString("Avtar", user.Avatar);
-                    }
-
-                    return RedirectToAction("landingpage", "Landingpage", new { user.UserId });
-                    // return RedirectToAction(nameof(HomeController.landingpage), "Home");
+                    return RedirectToAction("Admin", "Admin", new { area = "Admin" });
                 }
                 else
                 {
-                    ViewBag.Email = "email or pass is incorrect";
+                    if (user != null)
+                    {
+
+                        HttpContext.Session.SetString("userID", username);
+                        HttpContext.Session.SetString("user", user.UserId.ToString());
+                        HttpContext.Session.SetString("Firstname", user.FirstName);
+
+                        if (user.Avatar != null)
+                        {
+                            HttpContext.Session.SetString("Avtar", user.Avatar);
+                        }
+
+                        return RedirectToAction("landingpage", "Landingpage", new { user.UserId });
+
+                    }
+                    else
+                    {
+                        ViewBag.Email = "email or pass is incorrect";
+                    }
                 }
+
             }
-            return View();
+                    return View();
         }
 
         //--------------------------------------------------REGISTRATION---------------------------------------------
@@ -89,7 +100,7 @@ namespace CI.Controllers
             //};
             if (ModelState.IsValid)
             {
-                if (_IUser.Registration(user.FirstName,user.LastName,user.Email,user.PhoneNumber,user.ConfirmPassword)==true)
+                if (_IUser.Registration(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.ConfirmPassword) == true)
                 {
                     //_CIDbContext.Users.Add(user);
                     //_CIDbContext.SaveChanges();

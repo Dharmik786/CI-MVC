@@ -9,8 +9,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace CI_Platform.Controllers
+namespace CI_Platform.Areas.User.Controllers
 {
+    [Area("User")]
     public class LandingpageController : Controller
     {
         private readonly CIDbContext _CIDbContext;
@@ -59,7 +60,7 @@ namespace CI_Platform.Controllers
             ViewBag.skills = skills;
 
             missionList.favoriteMissions = _IUser.favoriteMissions();
-   
+
             return View(missionList);
 
         }
@@ -106,12 +107,12 @@ namespace CI_Platform.Controllers
             }
 
             ////Sort By
-            
+
             if (sortValue != null)
             {
                 ViewBag.sort = sortValue;
             }
-            
+
             switch (sortValue)
             {
                 case "Newest":
@@ -165,10 +166,22 @@ namespace CI_Platform.Controllers
                 }
             }
 
-            
+
             missionList.mission = mission;
 
-            ViewBag.missionCount = missionList.mission.Count();            const int pageSize = 3;            if (jpg < 1)            {                jpg = 1;            }            int recsCount = missionList.mission.Count();            var pager = new Pager(recsCount, jpg, pageSize);            int recSkip = (jpg - 1) * pageSize;            var data = missionList.mission.Skip(recSkip).Take(pager.PageSize).ToList();            this.ViewBag.pager = pager;            ViewBag.missionTempDate = data;            missionList.mission = data.ToList();
+            ViewBag.missionCount = missionList.mission.Count();
+            const int pageSize = 3;
+            if (jpg < 1)
+            {
+                jpg = 1;
+            }
+            int recsCount = missionList.mission.Count();
+            var pager = new Pager(recsCount, jpg, pageSize);
+            int recSkip = (jpg - 1) * pageSize;
+            var data = missionList.mission.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.pager = pager;
+            ViewBag.missionTempDate = data;
+            missionList.mission = data.ToList();
 
             ViewBag.TM = recsCount;
 
@@ -178,3 +191,4 @@ namespace CI_Platform.Controllers
 
     }
 }
+    

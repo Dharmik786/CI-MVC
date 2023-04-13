@@ -27,6 +27,8 @@ public partial class Story
 
     public DateTime? DeletedAt { get; set; }
 
+    public DateTime? StoryDate { get; set; }
+
     public virtual Mission Mission { get; set; } = null!;
 
     public virtual ICollection<StoryInvite> StoryInvites { get; } = new List<StoryInvite>();

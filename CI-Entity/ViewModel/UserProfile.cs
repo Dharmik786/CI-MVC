@@ -45,6 +45,8 @@ namespace CI_Entity.ViewModel
         public string Availablity { get; set; }
         public string LinkedIn { get; set; }
         public IFormFile Avatar { get; set; }
+        public string Email { get; set; }   
+        public string Name { get; set; }
 
 
     }
