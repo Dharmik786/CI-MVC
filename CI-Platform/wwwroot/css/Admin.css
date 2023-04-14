@@ -1,2 +1,28 @@
-﻿body {
+﻿#side-bar {
+    background-color: #f98635;
 }
+body{
+    overflow-x:hidden;
+}
+.nav > li > a:hover {
+    background-color: white;
+    color: #f98635!important;
+}
+
+.nav-pills a.active {
+    background-color: White !important;
+    color: #f98635 !important;
+}
+.dataTables_length{
+    display:none;
+}
+.dataTables_filter label{
+    display:flex;
+    margin-top:5px;
+}
+.paginate_button{
+    padding: 2px !important;
+}
+    .paginate_button:hover {
+        border-color: red!important;
+    }

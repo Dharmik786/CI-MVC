@@ -249,8 +249,8 @@ namespace CI_Platform.Areas.User.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult
+        //[HttpPost]
+        //public IActionResult
 
 
 

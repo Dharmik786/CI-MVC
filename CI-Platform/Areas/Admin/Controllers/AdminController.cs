@@ -9,5 +9,11 @@ namespace CI_Platform.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult GetUsers()
+        {
+            return PartialView("_User");
+        }
+
+
     }
 }
