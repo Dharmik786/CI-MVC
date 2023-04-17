@@ -1,0 +1,55 @@
+﻿@using CI_Entity.ViewModel;
+@model AdiminVM;
+<link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+<link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<div>
+    <div class="mt-3 ms-2 d-flex mb-0">
+        <h3 class="ps-2">User</h3>
+        <div class="ms-auto me-5">
+            <button class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                + Add
+            </button>
+        </div>
+    </div>
+    <hr class="mt-2 mb-1" />
+    <div class="" id="Admin">
+        <table id="example" class="table table-striped" style="width:100%">
+
+            <thead>
+                <tr>
+                    <th>Mission Title</th>
+                    <th>Mission Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Missions != null)
+                {
+                    foreach (var i in Model.Missions)
+                    {
+                        <tr>
+                            <td>@i.Title</td>
+                            <td>@i.MissionType</td>
+                            <td>@i.StartDate.ToString().Split(" ")[0]</td>
+                            <td>@i.EndDate.ToString().Split(" ")[0]</td>
+                            <td>
+
+
+                            </td>
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

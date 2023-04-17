@@ -1,0 +1,97 @@
+﻿@using CI_Entity.ViewModel;
+@model AdiminVM;
+<link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+<link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<div>
+    <div class="mt-3 ms-2 d-flex mb-0">
+        <h3 class="ps-2">Mission Application</h3>
+        <div class="ms-auto me-5">
+            <button class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                + Add
+            </button>
+        </div>
+    </div>
+    <hr class="mt-2 mb-1" />
+    <div class="" id="Admin">
+        <table id="example" class="table table-striped" style="width:100%">
+
+            <thead>
+                <tr>
+                    <th>Mission Title</th>
+                    <th>Mission Id</th>
+                    <th>User Id</th>
+                    <th>User Name</th>
+                    <th>Applied Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.missionApplications != null)
+                {
+                    
+                    foreach (var i in Model.missionApplications)
+                    {
+                        if(i.ApprovalStatus == "Pending")
+                        {
+                            <tr>
+                                <td>@i.Mission.Title</td>
+                                <td>@i.MissionId</td>
+                                <td>@i.UserId</td>
+                                <td>@i.User.FirstName @i.User.LastName</td>
+                                <td>@i.AppliedAt.ToString().Split(" ")[0]</td>
+                                <td>
+                                    <i class="fa-regular fa-circle-check fs-4 del-btn " style="color:green;" onclick="approve(@i.MissionApplicationId)"></i> &nbsp;
+                                    <i class="fa-sharp fa-regular fa-circle-xmark fs-4 del-btn" style="color:red;" onclick="reject(@i.MissionApplicationId)"></i>
+                                </td>
+                               
+                            </tr>
+                        }
+                       
+                    }
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script>
+    function approve(id){
+
+        $.ajax({
+            method: "GET",
+            url: "/Admin/Admin/ApproveApplication",
+            data: { id: id },
+            success: function (result) {
+                console.log("Approved");
+
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        })
+    }
+
+    function reject(id) {
+
+        $.ajax({
+            method: "GET",
+            url: "/Admin/Admin/RejectApplication",
+            data: { id: id },
+            success: function (result) {
+                console.log("Rejected");
+
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        })
+    }
+</script>

@@ -26,3 +26,29 @@ body{
     .paginate_button:hover {
         border-color: red!important;
     }
+.del-btn {
+    cursor: pointer;
+}
+.Edit-btn {
+    cursor: pointer;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: rgb(248 243 243 / 5%)!important;
+    color: var(--bs-table-striped-color);
+}
+.modal-save-btn {
+    border: 1px solid orange;
+    color: orange;
+    background: white;
+    border-radius: 20px;
+}
+.modal-close-btn {
+    border: 1px solid black;
+    color: black;
+    background: white;
+    border-radius: 20px;
+}
+.dataTables_wrapper .dataTables_filter {
+    float: left!important;
+    text-align: left!important;
+}

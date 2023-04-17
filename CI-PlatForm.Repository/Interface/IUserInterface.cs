@@ -56,7 +56,18 @@ namespace CI_PlatForm.Repository.Interface
         public void ChangePassword(string NewPsw, string CnfPsw,int UserId);
         public List<Skill> GetAllskill();
         public List<UserSkill> GetUserSkill(int userId);
+        public List<MissionSkill> GetMissionSkill();
         public void AddUserSkills(long SkillId,int UserId);
         public Admin GetAdminDetails(string email, string password);
+        public MissionTheme AddMissionTheme(string theme);
+        public MissionTheme DeleteTheme(int themeId);
+        public MissionTheme GetTheme(int themeId);
+        public MissionTheme EditTheme(string singleTheme, int ThemeId);
+        public Skill EditSkill(string singleSkill, int skillId);
+        public Skill DeleteSkill(int skillid);
+        public Skill AddSkill(string skill);
+        public Skill GetSkill(int skillid);
+        public MissionApplication approveApplication(int id);
+        public MissionApplication rejectApplication(int id);
     }
 }

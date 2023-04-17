@@ -1,0 +1,106 @@
+﻿@using CI_Entity.ViewModel;
+@model AdiminVM;
+<link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+<link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<div>
+    <div class="mt-3 ms-2 d-flex mb-0">
+        <h3 class="ps-2">Mission Theme</h3>
+        <div class="ms-auto me-5">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#addTheme"
+                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                + Add
+            </button>
+
+            <div class="modal fade" id="addTheme" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form asp-controller="Admin" asp-action="AddTheme">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label >Mission Theme</label>
+                                    <input type="text" asp-for="singleTheme" class="form-control" id="missionTheme">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="submit" class="modal-save-btn px-2">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr class="mt-2 mb-1" />
+    <div id="Themes">
+        <table id="example" class="table table-striped" style="width:100%">
+
+            <thead>
+                <tr>
+                    <th>Theme Title</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.missionThemes != null)
+                {
+                    foreach (var i in Model.missionThemes)
+                    {
+                        <tr>
+                            <td>@i.Title</td>
+                            <td>
+                                <button type="button" style="border:none;background-color:white;" data-bs-toggle="modal" data-bs-target="#editTheme">
+                                    <i class="bi bi-pencil-square Edit-btn" style="color:orange" onclick="EditTheme(@i.MissionThemeId)"></i> &nbsp;
+                                </button>
+
+                                <div class="modal fade" id="editTheme" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form asp-controller="Admin" asp-action="UpdateTheme" method="post">
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label>Mission Theme</label>
+                                                        <input type="text" asp-for="singleTheme" class="form-control" id="mtheme">
+                                                        <input type="text" asp-for="ThemeId" id="mthemeid" hidden>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="modal-save-btn px-2">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <i class="bi bi-trash del-btn" onclick="DeleteTheme(@i.MissionThemeId)"></i>
+                            </td>
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

@@ -94,7 +94,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public User? GetUserByUserId(long userId)
         {
-            return _CIDbContext.Users.Where(e=>e.UserId == userId).FirstOrDefault();
+            return _CIDbContext.Users.Where(e => e.UserId == userId).FirstOrDefault();
         }
 
         public List<Country> countries()
@@ -137,7 +137,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public List<Timesheet> timesheets()
         {
-            return _CIDbContext.Timesheets.Where(e=>e.DeletedAt==null).ToList();
+            return _CIDbContext.Timesheets.Where(e => e.DeletedAt == null).ToList();
         }
         public List<Comment> comments()
         {
@@ -337,25 +337,25 @@ namespace CI_PlatForm.Repository.Repository
         {
             var story = _CIDbContext.Stories.Where(e => e.StoryId == storyId).FirstOrDefault();
             var stroryMedia = _CIDbContext.StoryMedia.Where(e => e.StoryId == story.StoryId).ToList();
-            if(storyMedia != null)
+            if (storyMedia != null)
             {
                 foreach (var s in stroryMedia)
                 {
                     _CIDbContext.Remove(s);
                 }
             }
-            
+
             _CIDbContext.Remove(story);
             _CIDbContext.SaveChanges();
         }
 
         public void cmtdetele(int cmtId, int userId)
         {
-            var cmt = _CIDbContext.Comments.Where(c=>c.CommentId==cmtId).FirstOrDefault();
+            var cmt = _CIDbContext.Comments.Where(c => c.CommentId == cmtId).FirstOrDefault();
             _CIDbContext.Comments.Remove(cmt);
             _CIDbContext.SaveChanges();
         }
-        public void AddTime(long missionId, int userId, int? hour, int? min,int? action, DateTime date, string? notes, long TimesheetId)
+        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes, long TimesheetId)
         {
             if (TimesheetId == 0)
             {
@@ -415,28 +415,32 @@ namespace CI_PlatForm.Repository.Repository
                     _CIDbContext.SaveChanges();
                 }
             }
-           
+
         }
 
         public void DeleteTimeSheet(int id)
         {
-            var time = _CIDbContext.Timesheets.Where(e=>e.TimesheetId==id).FirstOrDefault();
+            var time = _CIDbContext.Timesheets.Where(e => e.TimesheetId == id).FirstOrDefault();
             time.DeletedAt = DateTime.Now;
             time.Status = "Deleted";
             _CIDbContext.Update(time);
             _CIDbContext.SaveChanges();
         }
 
-        public void ChangePassword(string NewPsw,string CnfPsw,int Userid)
+        public void ChangePassword(string NewPsw, string CnfPsw, int Userid)
         {
-            User u = _CIDbContext.Users.Where(u=>u.UserId==Userid).FirstOrDefault();
+            User u = _CIDbContext.Users.Where(u => u.UserId == Userid).FirstOrDefault();
             if (u != null)
             {
                 u.Password = NewPsw;
-                u.UpdatedAt=DateTime.Now;
+                u.UpdatedAt = DateTime.Now;
                 _CIDbContext.Update(u);
                 _CIDbContext.SaveChanges();
             }
+        }
+        public List<MissionSkill> GetMissionSkill()
+        {
+            return _CIDbContext.MissionSkills.ToList();
         }
 
         public List<UserSkill> GetUserSkill(int userId)
@@ -445,11 +449,102 @@ namespace CI_PlatForm.Repository.Repository
         }
         public void AddUserSkills(long SkillId, int UserId)
         {
-           UserSkill skill = new UserSkill();
+            UserSkill skill = new UserSkill();
             skill.SkillId = SkillId;
-            skill.UserId = UserId; 
+            skill.UserId = UserId;
             _CIDbContext.Add(skill);
             _CIDbContext.SaveChanges();
+        }
+        public MissionTheme AddMissionTheme(string theme)
+        {
+            MissionTheme mt = new MissionTheme();
+            if (theme != null)
+            {
+                mt.Title = theme;
+                _CIDbContext.Add(mt);
+                _CIDbContext.SaveChanges();
+            }
+            return mt;
+
+        }
+        public MissionTheme DeleteTheme(int themeId)
+        {
+            MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == themeId);
+            if (m != null)
+            {
+                _CIDbContext.Remove(m);
+                _CIDbContext.SaveChanges();
+            }
+            return m;
+        }
+        public MissionTheme GetTheme(int themeId)
+        {
+            MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == themeId);
+            return m;
+        }
+        public MissionTheme EditTheme(string singleTheme, int ThemeId)
+        {
+            MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == ThemeId);
+            m.Title = singleTheme;
+            m.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(m);
+            _CIDbContext.SaveChanges();
+            return m;
+
+        }
+
+
+        //skill
+        public Skill DeleteSkill(int skillid)
+        {
+            Skill m = _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillid);
+            if (m != null)
+            {
+                _CIDbContext.Remove(m);
+                _CIDbContext.SaveChanges();
+            }
+            return m;
+        }
+        public Skill AddSkill(string skill)
+        {
+            Skill mt = new Skill();
+            if (skill != null)
+            {
+                mt.SkillName = skill;
+                _CIDbContext.Add(mt);
+                _CIDbContext.SaveChanges();
+            }
+            return mt;
+
+        }
+        public Skill GetSkill(int skillid)
+        {
+            return _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillid);
+        }
+        public Skill EditSkill(string singleSkill, int skillId)
+        {
+            Skill m = _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillId);
+            m.SkillName = singleSkill;
+            m.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(m);
+            _CIDbContext.SaveChanges();
+            return m;
+        }
+        public MissionApplication approveApplication(int id)
+        {
+            var app = _CIDbContext.MissionApplications.FirstOrDefault(e=>e.MissionApplicationId == id);
+            app.ApprovalStatus = "Approve";
+            _CIDbContext.Update(app);
+            _CIDbContext.SaveChanges();
+            return app;
+        }
+        public MissionApplication rejectApplication(int id)
+        {
+            var app = _CIDbContext.MissionApplications.FirstOrDefault(e=>e.MissionApplicationId == id);
+            app.ApprovalStatus = "Rejected";
+            _CIDbContext.Update(app);
+            _CIDbContext.SaveChanges();
+            return app;
         }
     }
 }
