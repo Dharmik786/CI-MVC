@@ -16,10 +16,19 @@ namespace CI_Entity.ViewModel
         public List<Skill> skills { get; set; }
         public List<MissionTheme> missionThemes { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
-
+        public List<Country> countries { get; set; }
+        public List<City> cities { get; set; }
+        public List<CmsPage> cmsPages { get; set; }
         public string singleTheme { get; set; }
         public string singleskill { get; set; }
         public int  ThemeId { get; set; }
         public int skillId { get; set; }
+
+
+        public string cmstitle { get; set; }
+        public string description { get; set; }
+        public string slug { get; set; }
+        public string status { get; set; }
+        public int cmsid { get; set; }
     }
 }

@@ -110,6 +110,7 @@
                             <div class="mb-3 col-12 col-md-6">
                                 <label for="exampleFormControlTextarea1" class="form-label">Country*</label>
                                 <select class="form-select " aria-label="Default select example" asp-for="Country">
+                                    <option value="0">Select Country</option>
                                     @foreach (var c in Model.countries)
                                     {
                                         <option value="@c.CountryId">@c.CountryId @c.Name</option>
@@ -117,8 +118,9 @@
                                 </select>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="exampleFormControlTextarea1" class="form-label">City*</label>
-                                <select class="form-select " aria-label="Default select example" id="user-country">
+                                <label  class="form-label">City*</label>
+                                <select class="form-select "  asp-for="City">
+                                    <option value="0">Select City</option>
                                     @foreach (var c in Model.cities)
                                     {
                                         <option value="@c.CityId">@c.CityId @c.Name</option>
@@ -133,11 +135,11 @@
                         <hr>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <label for="exampleFormControlTextarea1" class="form-label">Availablity</label>
-                                <select class="form-select " aria-label="Default select example" asp-for="Availablity">
+                                <label  class="form-label">Availablity</label>
+                                <select class="form-select" asp-for="Availablity">
                                     <option value="Daily">Daily</option>
                                     <option value="Weekend">Weekend</option>
-                                    <option value="Weekend">Yearly</option>
+                                    <option value="Yearly">Yearly</option>
                                 </select>
                             </div>
                             <div class="mb-3 col-12 col-md-6">

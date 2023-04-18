@@ -26,6 +26,8 @@ namespace CI_Platform.Areas.Admin.Controllers
         {
             AdiminVM a = new AdiminVM();
             a.Users = _IUser.user();
+            a.countries = _IUser.countries();
+            a.cities = _IUser.cities();
             return PartialView("_User", a);
         }
         public IActionResult GetMission()
@@ -64,12 +66,19 @@ namespace CI_Platform.Areas.Admin.Controllers
             return PartialView("_Themes", a);
         }
 
-        [HttpPost]
-        public IActionResult AddTheme(AdiminVM model)
+        public IActionResult GetCmsPage()
         {
-            _IUser.AddMissionTheme(model.singleTheme);
-            return RedirectToAction("Admin", "Admin");
+            AdiminVM a = new AdiminVM();
+            a.cmsPages = _IUser.GetCmsPage();
+            return PartialView("_CmsPage", a);
         }
+        //-----------------------------------------------------------THEME-----------------------------------------------------
+        //[HttpPost]
+        //public IActionResult AddTheme(AdiminVM model)
+        //{
+        //    _IUser.AddMissionTheme(model.singleTheme);
+        //    return RedirectToAction("Admin", "Admin");
+        //}
         [HttpPost]
         public async Task<IActionResult> DeleteTheme(int ThemeId)
         {
@@ -81,14 +90,26 @@ namespace CI_Platform.Areas.Admin.Controllers
             var missionTheme = _IUser.GetTheme(ThemeId);
             return Json(new { success = true, MissionTheme = missionTheme });
         }
-        public ActionResult UpdateTheme(AdiminVM model)
+        //public ActionResult UpdateTheme(AdiminVM model)
+        //{
+        //    _IUser.EditTheme(model.singleTheme, model.ThemeId);
+        //    return RedirectToAction("Admin", "Admin");
+        //}
+        public ActionResult UpdateMissionTheme(string theme, int themmeid)
         {
-            _IUser.EditTheme(model.singleTheme, model.ThemeId);
-            return RedirectToAction("Admin", "Admin");
+            _IUser.EditTheme(theme, themmeid);
+            return Json(new { success = true });
+
+        }
+        [HttpPost]
+        public IActionResult AddMissionTheme(string theme)
+        {
+            _IUser.AddMissionTheme(theme);
+            return Json(new { success = true });
         }
 
 
-        //Skill
+        //-----------------------------------------------------------------------Skill------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> DeleteSkill(int skillid)
         {
@@ -96,22 +117,22 @@ namespace CI_Platform.Areas.Admin.Controllers
             return Json(new { success = true, DeleteSkill = DeleteSkill });
         }
         [HttpPost]
-        public IActionResult AddSkill(AdiminVM model)
+        public IActionResult AddSkill(string skill)
         {
-            _IUser.AddSkill(model.singleskill);
-            return RedirectToAction("Admin", "Admin");
+            _IUser.AddSkill(skill);
+            return Json(new { success = true });
         }
         public async Task<IActionResult> EditSkill(int Skillid)
         {
             var skill = _IUser.GetSkill(Skillid);
             return Json(new { success = true, skill = skill });
         }
-        public IActionResult UpdateSkill(AdiminVM model)
+        public IActionResult UpdateSkill(string skill, int skillid)
         {
-            _IUser.EditSkill(model.singleskill, model.skillId);
-            return RedirectToAction("Admin", "Admin");
+            _IUser.EditSkill(skill, skillid);
+            return Json(new { success = true });
         }
-
+        //------------------------------------------------------------------aaplication---------------------------------------------------------
         public async Task<IActionResult> ApproveApplication(int id)
         {
             _IUser.approveApplication(id);
@@ -121,6 +142,51 @@ namespace CI_Platform.Areas.Admin.Controllers
         {
             _IUser.rejectApplication(id);
             return Json(new { success = true, approve = id });
+        }
+
+
+        /*---------------------------------------------------------------Cms page---------------------------------------------------------------*/
+        public async Task<IActionResult> GetCms(int cmsid)
+        {
+            var cms = _IUser.GetCmsPageById(cmsid);
+            return Json(new { success = true, cms = cms });
+        }
+        public async Task<IActionResult> DeleteCms(int cmsid)
+        {
+            var cms = _IUser.DeleteCmsPageById(cmsid);
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCms(string title, string desc, string slug, string status, int id)
+        {
+            if (id == 0)
+            {
+                _IUser.AddCmsPage(title, desc, slug, status);
+            }
+            else
+            {
+                _IUser.EditCmsPage(id, title, desc, slug, status);
+            }
+
+
+            return Json(new { success = true });
+        }
+
+        //-------------------------------------------------------------Story---------------------------------------------------------
+        public async Task<IActionResult> ApproveStory(int id)
+        {
+            _IUser.approveStory(id);
+            return Json(new { success = true });
+        }
+        public async Task<IActionResult> RejectStory(int id)
+        {
+            _IUser.rejectStory(id);
+            return Json(new { success = true });
+        }
+        public async Task<IActionResult> DeleteStory(int id)
+        {
+            _IUser.DeleteStory(id);
+            return Json(new { success = true });
         }
     }
 }

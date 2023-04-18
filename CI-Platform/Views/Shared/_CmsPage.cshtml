@@ -1,0 +1,209 @@
+﻿@using CI_Entity.ViewModel;
+@model AdiminVM;
+<link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+<link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<div>
+    <div class="mt-3 ms-2 d-flex mb-0">
+        <h3 class="ps-2">Cms Page</h3>
+        <div class="ms-auto me-5">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#AddCms" onclick="addcms()"
+                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                + Add
+            </button>
+
+            <div class="modal fade " id="AddCms" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit </h1>
+                            <button type="button" class="bg-white border-0 btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <form asp-action="AddCms" asp-controller="Admin" method="post">
+                            <div class="modal-body ">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <lable>Title</lable>
+                                            <input asp-for="cmstitle" id="Title" class="form-control" />
+                                            <input asp-for="cmsid" id="CmsPageId" type="hidden" />
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <lable>Description</lable>
+                                            <textarea asp-for="description" id="Description"></textarea>
+
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <lable>Slug</lable>
+                                            <input id="Slug" asp-for="slug" class="form-control" />
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <lable>Status</lable>
+                                            <select class="form-select" asp-for="status" id="Status" placeholder="Status">
+                                                <option selected value="null">Select Status</option>
+                                                <option value="Active"> Active</option>
+                                                <option value="In-Active"> In-Active</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="modal-close-btn " data-bs-dismiss="modal">Close</button>
+                                <button type="button" onclick="AddUpdateCms()" class="modal-save-btn">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr class="mt-2 mb-1" />
+    <div id="cmsd">
+        <table id="example" class="table table-striped" style="width:100%">
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.cmsPages != null)
+                {
+                    foreach (var i in Model.cmsPages)
+                    {
+                        <tr>
+                            <td>@i.Title</td>
+                            @if (i.Status == "Active")
+                            {
+                                <td style="color:green">@i.Status</td>
+                            }
+                            else
+                            {
+                                <td style="color:red">@i.Status</td>
+                            }
+                            <td>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#AddCms"
+                                        class="bi bi-pencil-square Edit-btn" onclick="EditCms(@i.CmsPageId)"
+                                        style="color:orange;border-radius:20px;background:white;border:none;">
+                                    &nbsp;
+                                </button>
+
+                                <i class="bi bi-trash del-btn" onclick="deleteCms(@i.CmsPageId)"></i>
+
+
+                            </td>
+                        </tr>
+
+
+                    }
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script>
+    CKEDITOR.replace('Description');
+
+    function addcms() {
+       debugger
+        document.getElementById('Title').value = null;
+
+        var editor = CKEDITOR.instances['Description'];
+        editor.setData(" ");
+
+        document.getElementById('Slug').value = null;
+        document.getElementById('Status').value = null;
+        document.getElementById('CmsPageId').value = null;
+    }
+
+    function EditCms(cmsid) {
+
+
+        $.ajax({
+            url: "/Admin/Admin/GetCms",
+            method: "GET",
+            data: { cmsid: cmsid },
+
+            success: function (res) {
+                console.log(res);
+
+
+                document.getElementById('Title').value = res.cms.title;
+
+                var editor = CKEDITOR.instances['Description'];
+                editor.setData(res.cms.description);
+             
+
+                document.getElementById('Slug').value = res.cms.slug;
+                document.getElementById('Status').value = res.cms.status;
+                document.getElementById('CmsPageId').value = res.cms.cmsPageId;
+
+            },
+            error: function () {
+                alert("cms Error")
+            }
+
+
+        });
+    }
+    function deleteCms(cmsid) {
+
+
+        $.ajax({
+            url: "/Admin/Admin/DeleteCms",
+            method: "GET",
+            data: { cmsid: cmsid },
+
+            success: function (res) {
+                Page();
+
+            },
+            error: function () {
+                alert("cms Error")
+            }
+
+
+        });
+    }
+
+    function AddUpdateCms() {
+        var title = document.getElementById('Title').value;
+     
+        var desc= CKEDITOR.instances.Description.getData();
+
+        var slug = document.getElementById('Slug').value;
+        var status = document.getElementById('Status').value;
+        var id = document.getElementById('CmsPageId').value;
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/AddCms",
+            data: { title: title, desc: desc, slug: slug, status: status, id :id},
+            success: function (result) {
+             
+                $(".btn-close").click();
+                Page();
+
+            },
+            error: function () {
+                alert("Page Error")
+            }
+        })
+
+    }
+</script>

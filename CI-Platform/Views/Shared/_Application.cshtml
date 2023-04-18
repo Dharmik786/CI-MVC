@@ -62,36 +62,3 @@
         </table>
     </div>
 </div>
-<script>
-    function approve(id){
-
-        $.ajax({
-            method: "GET",
-            url: "/Admin/Admin/ApproveApplication",
-            data: { id: id },
-            success: function (result) {
-                console.log("Approved");
-
-            },
-            error: function () {
-                alert("Editt Theme Error")
-            }
-        })
-    }
-
-    function reject(id) {
-
-        $.ajax({
-            method: "GET",
-            url: "/Admin/Admin/RejectApplication",
-            data: { id: id },
-            success: function (result) {
-                console.log("Rejected");
-
-            },
-            error: function () {
-                alert("Editt Theme Error")
-            }
-        })
-    }
-</script>

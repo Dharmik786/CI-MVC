@@ -31,33 +31,33 @@ namespace CI_PlatForm.Repository.Interface
         public List<MissionMedium> missionMedia();
         public List<Timesheet> timesheets();
         public List<Comment> comments();
-        public MissionInvite AddMissionInvite(int FromUserId,int missionId,long Touserid);
+        public MissionInvite AddMissionInvite(int FromUserId, int missionId, long Touserid);
         public List<MissionApplication> missionApplications();
         public FavoriteMission addfav(int missionId, int userId);
         public FavoriteMission FavMission(int missionId, int userId);
 
-        public Comment addcomment(int missionId,int userId,string cmt);
+        public Comment addcomment(int missionId, int userId, string cmt);
 
-        public MissionRating rating(int missionId, string starId,int userId);
+        public MissionRating rating(int missionId, string starId, int userId);
 
         public MissionApplication applymission(int missionId, int userId);
-       public List<Story> stories();
-       public List<StoryMedium> storyMedia();
-       public long SubmitStory(long missionId,long userId,string title,string description,DateTime date,long storyId);
-       public void AddStoryMedia(string mediaType,string mediaPath,long missionId,long userId, long storyId,long sId);
-       public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+        public List<Story> stories();
+        public List<StoryMedium> storyMedia();
+        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+        public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId, long storyId, long sId);
+        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
         public void DraftDelete(int storyId);
-        public void RemoveMedia(long stroryId); 
+        public void RemoveMedia(long stroryId);
         public void cmtdetele(int cmtId, int userId);
-        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes,long TimesheetId);
+        public void AddTime(long missionId, int userId, int? hour, int? min, int? action, DateTime date, string? notes, long TimesheetId);
         public void DeleteTimeSheet(int id);
 
         public User GetUserByUserId(long userId);
-        public void ChangePassword(string NewPsw, string CnfPsw,int UserId);
+        public void ChangePassword(string NewPsw, string CnfPsw, int UserId);
         public List<Skill> GetAllskill();
         public List<UserSkill> GetUserSkill(int userId);
         public List<MissionSkill> GetMissionSkill();
-        public void AddUserSkills(long SkillId,int UserId);
+        public void AddUserSkills(long SkillId, int UserId);
         public Admin GetAdminDetails(string email, string password);
         public MissionTheme AddMissionTheme(string theme);
         public MissionTheme DeleteTheme(int themeId);
@@ -69,5 +69,13 @@ namespace CI_PlatForm.Repository.Interface
         public Skill GetSkill(int skillid);
         public MissionApplication approveApplication(int id);
         public MissionApplication rejectApplication(int id);
+        public List<CmsPage> GetCmsPage();
+        public CmsPage GetCmsPageById(int id);
+        public CmsPage DeleteCmsPageById(int id);
+        public bool EditCmsPage(int id, string tiitle, string desc, string slug, string status);
+        public bool AddCmsPage(string tiitle, string desc, string slug, string status);
+        public bool approveStory(int id);
+        public bool rejectStory(int id);
+        public bool DeleteStory(int id);
     }
 }

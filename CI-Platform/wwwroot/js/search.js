@@ -70,6 +70,7 @@ function mySearch(jpg) {
 
     
     console.log(jpg);
+
     var id = $(".sortSelect").val();
     console.log(id);
 

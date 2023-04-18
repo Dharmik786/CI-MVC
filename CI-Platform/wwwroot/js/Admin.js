@@ -21,10 +21,18 @@ function User() {
 }
 
 function Page() {
-    
     $(".page").addClass("active");
     $(".user,.mission,.theme,.skills,.application,.story,.management").removeClass("active");
-
+    $.ajax({
+        method: "GET",
+        url: "/Admin/Admin/GetCmsPage",
+        success: function (res) {
+            $("#Admin").html(res)
+        },
+        error: function () {
+            alert("Cms Error")
+        }
+    });
 
 }
 
@@ -123,16 +131,17 @@ function Management() {
     $(".user,.page,.mission,.skills,.theme,.application,.story").removeClass("active");
 }
 
+
+/*-----------------------------------------------------------------------------------------Theme--------------------------------------------------- */
 function DeleteTheme(ThemeId) {
     $.ajax({
         method: "POST",
         url: "/Admin/Admin/DeleteTheme",
         data: { ThemeId: ThemeId },
         success: function (res) {
-            debugger
-             $('#Themes').html($(res).find('#Themes').html());
-            /*$("#Themes").load(location.href + " #Themes>*", "");*/
            
+            Theme();
+            
         },
         error: function () {
             alert("User Error")
@@ -158,13 +167,54 @@ function EditTheme(ThemeId) {
     });
 }
 
+
+function UpdateTheme() {
+
+    var theme = document.getElementById("mtheme").value;
+    var themmeid = document.getElementById("mthemeid").value;
+   
+
+    $.ajax({
+        method: "POST",
+        url: "/Admin/Admin/UpdateMissionTheme",
+        data: { theme: theme, themmeid: themmeid },
+        success: function (result) {
+            $(".btn-close").click();
+            Theme();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    });
+}
+function Addtheme() {
+
+    var theme = document.getElementById("missionTheme").value;
+   
+    $.ajax({
+        method: "POST",
+        url: "/Admin/Admin/AddMissionTheme",
+        data: { theme: theme},
+        success: function (result) {
+            $(".btn-close").click();
+            Theme();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    });
+}
+/*---------------------------------------------------------------------------------------- -Skill --------------------------------------------------- */
+
 function DeleteSkill(skillid) {
     $.ajax({
         method: "POST",
         url: "/Admin/Admin/DeleteSkill",
         data: { skillid: skillid },
         success: function (res) {
-            $('.Themes').html($(res).find('.Themes').html());
+            Skills();
         },
         error: function () {
             alert("User Error")
@@ -188,3 +238,75 @@ function EditSkill(SkillId) {
         }
     });
 }
+
+function UpdateSkill() {
+    var skill = document.getElementById("mskill").value;
+    var skillid = document.getElementById("mskillid").value;
+
+
+    $.ajax({
+        method: "POST",
+        url: "/Admin/Admin/UpdateSkill",
+        data: { skill: skill, skillid: skillid },
+        success: function (result) {
+            $(".btn-close").click();
+            Skills();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    });
+}
+function AddSkill() {
+    var skill = document.getElementById("missionSkill").value;
+
+
+    $.ajax({
+        method: "POST",
+        url: "/Admin/Admin/AddSkill",
+        data: { skill: skill},
+        success: function (result) {
+            $(".btn-close").click();
+            Skills();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    });
+}
+
+//---------------------------------------------------Application--------------------------------------
+function approve(id) {
+
+    $.ajax({
+        method: "GET",
+        url: "/Admin/Admin/ApproveApplication",
+        data: { id: id },
+        success: function (result) {
+            Application();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    })
+}
+
+function reject(id) {
+
+    $.ajax({
+        method: "GET",
+        url: "/Admin/Admin/RejectApplication",
+        data: { id: id },
+        success: function (result) {
+            Application();
+
+        },
+        error: function () {
+            alert("Editt Theme Error")
+        }
+    })
+}
+//--------------------------------------------------------Admin--------------------------------------------------

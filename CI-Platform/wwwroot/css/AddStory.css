@@ -97,3 +97,6 @@ output {
 
 
 
+div.dt-row {
+    overflow-x: scroll;
+}

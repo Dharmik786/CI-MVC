@@ -256,7 +256,7 @@ namespace CI_PlatForm.Repository.Repository
                 st.UserId = userId;
                 st.Title = title;
                 st.Description = description;
-                st.Status = "1";
+                st.Status = "PENDING";
                 st.CreatedAt = date;
                 _CIDbContext.Stories.Add(st);
                 _CIDbContext.SaveChanges();
@@ -532,7 +532,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public MissionApplication approveApplication(int id)
         {
-            var app = _CIDbContext.MissionApplications.FirstOrDefault(e=>e.MissionApplicationId == id);
+            var app = _CIDbContext.MissionApplications.FirstOrDefault(e => e.MissionApplicationId == id);
             app.ApprovalStatus = "Approve";
             _CIDbContext.Update(app);
             _CIDbContext.SaveChanges();
@@ -540,11 +540,79 @@ namespace CI_PlatForm.Repository.Repository
         }
         public MissionApplication rejectApplication(int id)
         {
-            var app = _CIDbContext.MissionApplications.FirstOrDefault(e=>e.MissionApplicationId == id);
+            var app = _CIDbContext.MissionApplications.FirstOrDefault(e => e.MissionApplicationId == id);
             app.ApprovalStatus = "Rejected";
             _CIDbContext.Update(app);
             _CIDbContext.SaveChanges();
             return app;
         }
+        public List<CmsPage> GetCmsPage()
+        {
+            return _CIDbContext.CmsPages.Where(e => e.DeletedAt == null).ToList();
+        }
+        public CmsPage GetCmsPageById(int id)
+        {
+            return _CIDbContext.CmsPages.FirstOrDefault(e => e.CmsPageId == id);
+        }
+        public CmsPage DeleteCmsPageById(int id)
+        {
+            var cms = _CIDbContext.CmsPages.FirstOrDefault(e => e.CmsPageId == id);
+            cms.DeletedAt = DateTime.Now;
+            cms.Status = "In-Active";
+            _CIDbContext.Update(cms);
+            _CIDbContext.SaveChanges();
+
+            return cms;
+        }
+        public bool EditCmsPage(int id, string tiitle, string desc, string slug, string status)
+        {
+            var cms = _CIDbContext.CmsPages.FirstOrDefault(e => e.CmsPageId == id);
+            cms.Title = tiitle;
+            cms.Description = desc;
+            cms.Status = status;
+            cms.Slug = slug;
+            cms.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(cms);
+            _CIDbContext.SaveChanges(true);
+            return true;
+        }
+        public bool AddCmsPage(string tiitle, string desc, string slug, string status)
+        {
+            CmsPage cms = new CmsPage();
+            cms.Title = tiitle;
+            cms.Description = desc;
+            cms.Status = status;
+            cms.Slug = slug;
+            cms.CreatedAt = DateTime.Now;
+            _CIDbContext.Add(cms);
+            _CIDbContext.SaveChanges(true);
+            return true;
+        }
+        public bool approveStory(int id)
+        {
+            Story s = _CIDbContext.Stories.Where(e => e.StoryId == id).FirstOrDefault();
+            s.Status = "APPROVE";
+            _CIDbContext.Update(s);
+            _CIDbContext.SaveChanges();
+            return true;
+        }
+        public bool rejectStory(int id)
+        {
+            Story s = _CIDbContext.Stories.Where(e => e.StoryId == id).FirstOrDefault();
+            s.Status = "REJECT";
+            _CIDbContext.Update(s);
+            _CIDbContext.SaveChanges();
+            return true;
+        }
+        public bool DeleteStory(int id)
+        {
+            Story s = _CIDbContext.Stories.Where(e => e.StoryId == id).FirstOrDefault();
+            s.Status = "DELETE";
+            s.DeletedAt = DateTime.Now;
+            _CIDbContext.Update(s);
+            _CIDbContext.SaveChanges();
+            return true;
+        }
+
     }
 }

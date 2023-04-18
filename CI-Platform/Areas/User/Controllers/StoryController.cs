@@ -28,7 +28,7 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult StoriesListing()
         {
             MissionList missionList = new MissionList();
-            missionList.stories = _IUser.stories().Where(u => u.Status == "1").ToList();
+            missionList.stories = _IUser.stories().Where(u => u.Status == "APPROVE").ToList();
             missionList.users = _IUser.user();
             missionList.mission = _IUser.mission();
             missionList.missionThemes = _IUser.missionThemes();

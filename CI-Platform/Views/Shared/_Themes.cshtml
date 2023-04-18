@@ -27,7 +27,7 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label >Mission Theme</label>
-                                    <input type="text" asp-for="singleTheme" class="form-control" id="missionTheme">
+                                    <input type="text" a class="form-control" id="missionTheme">
                                 </div>
 
                             </div>
@@ -35,7 +35,7 @@
                                 <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">
                                     Close
                                 </button>
-                                <button type="submit" class="modal-save-btn px-2">Add</button>
+                                <button type="button" onclick="Addtheme()" class="modal-save-btn px-2">Add</button>
                             </div>
                         </form>
                     </div>
@@ -71,20 +71,20 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
                                             </div>
                                             <form asp-controller="Admin" asp-action="UpdateTheme" method="post">
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <label>Mission Theme</label>
-                                                        <input type="text" asp-for="singleTheme" class="form-control" id="mtheme">
-                                                        <input type="text" asp-for="ThemeId" id="mthemeid" hidden>
+                                                        <input type="text"  class="form-control" id="mtheme">
+                                                        <input type="text" id="mthemeid" hidden>
                                                     </div>
 
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="modal-save-btn px-2">Update</button>
+                                                    <button type="button" class="modal-save-btn px-2" onclick="UpdateTheme()">Update</button>
                                                 </div>
                                             </form>
                                         </div>

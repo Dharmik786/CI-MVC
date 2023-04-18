@@ -2,6 +2,8 @@
 @model AdiminVM;
 <link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
 <link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+
 <script>
     $(document).ready(function () {
         $('#example').DataTable();
@@ -9,7 +11,7 @@
 </script>
 <div>
     <div class="mt-3 ms-2 d-flex mb-0">
-        <h3 class="ps-2">User</h3>
+        <h3 class="ps-2">Story</h3>
         <div class="ms-auto me-5">
             <button class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
                 + Add
@@ -34,16 +36,21 @@
 
                     foreach (var i in Model.stories)
                     {
-                        <tr>
-                            <td>@i.Title</td>
-                            <td>@i.User.FirstName @i.User.LastName</td>
-                            <td>@i.Mission.Title</td>
-                            <td>
-                                <i class="bi bi-pencil-square" style="color:orange"></i> 
-                                <i class="bi bi-trash"></i>
-
-                            </td>
-                        </tr>
+                        if(i.Status == "PENDING")
+                        {
+                            <tr>
+                                <td style="width:40%">@i.Title</td>
+                                <td>@i.User.FirstName @i.User.LastName</td>
+                                <td style="width:30%">@i.Mission.Title</td>
+                                <td>
+                                    <a class="story-view-btn rounded-5  text-decoration-none px-2" href="/User/Story/StoryDetails?storyId=@i.StoryId" target="_blank">View</a> &nbsp;
+                                    <i class="fa-regular fa-circle-check del-btn " style="color:green;" onclick="approveStory(@i.StoryId)"></i> &nbsp;
+                                    <i class="fa-sharp fa-regular fa-circle-xmark  del-btn" style="color:red;" onclick="rejectStory(@i.StoryId)"></i>&nbsp;
+                                    <i class="bi bi-trash del-btn" onclick="deleteStory(@i.StoryId)"></i>
+                                </td>
+                            </tr>
+                        }
+                       
                     }
                 }
 
@@ -53,3 +60,53 @@
         </table>
     </div>
 </div>
+<script>
+
+    function approveStory(id){
+        debugger
+        $.ajax({
+            method:"POST",
+            url:"/Admin/Admin/ApproveStory",
+            data:{id:id},
+            success: function (res) {
+               Story();
+            },
+            error: function () {
+                alert("Application Error")
+            }
+
+        })
+
+    }
+    function rejectStory(id) {
+        
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/RejectStory",
+            data: { id: id },
+            success: function (res) {
+                Story();
+            },
+            error: function () {
+                alert("Application Error")
+            }
+
+        })
+
+    }
+    function deleteStory(id){
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/DeleteStory",
+            data: { id: id },
+            success: function (res) {
+                Story();
+            },
+            error: function () {
+                alert("Application Error")
+            }
+
+        })
+    }
+
+</script>
