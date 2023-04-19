@@ -30,5 +30,11 @@ namespace CI_Entity.ViewModel
         public string slug { get; set; }
         public string status { get; set; }
         public int cmsid { get; set; }
+
+        //User
+        public string? firstname { get; set; }
+        public string? lastname { get; set; }
+        public string? Email { get; set; }
+        
     }
 }

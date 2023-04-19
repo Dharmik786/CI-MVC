@@ -14,6 +14,106 @@
             <button class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
                 + Add
             </button>
+
+            <div class="modal fade bd-example-modal-lg " id="AddMission" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit </h1>
+                            <button type="button" class="bg-white border-0 btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="container">
+                                <div class="row">
+
+                                    <div class="col-12 mb-2">
+                                        <lable>Title</lable>
+                                        <input type="text" id="Title" class="form-control" />
+                                        <input id="missionid" type="hidden" />
+                                    </div>
+
+                                    <div class="col-12 mb-2">
+                                        <lable>Short Description</lable>
+                                        <input type="text" id="Title" class="form-control" />
+                                    </div>
+
+                                    <div class="col-12 mb-2">
+                                        <lable>Description</lable>
+                                        <textarea id="MissionDescription"></textarea>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Select Country</lable>
+                                        <select class="form-select">
+                                            @foreach (var i in Model.countries)
+                                            {
+                                                <option value="@i.CountryId">@i.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Select City</lable>
+                                        <select class="form-select">
+                                            @foreach (var i in Model.cities)
+                                            {
+                                                <option value="@i.CityId">@i.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Organisation Name</lable>
+                                        <input type="text" class="form-control" />
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Organisation Detail</lable>
+                                        <input type="text" class="form-control" />
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12 mb-2">
+                                        <lable>Select Mission Type </lable>
+                                        <select class="form-select">
+                                            <option value="Goal">Goal</option>
+                                            <option value="Time">Time</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-12 mb-2">
+                                        <lable>Start Date</lable>
+                                        <input type="date" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-12 mb-2">
+                                        <lable>End Date</lable>
+                                        <input type="date" class="form-control" />
+                                    </div>
+
+
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Total Seats</lable>
+                                        <input type="number" class="form-control" />
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                        <lable>Mission DeadLine</lable>
+                                        <input type="date" class="form-control" />
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-close-btn " data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="AddUpdateCms()" class="modal-save-btn">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <hr class="mt-2 mb-1" />
@@ -40,6 +140,13 @@
                             <td>@i.StartDate.ToString().Split(" ")[0]</td>
                             <td>@i.EndDate.ToString().Split(" ")[0]</td>
                             <td>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#AddMission"
+                                        class="bi bi-pencil-square Edit-btn"
+                                        style="color:orange;border-radius:20px;background:white;border:none;">
+                                    &nbsp;
+                                </button>
+
+                                <i class="bi bi-trash del-btn" onclick="deleteCms()"></i>
 
 
                             </td>
@@ -53,3 +160,8 @@
         </table>
     </div>
 </div>
+<script>
+    CKEDITOR.replace('MissionDescription');
+
+
+</script>

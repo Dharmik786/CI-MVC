@@ -139,9 +139,9 @@ function DeleteTheme(ThemeId) {
         url: "/Admin/Admin/DeleteTheme",
         data: { ThemeId: ThemeId },
         success: function (res) {
-           
+
             Theme();
-            
+
         },
         error: function () {
             alert("User Error")
@@ -172,7 +172,7 @@ function UpdateTheme() {
 
     var theme = document.getElementById("mtheme").value;
     var themmeid = document.getElementById("mthemeid").value;
-   
+
 
     $.ajax({
         method: "POST",
@@ -191,11 +191,11 @@ function UpdateTheme() {
 function Addtheme() {
 
     var theme = document.getElementById("missionTheme").value;
-   
+
     $.ajax({
         method: "POST",
         url: "/Admin/Admin/AddMissionTheme",
-        data: { theme: theme},
+        data: { theme: theme },
         success: function (result) {
             $(".btn-close").click();
             Theme();
@@ -265,7 +265,7 @@ function AddSkill() {
     $.ajax({
         method: "POST",
         url: "/Admin/Admin/AddSkill",
-        data: { skill: skill},
+        data: { skill: skill },
         success: function (result) {
             $(".btn-close").click();
             Skills();
@@ -310,3 +310,153 @@ function reject(id) {
     })
 }
 //--------------------------------------------------------Admin--------------------------------------------------
+function editAdminUser(id) {
+
+    $.ajax({
+        url: "/Admin/Admin/GetUserDetails",
+        method: "GET",
+        data: { id: id },
+
+        success: function (res) {
+            console.log(res)
+
+            document.getElementById('userId').value = res.user.userId;
+            document.getElementById('Fname').value = res.user.firstName;
+            document.getElementById('Lname').value = res.user.lastName;
+            document.getElementById('Email').value = res.user.email;
+            document.getElementById('Password').value = res.user.password;
+            document.getElementById('Employeeid').value = res.user.employeeId;
+            document.getElementById('Department').value = res.user.department;
+            document.getElementById('Profiletext').value = res.user.profileText;
+
+
+            document.getElementById('Status').value = res.user.status;
+            document.getElementById('City').value = res.user.cityId;
+            document.getElementById('Country').value = res.user.countryId;
+
+            document.getElementById('Img').src = res.user.avatar;
+
+        },
+        error: function () {
+            alert("Get user details error")
+        }
+
+    })
+}
+
+function ImgDiv() {
+
+    $("#InputImg").click();
+}
+
+function UpdateUser() {
+
+
+    var Id = document.getElementById('userId').value;
+
+    var Fname = document.getElementById('Fname').value;
+    var Lname = document.getElementById('Lname').value;
+    var Email = document.getElementById('Email').value;
+    var Password = document.getElementById('Password').value;
+    var Employeeid = document.getElementById('Employeeid').value;
+    var Department = document.getElementById('Department').value;
+    var Profiletext = document.getElementById('Profiletext').value;
+    var status = document.getElementById('Status').value;
+    var City = document.getElementById('City').value;
+    var Country = document.getElementById('Country').value;
+
+
+    //let Img = $("#InputImg").val();
+    // var Img = document.getElementById("InputImg").files[0];
+    //alert(Img)
+    //console.log(Img)
+    //var blob = dataURItoBlob(Img)
+    //console.log(blob)
+
+    $.ajax({
+
+
+        url: "/Admin/Admin/EditUser",
+        method: "POST",
+        data:
+        {
+            'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+            'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
+        },
+        success: function (res) {
+
+            User();
+        },
+        error: function () {
+            alert("user Edit error")
+        }
+
+
+    })
+}
+
+function AddUser() {
+
+    document.getElementById('userId').value = 0;
+    document.getElementById('Fname').value = null;
+    document.getElementById('Lname').value = null;
+    document.getElementById('Email').value = null;
+    document.getElementById('Password').value = null;
+    document.getElementById('Employeeid').value = null;
+    document.getElementById('Department').value = null;
+    document.getElementById('Profiletext').value = null;
+    document.getElementById('Status').value = null;
+    document.getElementById('City').value = null;
+    document.getElementById('Country').value = null;
+    document.getElementById('Img').src = null;
+}
+
+function DeleteUser(id) {
+
+
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+
+
+            $.ajax({
+
+                url: "/Admin/Admin/DeleteUser",
+                method: "POST",
+                data: { 'Id': id },
+                success: function (res) {
+                    Swal.fire(
+                        'Deleted!',
+                        'User has been deleted.',
+                        'success'
+                    )
+                    User();
+                },
+                error: function () {
+                    alert("user Edit error")
+                }
+
+
+            })
+
+
+
+           
+        }
+    })
+
+}
+//----------------------------------------------------------Misison-------------------------------------------
+function Time() {
+    alert("time")
+    $(".time-type").removeClass("d-none");
+}

@@ -613,6 +613,57 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.SaveChanges();
             return true;
         }
+        public bool UpdateUser(int Id,string Img, string Fname, string Lname, string Email, string Password,
+               string Employeeid, string Department, string Profiletext, string status, int Country, int City)
+         {
 
+
+            if (Id != 0)
+            {
+                var user = _CIDbContext.Users.FirstOrDefault(e => e.UserId == Id);
+
+                user.FirstName = Fname;
+                user.LastName = Lname;
+                user.Email = Email;
+                user.Password = Password;
+                user.EmployeeId = Employeeid;
+                user.Department = Department;
+                user.ProfileText = Profiletext;
+                user.Status = status;
+                user.CountryId = Country;
+                user.CityId = City;
+
+                _CIDbContext.Update(user);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                User user =new User();
+
+                user.FirstName = Fname;
+                user.LastName = Lname;
+                user.Email = Email;
+                user.Password = Password;
+                user.EmployeeId = Employeeid;
+                user.Department = Department;
+                user.ProfileText = Profiletext;
+                user.Status = status;
+                user.CountryId = Country;
+                user.CityId = City;
+
+                _CIDbContext.Add(user);
+                _CIDbContext.SaveChanges();
+            }
+          
+
+            return true;
+        }
+        public bool DeleteUserById(int Id)
+        {
+            var u = _CIDbContext.Users.FirstOrDefault(e=>e.UserId == Id);
+            _CIDbContext.Remove(u);
+            _CIDbContext.SaveChanges();
+            return true;
+        }
     }
 }

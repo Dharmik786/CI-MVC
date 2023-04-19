@@ -1,68 +1,102 @@
 ﻿#side-bar {
     background-color: #f98635;
 }
-body{
-    overflow-x:hidden;
+
+body {
+    overflow-x: hidden;
 }
+
 .nav > li > a:hover {
     background-color: white;
-    color: #f98635!important;
+    color: #f98635 !important;
 }
 
 .nav-pills a.active {
     background-color: White !important;
     color: #f98635 !important;
 }
-.dataTables_length{
-    display:none;
+
+.dataTables_length {
+    display: none;
 }
-.dataTables_filter label{
-    display:flex;
-    margin-top:5px;
+
+.dataTables_filter label {
+    display: flex;
+    margin-top: 5px;
 }
-.paginate_button{
+
+.paginate_button {
     padding: 2px !important;
 }
+
     .paginate_button:hover {
-        border-color: red!important;
+        border-color: red !important;
     }
+
 .del-btn {
     cursor: pointer;
 }
+
 .Edit-btn {
     cursor: pointer;
 }
+
 .table-striped > tbody > tr:nth-of-type(odd) {
-    --bs-table-accent-bg: rgb(248 243 243 / 5%)!important;
+    --bs-table-accent-bg: rgb(248 243 243 / 5%) !important;
     color: var(--bs-table-striped-color);
 }
+
 .modal-save-btn {
     border: 1px solid orange;
     color: orange;
     background: white;
     border-radius: 20px;
 }
+
 .modal-close-btn {
     border: 1px solid black;
     color: black;
     background: white;
     border-radius: 20px;
 }
-.dataTables_wrapper .dataTables_filter {
-    float: left!important;
-    text-align: left!important;
+
+/*.dataTables_wrapper .dataTables_filter {
+    float: left !important;
+    text-align: left !important;
 }
-.user-img{
-    width:150px;
-    height:150px;
-    border-radius:80px;
+*/
+.user-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 80px;
 }
 
 .story-view-btn {
-    font-size:80%;
+    font-size: 80%;
     border: 1px solid orange;
     border-radius: 21px;
     color: orange;
-    cursor:pointer;
-    
+    cursor: pointer;
+}
+
+.table-striped {
+    margin-top:5px!important;
+    border: 1px solid #e1e1e1 !important;
+}
+
+    .table-striped th {
+        border-bottom: 1px solid #e1e1e1 !important;
+    }
+
+    .table-striped thead {
+        background-color: #f8f9fd !important;
+    }
+th.sorting::before{
+    display:none!important;
+}
+th.sorting::after {
+    display: none !important;
+}
+.pagination{
+    margin-bottom:0px!important;
 }

@@ -34,6 +34,8 @@ namespace CI_Platform.Areas.Admin.Controllers
         {
             AdiminVM a = new AdiminVM();
             a.Missions = _IUser.mission();
+            a.countries = _IUser.countries();
+            a.cities = _IUser.cities();
             return PartialView("_MissionA", a);
         }
         public IActionResult GetApplication()
@@ -186,6 +188,24 @@ namespace CI_Platform.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteStory(int id)
         {
             _IUser.DeleteStory(id);
+            return Json(new { success = true });
+        }
+        //---------------------------------------------------Admin-------------------------------------------------
+        public async Task<IActionResult> GetUserDetails(int id)
+        {
+            var user = _IUser.GetUserByUserId(id);
+            return Json(new { success = true, user = user });
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(IFormFile Img,string i, int Id, string Fname, string Lname, string Email, string Password,
+                string Employeeid, string Department, string Profiletext, string status, int Country, int City)
+        {
+            _IUser.UpdateUser(Id,i, Fname, Lname, Email, Password, Employeeid, Department, Profiletext, status, Country, City);
+            return Json(new { success = true });
+        }
+        public async Task<IActionResult> DeleteUser(int Id)
+        {
+            _IUser.DeleteUserById(Id);
             return Json(new { success = true });
         }
     }

@@ -77,5 +77,9 @@ namespace CI_PlatForm.Repository.Interface
         public bool approveStory(int id);
         public bool rejectStory(int id);
         public bool DeleteStory(int id);
+        public bool UpdateUser(int Id,string Img ,string Fname, string Lname, string Email, string Password,
+                string Employeeid, string Department, string Profiletext, string status, int Country, int City);
+
+        public bool DeleteUserById(int Id);
     }
 }
