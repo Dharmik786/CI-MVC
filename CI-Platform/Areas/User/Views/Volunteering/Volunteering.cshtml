@@ -321,7 +321,7 @@
 
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId && e.UserId == Model.userId);
-                        
+                        var Pending = Model.missionApplications.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId && e.UserId == Model.userId && e.ApprovalStatus == "Pending");
                     }
                     <div id="applydiv">
                         @if (isClosed == 1)
@@ -342,9 +342,18 @@
                                 }
                                 else
                                 {
-                                    <div class="d-flex justify-content-center">
-                                        <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Already applied</button>
-                                    </div>
+                                    if (Pending == null)
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn"  onclick="applyMission(@Model.singleMission.MissionId)" disabled>Applied</button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Pending</button>
+                                        </div>
+                                    }
                                 }
                             }
                             else
@@ -528,7 +537,7 @@
                             <span>(By @ViewBag.rat Volunteer)</span>
 
                         </div>
-                    </div> 
+                    </div>
 
                 </div>
 
@@ -582,138 +591,138 @@
     </div>
 </body>
 <script src="~/js/volunteering.js"></script>
-<partial name="_RelatedMission"> 
-    <partial name="_Footer">    
+<partial name="_RelatedMission">
+    <partial name="_Footer">
 
-    <script>
-        function openDocs(url){
-            window.open(url);
-        }
-
-        function recent(index, missionid) {
-            $.ajax({
-                url: '/User/Volunteering/Volunteering',
-                type: 'POST',
-                data: { pageindex: index, missionId: missionid },
-                success: function (response) {
-                    console.log("aefsda");
-                    $('#recentvol').html($(response).find('#recentvol').html());
-                    $('#avgrating').html($(response).find('#avgrating').html());
-                },
-                error: function () {
-                    alert("could not like mission");
-                }
-            });
-        }
-        function loginalert() {
-            alert("login first");
-        }
-        function addToFav(missonid) {
-            $.ajax({
-                type: 'GET',
-                    url: "/User/Volunteering/addToFavourite",
-                data: { 'missonid': missonid },
-                success: function (res) {
-                    $('.addFav').html($(res).find('.addFav').html());
-                    Console.log("Mission Add to Wishlist")
-                },
-                error: function () {
-                    alert("please login first.");
-                }
-            });
-        }
-        function PostComment(missionid) {
-            var cmt = document.getElementById("comment").value;
-            console.log(cmt)
-            if (cmt == "") {
-                var cmtErr = document.getElementById('cmtError');
-                $('#cmtError').removeClass('d-none');
-                $('#cmtError').addClass('d-inline!important');
+        <script>
+            function openDocs(url) {
+                window.open(url);
             }
-            else {
+
+            function recent(index, missionid) {
                 $.ajax({
-                    type: 'GET',
-                        url: "/User/Volunteering/PostComment",
-                    data: { 'missonid': missionid, 'cmt': cmt },
-                    success: function (res) {
-                        $('.cmtdiv').html($(res).find('.cmtdiv').html());
-                        console.log("comment posted")
+                    url: '/User/Volunteering/Volunteering',
+                    type: 'POST',
+                    data: { pageindex: index, missionId: missionid },
+                    success: function (response) {
+                        console.log("aefsda");
+                        $('#recentvol').html($(response).find('#recentvol').html());
+                        $('#avgrating').html($(response).find('#avgrating').html());
                     },
                     error: function () {
+                        alert("could not like mission");
                     }
                 });
             }
-        }
-        function sendmail(missionid) {
-            const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
-            console.log(mail)
-            console.log(missionid)
-            var send = document.getElementById("sendmail");
-            send.innerHTML = "Sending";
-            $.ajax({
+            function loginalert() {
+                alert("login first");
+            }
+            function addToFav(missonid) {
+                $.ajax({
+                    type: 'GET',
+                    url: "/User/Volunteering/addToFavourite",
+                    data: { 'missonid': missonid },
+                    success: function (res) {
+                        $('.addFav').html($(res).find('.addFav').html());
+                        Console.log("Mission Add to Wishlist")
+                    },
+                    error: function () {
+                        alert("please login first.");
+                    }
+                });
+            }
+            function PostComment(missionid) {
+                var cmt = document.getElementById("comment").value;
+                console.log(cmt)
+                if (cmt == "") {
+                    var cmtErr = document.getElementById('cmtError');
+                    $('#cmtError').removeClass('d-none');
+                    $('#cmtError').addClass('d-inline!important');
+                }
+                else {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/User/Volunteering/PostComment",
+                        data: { 'missonid': missionid, 'cmt': cmt },
+                        success: function (res) {
+                            $('.cmtdiv').html($(res).find('.cmtdiv').html());
+                            console.log("comment posted")
+                        },
+                        error: function () {
+                        }
+                    });
+                }
+            }
+            function sendmail(missionid) {
+                const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+                console.log(mail)
+                console.log(missionid)
+                var send = document.getElementById("sendmail");
+                send.innerHTML = "Sending";
+                $.ajax({
                     url: '/User/Volunteering/Sendmail',
-                type: 'POST',
-                data: { 'emailList': mail, 'missionid': missionid },
-                success: function (result) {
-                    alert("Recomendations sent successfully!")
-        @*  alert("Recomendations sent successfully!");
-                        const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
-                        checkboxes.forEach((checkbox) => {
-                        checkbox.checked = false;
-                        });*@
-                        send.innerHTML = "sent"
-                },
-                error: function () {
-                    // Handle error response from the server, e.g. show an error message to the user
-                    alert('Error: Could not recommend mission.');
-                }
-            });
-        }
-        function Rating(starid, missionid) {
-            console.log(starid)
-            $.ajax({
-                type: 'POST',
+                    type: 'POST',
+                    data: { 'emailList': mail, 'missionid': missionid },
+                    success: function (result) {
+                        alert("Recomendations sent successfully!")
+            @*  alert("Recomendations sent successfully!");
+                            const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+                            checkboxes.forEach((checkbox) => {
+                            checkbox.checked = false;
+                            });*@
+                            send.innerHTML = "sent"
+                    },
+                    error: function () {
+                        // Handle error response from the server, e.g. show an error message to the user
+                        alert('Error: Could not recommend mission.');
+                    }
+                });
+            }
+            function Rating(starid, missionid) {
+                console.log(starid)
+                $.ajax({
+                    type: 'POST',
                     url: "/User/Volunteering/Rating",
-                data: { 'missonid': missionid, 'starid': starid },
-                success: function (result) {
-                    $('.avgRate').html($(result).find('.avgRate').html());
-                    $('.rating').html($(result).find('.rating').html());
-                    console.log("Rating Done")
-                },
-                error: function () {
-                    console.log("Erroor");
-                }
-            });
-        }
-        function applyMission(missionid) {
-            debugger;
-            $.ajax({
-                type: 'POST',
+                    data: { 'missonid': missionid, 'starid': starid },
+                    success: function (result) {
+                        $('.avgRate').html($(result).find('.avgRate').html());
+                        $('.rating').html($(result).find('.rating').html());
+                        console.log("Rating Done")
+                    },
+                    error: function () {
+                        console.log("Erroor");
+                    }
+                });
+            }
+            function applyMission(missionid) {
+                debugger;
+                $.ajax({
+                    type: 'POST',
                     url: "/User/Volunteering/applyMission",
-                data: { 'missionid': missionid },
-                success: function (res) {
-        @* alert("mission applied");*@
-                        $('#applydiv').html($(res).find('#applydiv').html());
-                }
-            });
-        }
-        function cmtdelete(cmtid, missionid) {
-            console.log(cmtid)
-            $.ajax({
-                type: 'POST',
+                    data: { 'missionid': missionid },
+                    success: function (res) {
+            @* alert("mission applied");*@
+                            $('#applydiv').html($(res).find('#applydiv').html());
+                    }
+                });
+            }
+            function cmtdelete(cmtid, missionid) {
+                console.log(cmtid)
+                $.ajax({
+                    type: 'POST',
                     url: "/User/Volunteering/cmtDelete",
-                data: { 'cmtId': cmtid, 'missionId': missionid },
-                success: function (res) {
-                    console.log("comt delete")
-                    $('.cmtdiv').html($(res).find('.cmtdiv').html());
-                },
-                error: function () {
-                    console.log("Erroor");
-                }
-            });
-        }
-        function EnterCmt() {
-            $('#cmtError').addClass('d-none')
-        }
-    </script>
+                    data: { 'cmtId': cmtid, 'missionId': missionid }, 
+                    success: function (res) {
+                        console.log("comt delete")
+                        $('.cmtdiv').html($(res).find('.cmtdiv').html());
+                    },
+                    error: function () {
+                        console.log("Erroor");
+                    }
+                });
+            }
+            function EnterCmt() {
+                $('#cmtError').addClass('d-none')
+            }
+        </script>
 </html>

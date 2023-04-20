@@ -377,6 +377,7 @@ public partial class CIDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.Deadline).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("deleted_at");
@@ -397,6 +398,10 @@ public partial class CIDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("organization_name");
+            entity.Property(e => e.Seats)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("seats");
             entity.Property(e => e.ShortDescription)
                 .HasColumnType("text")
                 .HasColumnName("short_description");

@@ -1,7 +1,21 @@
 ﻿$(document).ready(function () {
     $('#example').DataTable();
-    $('.user').click();
+    /* $('.user').click();*/
+    Mission();
+    currentTime();
 });
+
+
+function currentTime() {
+    var dashboadtime = document.getElementById("dashboadtime");
+    var time = new Date();
+    var dateString = time.toDateString();
+    var timeString = time.toLocaleTimeString();
+    dashboadtime.innerHTML = dateString + ' ' + timeString;
+    let t = setTimeout(function () { currentTime() }, 1000);
+}
+
+
 
 function User() {
     $(".user").addClass("active");
@@ -364,6 +378,19 @@ function ImgDiv() {
     $("#InputImg").click();
 }
 
+//document.getElementById('InputImg').addEventListener("change", e => {
+//    debugger
+//    const reader = new FileReader();
+//    reader.onload = function () {
+//        document.getElementById('Img').src = reader.result;
+//    }
+//    reader.readAsDataURL(e.target.files[0]);
+//})
+
+
+
+
+
 function UpdateUser() {
 
 
@@ -382,32 +409,33 @@ function UpdateUser() {
 
 
     //let Img = $("#InputImg").val();
-    // var Img = document.getElementById("InputImg").files[0];
-    //alert(Img)
-    //console.log(Img)
-    //var blob = dataURItoBlob(Img)
-    //console.log(blob)
+    var file = document.getElementById("InputImg").files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function (e) {
 
-    $.ajax({
+        var base64Image = e.target.result;
+        console.log(base64Image);
 
+        $.ajax({
 
-        url: "/Admin/Admin/EditUser",
-        method: "POST",
-        data:
-        {
-            'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
-            'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
-        },
-        success: function (res) {
+            url: "/Admin/Admin/EditUser",
+            method: "POST",
+            data:
+            {
+                'Image': base64Image, 'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+                'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
+            },
+            success: function (res) {
 
-            User();
-        },
-        error: function () {
-            alert("user Edit error")
-        }
+                User();
+            },
+            error: function () {
+                alert("user Edit error")
+            }
 
-
-    })
+        })
+    }
 }
 
 function AddUser() {
@@ -465,16 +493,13 @@ function DeleteUser(id) {
 
 
 
-           
+
         }
     })
 
 }
 //----------------------------------------------------------Misison-------------------------------------------
-function Time() {
-    alert("time")
-    $(".time-type").removeClass("d-none");
-}
+
 function EditMission(id) {
     alert(id);
 
@@ -496,10 +521,10 @@ function EditMission(id) {
             document.getElementById('Type').value = res.mission.missionType;
             document.getElementById('Sdate').value = res.mission.startDate;
             document.getElementById('Edate').value = res.mission.endDate;
-           //document.getElementById('seats').value = res.Mission.countryId;
-           //document.getElementById('deadline').value = res.Mission.countryId;
+            document.getElementById('seats').value = res.mission.seats;
+            document.getElementById('Deadline').value = res.mission.deadline;
             document.getElementById('Theme').value = res.mission.themeId;
-            document.getElementById('Skill').value = res.mission.countryId;
+            document.getElementById('Skill').value = res.mission.skillId;
 
             //document.getElementById('Img').src = res.Mission.avatar;
 

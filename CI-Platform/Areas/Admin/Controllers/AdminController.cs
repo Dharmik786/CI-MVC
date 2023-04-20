@@ -204,10 +204,10 @@ namespace CI_Platform.Areas.Admin.Controllers
             return Json(new { success = true, user = user });
         }
         [HttpPost]
-        public async Task<IActionResult> EditUser(IFormFile Img, string i, int Id, string Fname, string Lname, string Email, string Password,
+        public async Task<IActionResult> EditUser(string Image, int Id, string Fname, string Lname, string Email, string Password,
                 string Employeeid, string Department, string Profiletext, string status, int Country, int City)
         {
-            _IUser.UpdateUser(Id, i, Fname, Lname, Email, Password, Employeeid, Department, Profiletext, status, Country, City);
+            _IUser.UpdateUser(Id, Image, Fname, Lname, Email, Password, Employeeid, Department, Profiletext, status, Country, City);
             return Json(new { success = true });
         }
         public async Task<IActionResult> DeleteUser(int Id)

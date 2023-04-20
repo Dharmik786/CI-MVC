@@ -235,7 +235,7 @@ namespace CI_PlatForm.Repository.Repository
             MissionApplication am = new MissionApplication();
             am.MissionId = missionId;
             am.UserId = userId;
-            am.ApprovalStatus = "1";
+            am.ApprovalStatus = "Pending";
             am.AppliedAt = DateTime.Now;
             _CIDbContext.Add(am);
             //}
@@ -649,6 +649,7 @@ namespace CI_PlatForm.Repository.Repository
                 user.Status = status;
                 user.CountryId = Country;
                 user.CityId = City;
+                user.Avatar = Img;
 
                 _CIDbContext.Update(user);
                 _CIDbContext.SaveChanges();
@@ -685,7 +686,7 @@ namespace CI_PlatForm.Repository.Repository
 
         public Mission GetMissionNtId(int id)
         {
-            Mission m =  _CIDbContext.Missions.FirstOrDefault(e=>e.MissionId == id);
+            Mission m = _CIDbContext.Missions.FirstOrDefault(e => e.MissionId == id);
             return m;
         }
     }

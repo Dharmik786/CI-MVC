@@ -34,7 +34,8 @@
                 var MissionEndDate = item.EndDate.ToString().Split(" ")[0];
                 DateTime EndDate = DateTime.Parse(MissionEndDate).Date;
                 DateTime Deadline = EndDate.AddDays(-5);
-                if (Deadline < DateTime.Now)
+
+                if (item.Deadline < DateTime.Now)
                 {
                     isClosed = 1;
                 }
@@ -294,7 +295,7 @@
                         var MissionEndDate = i.EndDate.ToString().Split(" ")[0];
                         DateTime EndDate = DateTime.Parse(MissionEndDate).Date;
                         DateTime Deadline = EndDate.AddDays(-5);
-                        if (Deadline < DateTime.Now)
+                        if (i.Deadline < DateTime.Now)
                         {
                             isClosed = 1;
                         }
