@@ -5,7 +5,9 @@
 body {
     overflow-x: hidden;
 }
-
+.status{
+    cursor:pointer;
+}
 .nav > li > a:hover {
     background-color: white;
     color: #f98635 !important;

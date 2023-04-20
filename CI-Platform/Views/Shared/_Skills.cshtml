@@ -50,6 +50,7 @@
             <thead>
                 <tr>
                     <th>Mission Title</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -60,7 +61,14 @@
                     {
                         <tr>
                             <td>@i.SkillName</td>
-                            
+                            @if(i.Status == "1")
+                            {
+                                <td class="text-success status" onclick="SkillStatus(@i.SkillId)">Active</td>
+                            }
+                            else
+                            {
+                                <td class="text-danger status" onclick="SkillStatus(@i.SkillId)">In-Active</td>
+                            }
                             <td>
                                 <button type="button" style="border:none;background-color:white;" data-bs-toggle="modal" data-bs-target="#editskill">
                                     <i class="bi bi-pencil-square Edit-btn" style="color:orange" onclick="EditSkill(@i.SkillId)"></i> &nbsp;

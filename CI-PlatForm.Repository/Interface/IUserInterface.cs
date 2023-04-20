@@ -67,6 +67,7 @@ namespace CI_PlatForm.Repository.Interface
         public Skill DeleteSkill(int skillid);
         public Skill AddSkill(string skill);
         public Skill GetSkill(int skillid);
+        public Skill SkillStatus(int skillid);
         public MissionApplication approveApplication(int id);
         public MissionApplication rejectApplication(int id);
         public List<CmsPage> GetCmsPage();
@@ -81,5 +82,6 @@ namespace CI_PlatForm.Repository.Interface
                 string Employeeid, string Department, string Profiletext, string status, int Country, int City);
 
         public bool DeleteUserById(int Id);
+        public Mission GetMissionNtId(int id);
     }
 }

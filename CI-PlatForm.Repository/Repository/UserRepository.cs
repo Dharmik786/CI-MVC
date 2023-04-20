@@ -447,6 +447,23 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.UserSkills.Where(e => e.UserId == userId).ToList();
         }
+        public Skill SkillStatus(int skillid)
+        {
+            var s = _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillid);
+
+            if (s.Status == "1")
+            {
+                s.Status = "0";
+            }
+            else
+            {
+                s.Status = "1";
+            }
+            s.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(s);
+            _CIDbContext.SaveChanges();
+            return s;
+        }
         public void AddUserSkills(long SkillId, int UserId)
         {
             UserSkill skill = new UserSkill();
@@ -613,9 +630,9 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.SaveChanges();
             return true;
         }
-        public bool UpdateUser(int Id,string Img, string Fname, string Lname, string Email, string Password,
+        public bool UpdateUser(int Id, string Img, string Fname, string Lname, string Email, string Password,
                string Employeeid, string Department, string Profiletext, string status, int Country, int City)
-         {
+        {
 
 
             if (Id != 0)
@@ -638,7 +655,7 @@ namespace CI_PlatForm.Repository.Repository
             }
             else
             {
-                User user =new User();
+                User user = new User();
 
                 user.FirstName = Fname;
                 user.LastName = Lname;
@@ -654,16 +671,22 @@ namespace CI_PlatForm.Repository.Repository
                 _CIDbContext.Add(user);
                 _CIDbContext.SaveChanges();
             }
-          
+
 
             return true;
         }
         public bool DeleteUserById(int Id)
         {
-            var u = _CIDbContext.Users.FirstOrDefault(e=>e.UserId == Id);
+            var u = _CIDbContext.Users.FirstOrDefault(e => e.UserId == Id);
             _CIDbContext.Remove(u);
             _CIDbContext.SaveChanges();
             return true;
+        }
+
+        public Mission GetMissionNtId(int id)
+        {
+            Mission m =  _CIDbContext.Missions.FirstOrDefault(e=>e.MissionId == id);
+            return m;
         }
     }
 }

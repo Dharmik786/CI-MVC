@@ -239,6 +239,21 @@ function EditSkill(SkillId) {
     });
 }
 
+function SkillStatus(id) {
+    $.ajax({
+        method: "POST",
+        url: "/Admin/Admin/SkillStatus",
+        data: { id: id },
+        success: function (result) {
+            Skills();
+
+        },
+        error: function () {
+            alert(" skill status Error")
+        }
+    });
+}
+
 function UpdateSkill() {
     var skill = document.getElementById("mskill").value;
     var skillid = document.getElementById("mskillid").value;
@@ -459,4 +474,39 @@ function DeleteUser(id) {
 function Time() {
     alert("time")
     $(".time-type").removeClass("d-none");
+}
+function EditMission(id) {
+    alert(id);
+
+    $.ajax({
+        url: "/Admin/Admin/EditMission",
+        method: "GET",
+        data: { id: id },
+        success: function (res) {
+            console.log(res)
+
+            document.getElementById('Mid').value = res.mission.missionId;
+            document.getElementById('Title').value = res.mission.title;
+            document.getElementById('ShortDescription').value = res.mission.shortDescription;
+            document.getElementById('Description').value = res.mission.description;
+            document.getElementById('Country').value = res.mission.countryId;
+            document.getElementById('City').value = res.mission.cityId;
+            document.getElementById('OrName').value = res.mission.organizationName;
+            document.getElementById('OrDetail').value = res.mission.organizationDetail;
+            document.getElementById('Type').value = res.mission.missionType;
+            document.getElementById('Sdate').value = res.mission.startDate;
+            document.getElementById('Edate').value = res.mission.endDate;
+           //document.getElementById('seats').value = res.Mission.countryId;
+           //document.getElementById('deadline').value = res.Mission.countryId;
+            document.getElementById('Theme').value = res.mission.themeId;
+            document.getElementById('Skill').value = res.mission.countryId;
+
+            //document.getElementById('Img').src = res.Mission.avatar;
+
+        },
+        error: function () {
+            alert("Get user details error")
+        }
+
+    })
 }

@@ -36,6 +36,8 @@ namespace CI_Platform.Areas.Admin.Controllers
             a.Missions = _IUser.mission();
             a.countries = _IUser.countries();
             a.cities = _IUser.cities();
+            a.skills = _IUser.skills();
+            a.missionThemes = _IUser.missionThemes();
             return PartialView("_MissionA", a);
         }
         public IActionResult GetApplication()
@@ -134,6 +136,11 @@ namespace CI_Platform.Areas.Admin.Controllers
             _IUser.EditSkill(skill, skillid);
             return Json(new { success = true });
         }
+        public IActionResult SkillStatus(int id)
+        {
+            _IUser.SkillStatus(id);
+            return Json(new { success = true });
+        }
         //------------------------------------------------------------------aaplication---------------------------------------------------------
         public async Task<IActionResult> ApproveApplication(int id)
         {
@@ -197,16 +204,22 @@ namespace CI_Platform.Areas.Admin.Controllers
             return Json(new { success = true, user = user });
         }
         [HttpPost]
-        public async Task<IActionResult> EditUser(IFormFile Img,string i, int Id, string Fname, string Lname, string Email, string Password,
+        public async Task<IActionResult> EditUser(IFormFile Img, string i, int Id, string Fname, string Lname, string Email, string Password,
                 string Employeeid, string Department, string Profiletext, string status, int Country, int City)
         {
-            _IUser.UpdateUser(Id,i, Fname, Lname, Email, Password, Employeeid, Department, Profiletext, status, Country, City);
+            _IUser.UpdateUser(Id, i, Fname, Lname, Email, Password, Employeeid, Department, Profiletext, status, Country, City);
             return Json(new { success = true });
         }
         public async Task<IActionResult> DeleteUser(int Id)
         {
             _IUser.DeleteUserById(Id);
             return Json(new { success = true });
+        }
+        //-----------------------------------------------Mission---------------------------------------------------
+        public IActionResult EditMission(int id)
+        {
+            var Mission = _IUser.GetMissionNtId(id);
+            return Json(new { success = true, Mission = Mission });
         }
     }
 }
