@@ -363,7 +363,7 @@ function editAdminUser(id) {
             document.getElementById('City').value = res.user.cityId;
             document.getElementById('Country').value = res.user.countryId;
 
-            document.getElementById('Img').src = res.user.avatar;
+            document.getElementById('Img').src = res.user.avatar; 
 
         },
         error: function () {
@@ -377,19 +377,6 @@ function ImgDiv() {
 
     $("#InputImg").click();
 }
-
-//document.getElementById('InputImg').addEventListener("change", e => {
-//    debugger
-//    const reader = new FileReader();
-//    reader.onload = function () {
-//        document.getElementById('Img').src = reader.result;
-//    }
-//    reader.readAsDataURL(e.target.files[0]);
-//})
-
-
-
-
 
 function UpdateUser() {
 
@@ -407,8 +394,6 @@ function UpdateUser() {
     var City = document.getElementById('City').value;
     var Country = document.getElementById('Country').value;
 
-
-    //let Img = $("#InputImg").val();
     var file = document.getElementById("InputImg").files[0];
     var reader = new FileReader();
     reader.readAsDataURL(file);
@@ -532,6 +517,97 @@ function EditMission(id) {
         error: function () {
             alert("Get user details error")
         }
+
+    })
+}
+
+//const fileInput = document.getElementById('fileInput');
+
+//fileInput.addEventListener('change', (e) => {
+//    const files = e.target.files;
+
+//    for (let i = 0; i < files.length; i++) {
+//        const file = files[i];
+//        console.log(file)
+//        const reader = new FileReader();
+//       // reader.addEventListener('load')
+//    }
+//})
+
+//const fileInput = document.getElementById('fileInput');
+
+//fileInput.addEventListener('change', (event) => {
+//    const files = event.target.files; // get the selected files
+//    for (let i = 0; i < files.length; i++) {
+//        const file = files[i];
+
+//        console.log(file)
+
+//        const reader = new FileReader();
+//        reader.addEventListener('load', (event) => {
+//            const contents = event.target.result; // get the contents of the file
+//            console.log(`File ${i + 1}: ${file.name}\nContents:\n${contents}`);
+//        });
+//        reader.readAsText(file); // read the contents of the file
+//    }
+//});
+
+const input = document.querySelector(".file")
+let imagesArray = []
+
+function SaveMission() {
+    var files = document.getElementById("fileInput").files;
+    console.log(files);
+
+    const imageFiles = [];
+    const pdfFiles = [];
+
+    var reader = new FileReader();
+
+    for (let i = 0; i <= files.length; i++) {
+        const file = files[i];
+        if (file.type.startsWith('image/')) {
+            console.log("imgae 6")
+            imageFiles.push(files[i]);
+
+
+
+
+            const reader = new FileReader();
+            reader.addEventListener('load', (event) => {
+                const contents = event.target.result; // get the contents of the file
+                imageFiles.push(contents); // push the contents to the imageFiles array
+            });
+            reader.readAsDataURL(file); 
+
+
+
+
+        }
+        else if (file.type === 'application/pdf') {
+            console.log("file 6")
+            pdfFiles.push(files[i]);
+        }
+        console.log("Img:", imageFiles)
+        console.log("pdf:", pdfFiles)
+    };
+   
+}
+
+function AddMission(id) {
+
+    $.ajax({
+
+        url: "/Admin/Admin/AddMission",
+        method: "GET",
+        data: {id:id},
+        success: function (res) {
+            $("#Admin").html(res);
+        },
+        error: function () {
+            alert("Mission edit error")
+        }
+
 
     })
 }

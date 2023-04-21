@@ -83,5 +83,13 @@ namespace CI_PlatForm.Repository.Interface
 
         public bool DeleteUserById(int Id);
         public Mission GetMissionNtId(int id);
+        public List<MissionMedium> GetMissionMediaById(int id);
+        public List<MissionSkill> GetMissionSkillById(int id);
+
+        public bool UpdateMissionSkill(long[] skills,int id);
+
+        public bool AddEditMission(MissionVM mission);
+
+
     }
 }

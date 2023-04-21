@@ -45,8 +45,8 @@
         <h3 class="ps-2">Mission</h3>
         <div class="ms-auto me-5">
             <button class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;"
-                    data-bs-toggle="modal" data-bs-target="#AddMission">
-                + Add
+            @*data-bs-toggle="modal" data-bs-target="#AddMission"*@ onclick="AddMission()">
+                    + Add
             </button>
 
             <div class="modal fade " id="AddMission" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -162,7 +162,7 @@
 
                                     <div class="col-12 mb-2 ">
                                         <lable>Select Mission Images</lable>
-                                        <input type="file" class="file-input file form-control " multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+                                        <input type="file" class="file-input file" id="fileInput" multiple="multiple" accept=".pdf,image/*">
                                     </div>
                                     <output>
                                         @*@if (Model.storyMedia != null)
@@ -187,7 +187,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="modal-close-btn " data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="modal-save-btn">Save changes</button>
+                            <button type="button" class="modal-save-btn" onclick="SaveMission()">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -219,8 +219,8 @@
                             <td>@i.StartDate.ToString().Split(" ")[0]</td>
                             <td>@i.EndDate.ToString().Split(" ")[0]</td>
                             <td>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#AddMission"
-                                        class="bi bi-pencil-square Edit-btn" onclick="EditMission(@i.MissionId)"
+                                <button type="button"@* data-bs-toggle="modal" data-bs-target="#AddMission"*@
+                                        class="bi bi-pencil-square Edit-btn" @*onclick="EditMission(@i.MissionId)"*@ onclick="AddMission(@i.MissionId)"
                                         style="color:orange;border-radius:20px;background:white;border:none;">
                                     &nbsp;
                                 </button>

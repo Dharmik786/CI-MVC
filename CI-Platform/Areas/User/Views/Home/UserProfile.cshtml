@@ -233,9 +233,9 @@
                                                 </div>
 
                                                 <select multiple id="s2" style="height:300px;" class=" px-0 col-12 col-md-5 ">
-                                                    @if (ViewBag.userskills != null)
+                                                    @if (Model.Userskills != null)
                                                     {
-                                                        @foreach (var it in ViewBag.userskills)
+                                                        @foreach (var it in Model.RemainingSkill)
                                                         {
                                                             <option value=@it.SkillId>@it.SkillName</option>
                                                         }

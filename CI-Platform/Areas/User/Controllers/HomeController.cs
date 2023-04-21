@@ -120,6 +120,7 @@ namespace CI_Platform.Areas.User.Controllers
             u.cities = _IUser.cities();
             u.countries = _IUser.countries();
             u.skills = _IUser.GetAllskill();
+
             u.Userskills = _IUser.GetUserSkill(Convert.ToInt32(userId));
 
             var r = from row1 in u.skills.AsEnumerable()

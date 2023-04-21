@@ -221,5 +221,65 @@ namespace CI_Platform.Areas.Admin.Controllers
             var Mission = _IUser.GetMissionNtId(id);
             return Json(new { success = true, Mission = Mission });
         }
+        public IActionResult AddMission(int id)
+        {
+            MissionVM vm = new MissionVM();
+            vm.Missions = _IUser.mission();
+            vm.countries = _IUser.countries();
+            vm.cities = _IUser.cities();
+            vm.skills = _IUser.skills();
+            vm.missionThemes = _IUser.missionThemes();
+
+            if (id != 0)
+            {
+                var mission = _IUser.GetMissionNtId(id);
+                vm.title = mission.Title;
+                vm.shortDescription = mission.ShortDescription;
+                vm.description = mission.Description;
+                vm.countryId = mission.CountryId;
+                vm.countryId = mission.CountryId;
+                vm.OrganisationName = mission.OrganizationName;
+                vm.OrganisationDetail = mission.OrganizationDetail;
+                vm.missionType = mission.MissionType;
+                vm.startDate = (DateTime)mission.StartDate;
+                vm.endDate = (DateTime)mission.EndDate;
+                if (mission.MissionType == "Time")
+                {
+                    vm.seats = Convert.ToInt32(mission.Seats);
+                    vm.deadline = (DateTime)mission.Deadline;
+                }
+
+
+                vm.missionThemeId = mission.ThemeId;
+                vm.missionMedia = _IUser.GetMissionMediaById(id);
+                vm.missionId = mission.MissionId;
+                vm.missionSkills = _IUser.GetMissionSkillById(id);
+
+                var r = from row1 in vm.skills.AsEnumerable()
+                        where !vm.missionSkills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
+                        select row1;
+                vm.RemainingSkill = r.ToList();
+            }
+
+
+
+            return PartialView("_MissionAddEdit", vm);
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> SaveMissionSkills(long[] selectedSkills, int id)
+        //{
+        //    _IUser.UpdateMissionSkill(selectedSkills, id);
+        //    return Json(new { suceess = true });
+        //}
+
+        [HttpPost]
+        public IActionResult AddEditMission(MissionVM model)
+        {
+            
+                _IUser.AddEditMission(model);
+            
+            return RedirectToAction("Admin", "Admin");
+        }
+
     }
 }

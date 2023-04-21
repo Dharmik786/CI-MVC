@@ -2,6 +2,15 @@
     background-color: #f98635;
 }
 
+.user-add-skills-btn {
+    background-color: #fff;
+    color: #757575;
+    border: 1px solid #757575;
+    border-radius: 30px;
+    padding: 5px 25px;
+    width:auto;
+}
+
 body {
     overflow-x: hidden;
 }

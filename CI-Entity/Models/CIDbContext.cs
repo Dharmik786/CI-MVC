@@ -11,7 +11,7 @@ public partial class CIDbContext : DbContext
     }
 
     public CIDbContext(DbContextOptions<CIDbContext> options)
-        : base(options)
+        :   base(options)
     {
     }
 

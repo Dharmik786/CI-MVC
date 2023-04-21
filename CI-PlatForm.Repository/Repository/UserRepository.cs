@@ -689,5 +689,84 @@ namespace CI_PlatForm.Repository.Repository
             Mission m = _CIDbContext.Missions.FirstOrDefault(e => e.MissionId == id);
             return m;
         }
+        public List<MissionMedium> GetMissionMediaById(int id)
+        {
+            return _CIDbContext.MissionMedia.Where(e => e.MissionId == id).ToList();
+        }
+        public List<MissionSkill> GetMissionSkillById(int id)
+        {
+            return _CIDbContext.MissionSkills.Where(e => e.MissionId == id).ToList();
+        }
+        public bool UpdateMissionSkill(long[] skills, int id)
+        {
+            if (id != 0)
+            {
+                foreach (var i in skills)
+                {
+                    MissionSkill m = new MissionSkill();
+                    m.SkillId = i;
+                    m.MissionId = id;
+                    _CIDbContext.Add(m);
+                    _CIDbContext.SaveChanges();
+                }
+            }
+
+            return true;
+        }
+
+        public bool AddEditMission(MissionVM mission)
+        {
+
+            if (mission.missionId != 0)
+            {
+                MissionVM m = new MissionVM();
+                m.title = mission.title;
+                m.shortDescription = mission.shortDescription;
+                m.description = mission.description;
+                m.countryId = mission.countryId;
+                m.cityId = mission.cityId;
+                m.OrganisationName = mission.OrganisationName;
+                m.OrganisationDetail=mission.OrganisationDetail;
+                m.missionType = mission.missionType;
+                m.startDate = mission.startDate;
+                m.endDate = mission.endDate;
+                m.seats= mission.seats;
+                if (mission.missionType == "Goal")
+                {
+                    m.deadline= mission.deadline;
+                }
+                m.missionThemeId = mission.missionThemeId;
+
+                if(mission.Images != null)
+                {
+                    foreach(var i in mission.Images)
+                    {
+                        var FileName = "";
+                        using (var ms = new MemoryStream())
+                        {
+                            i.CopyToAsync(ms);        ;
+                            var imageBytes = ms.ToArray();
+                            var base64String = Convert.ToBase64String(imageBytes);
+                            FileName = "data:image/png;base64," + base64String;
+                        }
+                        MissionMedium md = new MissionMedium();
+                        md.MissionId = mission.missionId;
+                        md.MediaName = FileName;
+                        md.CreatedAt = DateTime.Now;
+                    }
+                }
+
+
+                if (mission.Docs != null)
+                {
+                    foreach (var doc in mission.Docs)
+                    {
+
+                    }
+                }
+
+            }
+            return true;
+        }
     }
 }
