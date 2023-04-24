@@ -15,7 +15,7 @@
     <h3>Add/Edit Mission</h3>
     <hr class="m-2" />
 
-    <form asp-controller="Admin" asp-action="AddEditMission" method="post" enctype="multipart/form-data">
+    <form asp-controller="Admin" asp-action="AddEditMission" asp-area="Admin" method="post" enctype="multipart/form-data">
         <div class="row mb-5">
             <input asp-for="missionId" type="hidden" id="MissioniId" />
             <div class="col-md-6 col-12 mb-2">
@@ -121,9 +121,8 @@
             </div>
 
 
-            <div class="user-skill-list-div form-control mb-2 d-none"  style="border:1px solid gray">
+            <div class="user-skill-list-div form-control mb-2 d-none" style="border:1px solid gray">
                 <select class="user-skills-list" id="userskilldiv2" asp-for="selectedSkills" multiple>
-
                 </select>
             </div>
 
@@ -195,7 +194,7 @@
 
                                         <i class="bi bi-chevron-double-up skillimg px-2 ms-2" id="t4" onclick="ved4()"></i>
                                     </div>
-                                    
+
                                     <select multiple id="s2" style="height:300px;" class=" px-0 col-12 col-md-5 ">
                                         @if (Model.missionSkills != null)
                                         {
@@ -219,25 +218,60 @@
             </div>
 
 
-            <div class="col-12 mb-2 ">
+            @*<div class="col-12 mb-2 ">
                 <lable>Select Mission Images</lable>
                 <input asp-for="Images" type="file" class="file-input file form-control" id="fileInput" multiple="multiple" accept="image/png, image/jpeg">
             </div>
 
-           
+
             <output class="mb-2">
+
+            </output>*@
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Upload Your Photos</label>
+                        <div class="input-div d-flex justify-content-center align-items-center text-center bg-white position-relative border" ondrop="dk2()" style="height:150px">
+                            <p>Drag & drop photos here or <strong>Browse</strong></p>
+                            <input id="imageupload" type="file"  class="file" onchange="dk1()" multiple accept="image/jpeg, image/png, image/jpg" required />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="mb-2" id="preview">
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div>
                 @if (Model.missionMedia != null)
                 {
                     foreach (var m in Model.missionMedia)
                     {
                         <div class="image">
-                            <img src="@m.MediaPath" alt="image">
+                            <img src="@m.MediaPath" alt="image" style="height:100px;width:100px;">
                             <span onclick="deleteImage(0)" style="color:black;">×</span>
                         </div>
                     }
                 }
-            </output>
-
+            </div>
             <div class="col-12 mb-2 ">
                 <lable>Select Mission Document</lable>
                 <input asp-for="Docs" type="file" class="file-input file form-control" multiple="multiple" accept=".pdf,.doc,.xls">
@@ -307,38 +341,38 @@
 
         $("#userskilldiv2").html($("#s2").html());
         //$("#userskilldiv2")
-       // $("#multiselect_to2").html($("#multiselect_to").html());
-         $("#userskilldiv2 option").attr("selected", "selected");
+        // $("#multiselect_to2").html($("#multiselect_to").html());
+        $("#userskilldiv2 option").attr("selected", "selected");
         //$("#multiselect_to1 option").addClass("bg-white");
     }
 
 
-        //document.getElementById('skillSave').addEventListener("click", e => {
-        //    var id = document.getElementById("MissioniId").value;
-        //    alert(id);
-        //    var selectedSkills = [];
-        //    const skillsSelected = $('#s2 option');
+            //document.getElementById('skillSave').addEventListener("click", e => {
+            //    var id = document.getElementById("MissioniId").value;
+            //    alert(id);
+            //    var selectedSkills = [];
+            //    const skillsSelected = $('#s2 option');
 
-        //    for (var i = 0; i < skillsSelected.length; i++) {
-        //        selectedSkills.push(skillsSelected[i].value);
-        //    }
+            //    for (var i = 0; i < skillsSelected.length; i++) {
+            //        selectedSkills.push(skillsSelected[i].value);
+            //    }
 
-        //    console.log(selectedSkills);
-        //    $.ajax({
-        //        url: '/Admin/Admin/SaveMissionSkills',
-        //        type: 'POST',
-        //        data: { selectedSkills: selectedSkills, id: id },
+            //    console.log(selectedSkills);
+            //    $.ajax({
+            //        url: '/Admin/Admin/SaveMissionSkills',
+            //        type: 'POST',
+            //        data: { selectedSkills: selectedSkills, id: id },
 
-        //        success: function (response) {
-        //            alert("save")
-        //            $('#userskilldiv').html($(response).find('#userskilldiv').html());
-        //            document.getElementById('close').click();
+            //        success: function (response) {
+            //            alert("save")
+            //            $('#userskilldiv').html($(response).find('#userskilldiv').html());
+            //            document.getElementById('close').click();
 
-        //        },
-        //        error: function () {
-        //            alert("could not comment");
-        //        }
-        //    });
-        //});
+            //        },
+            //        error: function () {
+            //            alert("could not comment");
+            //        }
+            //    });
+            //});
 
 </script>

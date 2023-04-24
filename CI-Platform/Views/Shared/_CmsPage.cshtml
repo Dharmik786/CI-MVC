@@ -1,5 +1,5 @@
 ﻿@using CI_Entity.ViewModel;
-@model AdiminVM;
+@model AdminVM;
 <link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
 <link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <script>
@@ -32,16 +32,20 @@
                                         <div class="col-12 mb-2">
                                             <lable>Title</lable>
                                             <input asp-for="cmstitle" type="text" id="Title" class="form-control" />
-                                            <input asp-for="cmsid"  id="CmsPageId" type="hidden" />
+                                            <input asp-for="cmsid" id="CmsPageId" type="hidden" />
+                                            <span id="title-validation" class="text-danger d-none">Enter the Title</span>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <lable>Description</lable>
                                             <textarea asp-for="description" id="Description"></textarea>
+                                            <span id="desc-validation" class="text-danger d-none">Enter the Description</span>
 
                                         </div>
                                         <div class="col-12 mb-2">
                                             <lable>Slug</lable>
                                             <input id="Slug" type="text" asp-for="slug" class="form-control" />
+                                            <span id="slug-validation" class="text-danger d-none">Enter the slug</span>
+
                                         </div>
                                         <div class="col-12 mb-2">
                                             <lable>Status</lable>
@@ -49,7 +53,9 @@
                                                 <option selected value="null">Select Status</option>
                                                 <option value="Active"> Active</option>
                                                 <option value="In-Active"> In-Active</option>
+
                                             </select>
+                                            <span id="status-validation" class="text-danger d-none">Select the status</span>
                                         </div>
 
                                     </div>
@@ -119,7 +125,7 @@
     CKEDITOR.replace('Description');
 
     function addcms() {
-       debugger
+        debugger
         document.getElementById('Title').value = null;
 
         var editor = CKEDITOR.instances['Description'];
@@ -146,7 +152,7 @@
 
                 var editor = CKEDITOR.instances['Description'];
                 editor.setData(res.cms.description);
-             
+
 
                 document.getElementById('Slug').value = res.cms.slug;
                 document.getElementById('Status').value = res.cms.status;
@@ -182,28 +188,49 @@
 
     function AddUpdateCms() {
         var title = document.getElementById('Title').value;
-     
-        var desc= CKEDITOR.instances.Description.getData();
+
+        var desc = CKEDITOR.instances.Description.getData();
 
         var slug = document.getElementById('Slug').value;
         var status = document.getElementById('Status').value;
         var id = document.getElementById('CmsPageId').value;
+        alert(status)
+        console.log(status)
 
+        if (status == null) {
+            $("#status-validation").removeClass("d-none");
 
-        $.ajax({
-            method: "POST",
-            url: "/Admin/Admin/AddCms",
-            data: { title: title, desc: desc, slug: slug, status: status, id :id},
-            success: function (result) {
-             
-                $(".btn-close").click();
-                Page();
+        }
 
-            },
-            error: function () {
-                alert("Page Error")
-            }
-        })
+        else if (title == "" || title == null) {
+            $("#title-validation").removeClass("d-none");
+        }
+        else if (desc == "" || desc == null) {
+            $("#desc-validation").removeClass("d-none");
+
+        }
+        else if (slug == "" || slug == null) {
+            $("#slug-validation").removeClass("d-none");
+
+        }
+
+        else {
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Admin/AddCms",
+                data: { title: title, desc: desc, slug: slug, status: status, id: id },
+                success: function (result) {
+
+                    $(".btn-close").click();
+                    Page();
+
+                },
+                error: function () {
+                    alert("Page Error")
+                }
+            })
+
+        }
 
     }
 </script>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CI_Entity.ViewModel
 {
-    public class AdiminVM
+    public class AdminVM
     {
         public List<User> Users { get; set; }
         public List<Mission> Missions { get; set; }
@@ -19,6 +19,7 @@ namespace CI_Entity.ViewModel
         public List<Country> countries { get; set; }
         public List<City> cities { get; set; }
         public List<CmsPage> cmsPages { get; set; }
+        public List<Banner> banner { get; set; }
         public string singleTheme { get; set; }
         public string singleskill { get; set; }
         public int ThemeId { get; set; }

@@ -1,5 +1,5 @@
 ﻿@using CI_Entity.ViewModel;
-@model AdiminVM;
+@model AdminVM;
 <link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
 <link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <script>
@@ -27,7 +27,8 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label >Mission Theme</label>
-                                    <input type="text" a class="form-control" id="missionTheme">
+                                    <input type="text" a class="form-control" id="missionTheme" onkeydown="themeKey()"> 
+                                    <span class="text-danger theme-validation d-none">Enter The Theme</span>
                                 </div>
 
                             </div>
@@ -77,8 +78,9 @@
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <label>Mission Theme</label>
-                                                        <input type="text"  class="form-control" id="mtheme">
+                                                        <input type="text" class="form-control" id="mtheme" onkeydown="themeKey()">
                                                         <input type="text" id="mthemeid" hidden>
+                                                        <span class="text-danger theme-validation d-none">Enter The Theme</span>
                                                     </div>
 
                                                 </div>

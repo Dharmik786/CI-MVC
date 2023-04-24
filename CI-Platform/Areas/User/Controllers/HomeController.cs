@@ -1,4 +1,4 @@
-﻿using CI.Models;
+﻿
 using CI_Entity.Models;
 using CI_Entity.ViewModel;
 using CI_Platform.Models;
@@ -73,6 +73,10 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult VolunteeringTimesheet()
         {
             var userId = HttpContext.Session.GetString("user");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User", new { area = "User" });
+            }
 
             MissionList m = new MissionList();
             m.users = _IUser.user();
@@ -114,7 +118,10 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult UserProfile()
         {
             var userId = HttpContext.Session.GetString("user");
-
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User", new { Areas = "User" });
+            }
             UserProfile u = new UserProfile();
             u.user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.cities = _IUser.cities();
@@ -151,7 +158,7 @@ namespace CI_Platform.Areas.User.Controllers
 
             var user = _IUser.GetUserByUserId(Convert.ToInt32(userId));
             u.FirstName = user.FirstName;
-            u.LastName = user.LastName; 
+            u.LastName = user.LastName;
             u.EmployeeId = user.EmployeeId;
             u.Title = user.Title;
             u.Department = user.Department;

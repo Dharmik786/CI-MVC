@@ -159,8 +159,9 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary d-inline" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary d-inline" id="sendmail" onclick="sendmail(@Model.storydetails.MissionId)">Send Mission</button>
+                                        <button type="button" class="btn btn-primary d-inline" id="sendmail" onclick="sendmail(@Model.storydetails.StoryId)">Send Mission</button>
                                     </div>
+                                    <input type="hidden" value="@Model.storydetails.StoryId"/>
                                 </div>
                             </div>
                         </div>
@@ -188,16 +189,16 @@
 <script src="~/js/volunteering.js"></script>
 
 <script>
-    function sendmail(missionid) {
+    function sendmail(id) {
         const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
         console.log(mail)
-        console.log(missionid)
+        console.log(id)
         var send = document.getElementById("sendmail");
         send.innerHTML = "Sending";
         $.ajax({
             url: '/User/Story/SendStorymail',
             type: 'POST',
-            data: { 'emailList': mail, 'missionid': missionid },
+            data: { 'emailList': mail, 'storyId': id },
             success: function (result) {
                 send.innerHTML = "sent";
                 Swal.fire({

@@ -92,6 +92,7 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.Users.ToList();
         }
+
         public User? GetUserByUserId(long userId)
         {
             return _CIDbContext.Users.Where(e => e.UserId == userId).FirstOrDefault();
@@ -115,6 +116,10 @@ namespace CI_PlatForm.Repository.Repository
         public List<MissionTheme> missionThemes()
         {
             return _CIDbContext.MissionThemes.ToList();
+        }
+        public List<Banner> GetBanner()
+        {
+            return _CIDbContext.Banners.ToList();
         }
 
         public List<GoalMission> goalMissions()
@@ -269,7 +274,7 @@ namespace CI_PlatForm.Repository.Repository
                 st.UserId = userId;
                 st.Title = title;
                 st.Description = description;
-                st.Status = "1";
+                st.Status = "PENDING";
                 st.CreatedAt = date;
                 _CIDbContext.Stories.Update(st);
                 _CIDbContext.SaveChanges();
@@ -649,7 +654,11 @@ namespace CI_PlatForm.Repository.Repository
                 user.Status = status;
                 user.CountryId = Country;
                 user.CityId = City;
+                if (Img != null)
+                {
+
                 user.Avatar = Img;
+                }
 
                 _CIDbContext.Update(user);
                 _CIDbContext.SaveChanges();
@@ -668,6 +677,11 @@ namespace CI_PlatForm.Repository.Repository
                 user.Status = status;
                 user.CountryId = Country;
                 user.CityId = City;
+                if (Img != null)
+                {
+
+                user.Avatar = Img;
+                }
 
                 _CIDbContext.Add(user);
                 _CIDbContext.SaveChanges();
@@ -717,7 +731,7 @@ namespace CI_PlatForm.Repository.Repository
         public bool AddEditMission(MissionVM mission)
         {
 
-            if (mission.missionId != 0)
+            if (mission.missionId == 0)
             {
                 MissionVM m = new MissionVM();
                 m.title = mission.title;
@@ -726,25 +740,25 @@ namespace CI_PlatForm.Repository.Repository
                 m.countryId = mission.countryId;
                 m.cityId = mission.cityId;
                 m.OrganisationName = mission.OrganisationName;
-                m.OrganisationDetail=mission.OrganisationDetail;
+                m.OrganisationDetail = mission.OrganisationDetail;
                 m.missionType = mission.missionType;
                 m.startDate = mission.startDate;
                 m.endDate = mission.endDate;
-                m.seats= mission.seats;
+                m.seats = mission.seats;
                 if (mission.missionType == "Goal")
                 {
-                    m.deadline= mission.deadline;
+                    m.deadline = mission.deadline;
                 }
                 m.missionThemeId = mission.missionThemeId;
 
-                if(mission.Images != null)
+                if (mission.Images != null)
                 {
-                    foreach(var i in mission.Images)
+                    foreach (var i in mission.Images)
                     {
                         var FileName = "";
                         using (var ms = new MemoryStream())
                         {
-                            i.CopyToAsync(ms);        ;
+                            i.CopyToAsync(ms); ;
                             var imageBytes = ms.ToArray();
                             var base64String = Convert.ToBase64String(imageBytes);
                             FileName = "data:image/png;base64," + base64String;
@@ -766,6 +780,48 @@ namespace CI_PlatForm.Repository.Repository
                 }
 
             }
+            return true;
+        }
+        public Banner GetBannerById(int id)
+        {
+            var banner = _CIDbContext.Banners.FirstOrDefault(e=>e.BannerId == id);
+            return banner;
+        }
+        public bool AddBanner(int id, string image, string description, int sort)
+        {
+            if (id == 0)
+            {
+                Banner banner = new Banner();
+                banner.Image = image;
+                banner.Text = description;
+                banner.SortOrder = sort;
+                banner.CreatedAt = DateTime.Now;
+                _CIDbContext.Add(banner);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var banner = _CIDbContext.Banners.FirstOrDefault(e => e.BannerId == id);
+                if (image != null)
+                {
+
+                    banner.Image = image;
+                }
+                banner.Text = description;
+                banner.SortOrder = sort;
+                banner.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(banner);
+                _CIDbContext.SaveChanges();
+            }
+            return true;
+        }
+        public bool DeleteBanner(int id)
+        {
+
+            var banner = _CIDbContext.Banners.FirstOrDefault(e=>e.BannerId==id);
+            banner.DeletedAt = DateTime.Now;
+            _CIDbContext.Update(banner);
+            _CIDbContext.SaveChanges() ;
             return true;
         }
     }

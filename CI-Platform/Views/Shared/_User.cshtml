@@ -1,5 +1,5 @@
 ﻿@using CI_Entity.ViewModel;
-@model AdiminVM;
+@model AdminVM;
 <link src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
 <link src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <script>
@@ -79,7 +79,7 @@
                                                         <div class="row">
                                                             <div class="d-flex" style="justify-content:center;">
 
-                                                                <input type="file" class="d-none" id="InputImg" />
+                                                                <input type="file" class="d-none" id="InputImg"  onchange="changeUser()" />
                                                                 <img id="Img" class="rounded-circle" style="height:150px;width:150px;" onclick="ImgDiv()">
 
                                                             </div>

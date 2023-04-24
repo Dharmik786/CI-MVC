@@ -21,13 +21,13 @@ namespace CI_Entity.ViewModel
         public User user { get; set; }
         public List<GoalMission> goalMissions { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
- 
+        public List<GoalMission> goal { get; set; }
 
         public List<Comment> comments { get; set; }
         public List<User> users { get; set; }
         public List<Mission> relatedMission { get; set; }
         public List<MissionRating> missionRatings { get; set; }
-      
+
         public List<Timesheet> timesheets { get; set; }
         public List<MissionDocument> missionDocuments { get; set; }
         public List<MissionApplication> missionApplications { get; set; }
@@ -39,18 +39,18 @@ namespace CI_Entity.ViewModel
         public long missionId { get; set; }
         public long userId { get; set; }
         public Story storydetails { get; set; }
-        public int isApplied { get; set; }  
-     
+        public int isApplied { get; set; }
+
         public int UserId { get; set; }
         public List<MissionApplication> recentVolunteering { get; set; }
 
         public MissionRating rating { get; set; }
         public long? userRate { get; set; } = null;
 
-        public List<StoryMedium> storyMedia { get;set; }
+        public List<StoryMedium> storyMedia { get; set; }
 
 
-        public string title { get; set; }   
+        public string title { get; set; }
         public string editor1 { get; set; }
         public DateTime date { get; set; }
         public List<IFormFile> attachment { get; set; }
@@ -59,7 +59,7 @@ namespace CI_Entity.ViewModel
         public Timesheet timesheet { get; set; }
         public List<MissionApplication> Goal { get; set; }
         public List<MissionApplication> Time { get; set; }
-        public string? notes { get;set; }
+        public string? notes { get; set; }
         public int? hour { get; set; }
         public int? min { get; set; }
         public int? action { get; set; }

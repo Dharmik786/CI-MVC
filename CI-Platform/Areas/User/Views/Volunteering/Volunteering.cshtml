@@ -23,6 +23,7 @@
         <div class="row">
             @{
                 var userId = Context.Session.GetString("user");
+                
             }
 
             <div class="col-12 col-lg-6 col-md-12 col-sm-12 p-1 ">
@@ -93,6 +94,22 @@
 
                     @{
                         var goalObj = Model.goalMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
+                        var w = 0;
+                        if (Model.singleMission.MissionType == "Goal")
+                        {
+                            var goalValue = Model.timesheets.Where(e => e.MissionId == Model.singleMission.MissionId && e.DeletedAt == null).ToList();
+                            var goal = Model.goal.FirstOrDefault(e => e.MissionId == Model.singleMission.MissionId);
+                            if (goalValue != null && goal != null)
+                            {
+                                var sum = 0;
+                                foreach (var g in goalValue)
+                                {
+                                    sum = sum + Convert.ToInt32(g.Action);
+
+                                }
+                                 w = ((sum * 100) / Convert.ToInt32(goal.GoalValue));
+                            }
+                        }
                     }
 
                     @if (@Model.singleMission.MissionType == "Time")
@@ -140,9 +157,9 @@
                                 <div class=" me-2"><img src="/Image/achieved.png" class="mt-2"></div>
                                 <div class="ms-2 me-5" stye="width:100%">
                                     <div class="progress mt-2" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar bg-warning" style="width: 25%">25%</div>
+                                        <div class="progress-bar bg-warning" style="width: @w%">25%</div>
                                     </div>
-                                    <fs-5>Deadline</fs-5>
+                                            
                                 </div>
                             }
                         </div>

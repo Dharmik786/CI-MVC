@@ -40,29 +40,43 @@ namespace CI_Platform.Areas.User.Controllers
             var userId = HttpContext.Session.GetString("user");
             MissionList missionList = new MissionList();
             missionList.stories = _IUser.stories();
-            missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
-            missionList.missionThemes = _IUser.missionThemes();
+            if (userId != null)
+            {
 
-            var data = missionList.stories.Where(e => e.StoryId == storyId).FirstOrDefault();
-            data.Views = data.Views + 1;
-            missionList.storydetails = data;
-            _CIDbContext.Update(data);
-            _CIDbContext.SaveChanges();
+                missionList.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
+            }
+            else
+            {
+                missionList.users = _IUser.user();
+            }
+            missionList.missionThemes = _IUser.missionThemes();
+            missionList.storydetails = _CIDbContext.Stories.FirstOrDefault(e => e.StoryId == storyId);
+
             return View(missionList);
         }
         [HttpPost]
-        public void SendStorymail(int missionid, long[] emailList)
+        public IActionResult StoryView(int id)
+        {
+            var data = _CIDbContext.Stories.FirstOrDefault(e => e.StoryId == id);
+            data.Views = data.Views + 1;
+            _CIDbContext.Update(data);
+            _CIDbContext.SaveChanges();
+            return Json(data);
+        }
+
+        [HttpPost]
+        public void SendStorymail(int storyId, long[] emailList)
         {
             //ViewBag.UserId = int.Parse(userId);
 
-            foreach (var i in emailList)
+            foreach (var i in emailList)        
             {
                 try
                 {
                     var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
                     var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                    var missionlink = Url.Action("StoryDetails", "Story", new { user = user.UserId, missionid }, Request.Scheme);
+                    var missionlink = Url.Action("StoryDetails", "Story", new { storyId }, Request.Scheme);
 
                     var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
                     var toAddress = new MailAddress(user.Email);
@@ -70,7 +84,7 @@ namespace CI_Platform.Areas.User.Controllers
                     var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
 
                     var message = new MailMessage(fromAddress, toAddress)
-                    {
+                    {   
                         Subject = subject,
                         Body = body,
                         IsBodyHtml = true

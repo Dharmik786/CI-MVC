@@ -90,6 +90,9 @@ namespace CI_PlatForm.Repository.Interface
 
         public bool AddEditMission(MissionVM mission);
 
-
+        public bool AddBanner(int id,string image,string description,int sort);
+        public List<Banner> GetBanner();
+        public Banner GetBannerById(int id) ;
+        public bool DeleteBanner(int id);
     }
 }

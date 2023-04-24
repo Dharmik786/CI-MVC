@@ -20,11 +20,18 @@ namespace CI_Platform.Areas.Admin.Controllers
 
         public IActionResult Admin()
         {
+            var admin = HttpContext.Session.GetString("AdminId");
+            if (admin == null)
+            {
+
+                return RedirectToAction("Login", "User", new { area = "User" });
+
+            }
             return View();
         }
         public IActionResult GetUsers()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.Users = _IUser.user();
             a.countries = _IUser.countries();
             a.cities = _IUser.cities();
@@ -32,7 +39,7 @@ namespace CI_Platform.Areas.Admin.Controllers
         }
         public IActionResult GetMission()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.Missions = _IUser.mission();
             a.countries = _IUser.countries();
             a.cities = _IUser.cities();
@@ -42,7 +49,7 @@ namespace CI_Platform.Areas.Admin.Controllers
         }
         public IActionResult GetApplication()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.missionApplications = _IUser.missionApplications();
             a.Missions = _IUser.mission();
             a.Users = _IUser.user();
@@ -50,7 +57,7 @@ namespace CI_Platform.Areas.Admin.Controllers
         }
         public IActionResult GetStory()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.Users = _IUser.user();
             a.Missions = _IUser.mission();
             a.stories = _IUser.stories();
@@ -58,27 +65,34 @@ namespace CI_Platform.Areas.Admin.Controllers
         }
         public IActionResult GetSkills()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.missionSkills = _IUser.GetMissionSkill();
             a.skills = _IUser.skills();
             return PartialView("_Skills", a);
         }
         public IActionResult GetThemes()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.missionThemes = _IUser.missionThemes();
             return PartialView("_Themes", a);
         }
 
         public IActionResult GetCmsPage()
         {
-            AdiminVM a = new AdiminVM();
+            AdminVM a = new AdminVM();
             a.cmsPages = _IUser.GetCmsPage();
             return PartialView("_CmsPage", a);
         }
+
+        public IActionResult GetBanner()
+        {
+            AdminVM a = new AdminVM();
+            a.banner = _IUser.GetBanner();
+            return PartialView("_Banner", a);
+        }
         //-----------------------------------------------------------THEME-----------------------------------------------------
         //[HttpPost]
-        //public IActionResult AddTheme(AdiminVM model)
+        //public IActionResult AddTheme(AdminVM model)
         //{
         //    _IUser.AddMissionTheme(model.singleTheme);
         //    return RedirectToAction("Admin", "Admin");
@@ -94,7 +108,7 @@ namespace CI_Platform.Areas.Admin.Controllers
             var missionTheme = _IUser.GetTheme(ThemeId);
             return Json(new { success = true, MissionTheme = missionTheme });
         }
-        //public ActionResult UpdateTheme(AdiminVM model)
+        //public ActionResult UpdateTheme(AdminVM model)
         //{
         //    _IUser.EditTheme(model.singleTheme, model.ThemeId);
         //    return RedirectToAction("Admin", "Admin");
@@ -197,7 +211,7 @@ namespace CI_Platform.Areas.Admin.Controllers
             _IUser.DeleteStory(id);
             return Json(new { success = true });
         }
-        //---------------------------------------------------Admin-------------------------------------------------
+        //---------------------------------------------------User -------------------------------------------------
         public async Task<IActionResult> GetUserDetails(int id)
         {
             var user = _IUser.GetUserByUserId(id);
@@ -275,11 +289,31 @@ namespace CI_Platform.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddEditMission(MissionVM model)
         {
-            
-                _IUser.AddEditMission(model);
-            
+
+            _IUser.AddEditMission(model);
+
             return RedirectToAction("Admin", "Admin");
         }
 
+
+
+        //------------------------------------------------Banner Management---------------------------------
+        public IActionResult AddBanner(int id, string Image, string desc, int sort)
+        {
+            _IUser.AddBanner(id, Image, desc, sort);
+            return Json(new { sucess = true });
+        }
+        public IActionResult GetBannerById(int id)
+        {
+            var banner = _IUser.GetBannerById(id);
+            return Json(banner);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteBanner(int id)
+        {
+            _IUser.DeleteBanner(id);
+            return Json(new { sucess = true });
+        }
     }
 }

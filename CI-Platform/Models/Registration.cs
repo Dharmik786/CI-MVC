@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CI_Entity.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CI_Platform.Models
 {
@@ -33,5 +34,7 @@ namespace CI_Platform.Models
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public List<Banner> banners { get; set; }   
     }
 }

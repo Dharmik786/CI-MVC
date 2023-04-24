@@ -1,5 +1,5 @@
-﻿using CI.Models;
-using CI_Entity.Models;
+﻿using CI_Entity.Models;
+using CI_Entity.ViewModel;
 using CI_Platform.Models;
 using CI_PlatForm.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -30,16 +30,17 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Login()
         {
             HttpContext.Session.Clear();
-            return View();
+            LoginVM vm = new LoginVM();
+            vm.banners = _IUser.GetBanner().Where(e=>e.DeletedAt==null).ToList();
+            return View(vm);
         }
 
         [HttpPost]
         //[AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login model)
+        public async Task<IActionResult> Login(LoginVM model)
         {
-
-            if (ModelState.IsValid)
+            if(model.Email!=null || model.Password != null)
             {
                 var admin = _IUser.GetAdminDetails(model.Email, model.Password);
                 var user = _IUser.Login(model.Email, model.Password);
@@ -47,6 +48,7 @@ namespace CI_Platform.Areas.User.Controllers
 
                 if (admin != null)
                 {
+                    HttpContext.Session.SetInt32("AdminId",Convert.ToInt32(admin.AdminId));
                     return RedirectToAction("Admin", "Admin", new { area = "Admin" });
                 }
                 else
@@ -71,33 +73,27 @@ namespace CI_Platform.Areas.User.Controllers
                         ViewBag.Email = "email or pass is incorrect";
                     }
                 }
-
             }
-                    return View();
+             
+            LoginVM vm = new LoginVM();
+            vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+
+            //return RedirectToAction("Login", "User");
+            return View(vm);
         }
 
         //--------------------------------------------------REGISTRATION---------------------------------------------
 
         public IActionResult Registration()
         {
-            //User user = new User();
-            return View();
+            Registration r = new Registration();
+            r.banners = _IUser.GetBanner();
+            return View(r);
         }
         [HttpPost]
-        // public IActionResult Registration(string FirstName, string LastName, int PhoneNumber, string Email, string Password, string ConfirmPassword)
         public IActionResult Registration(Registration user)
         {
-            // var obj = _IUser.Registration(user.Email);
-
-            //var userData = new User
-            //{
-            //    FirstName = FirstName,
-            //    LastName = LastName,
-            //    PhoneNumber = PhoneNumber,
-            //    Email = Email,
-            //    Password = Password,
-
-            //};
+            
             if (ModelState.IsValid)
             {
                 if (_IUser.Registration(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.ConfirmPassword) == true)
@@ -113,7 +109,9 @@ namespace CI_Platform.Areas.User.Controllers
                     ViewBag.RegEmail = "Email Already Exist";
                 }
             }
-            return View();
+            Registration r = new Registration();
+            r.banners = _IUser.GetBanner();
+            return View(r);
         }
 
         //----------------------------------------------FORGET PASSWORD-------------------------------------------------------------

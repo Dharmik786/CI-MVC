@@ -76,8 +76,14 @@ namespace CI_Platform.Areas.User.Controllers
             missionList.missionThemes = _IUser.missionThemes();
             missionList.goalMissions = _IUser.goalMissions();
             missionList.users = _IUser.user();
+            missionList.timesheets = _IUser.timesheets();
+            missionList.goal = _IUser.goalMissions();
             //missionList.userId = userId;
             List<Mission> mission = _IUser.mission().ToList();
+
+
+
+
 
             missionList.missionApplications = _IUser.missionApplications();
             missionList.userId = Convert.ToInt32(userId);
@@ -185,8 +191,8 @@ namespace CI_Platform.Areas.User.Controllers
 
             ViewBag.TM = recsCount;
 
-
             return PartialView("_Missions", missionList);
+
         }
 
     }

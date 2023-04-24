@@ -1,4 +1,4 @@
-﻿using CI.Models;
+﻿
 using CI_Platform.Models;
 using CI_Entity.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,6 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Volunteering(long id, int missionid, int pageIndex = 1)
         {
             var userId = HttpContext.Session.GetString("user");
-            //ViewBag.UserId = int.Parse(userId);
 
 
             MissionList vMMission = new MissionList();
@@ -43,6 +42,7 @@ namespace CI_Platform.Areas.User.Controllers
             vMMission.goalMissions = _IUser.goalMissions();
             vMMission.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             vMMission.timesheets = _IUser.timesheets();
+            vMMission.goal = _IUser.goalMissions().Where(e=>e.DeletedAt==null).ToList();
 
             MissionRating ratin = vMMission.missionRatings.FirstOrDefault(e => e.MissionId == missionid && e.UserId == Convert.ToInt32(userId));
             vMMission.userRate = ratin != null ? int.Parse(ratin.Rating) : 0;

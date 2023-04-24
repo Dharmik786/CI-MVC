@@ -143,25 +143,62 @@ function Story() {
 function Management() {
     $(".management").addClass("active");
     $(".user,.page,.mission,.skills,.theme,.application,.story").removeClass("active");
+
+
+    $.ajax({
+        method: "GET",
+        url: "/Admin/Admin/GetBanner",
+        success: function (res) {
+            $("#Admin").html(" ");
+            $("#Admin").html(res)
+        },
+        error: function () {
+            alert("banner Error")
+        }
+    });
 }
 
 
 /*-----------------------------------------------------------------------------------------Theme--------------------------------------------------- */
 function DeleteTheme(ThemeId) {
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/DeleteTheme",
-        data: { ThemeId: ThemeId },
-        success: function (res) {
 
-            Theme();
 
-        },
-        error: function () {
-            alert("User Error")
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Admin/DeleteTheme",
+                data: { ThemeId: ThemeId },
+                success: function (res) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Theme has been deleted.',
+                        'success'
+                    )
+                    Theme();
+
+                },
+                error: function () {
+                    alert("theme Error")
+                }
+            });
+
+
         }
-    });
+    })
+
 }
+
 
 function EditTheme(ThemeId) {
     $.ajax({
@@ -180,60 +217,95 @@ function EditTheme(ThemeId) {
         }
     });
 }
-
-
+function themeKey() {
+    $(".theme-validation").addClass("d-none");
+}
 function UpdateTheme() {
 
     var theme = document.getElementById("mtheme").value;
     var themmeid = document.getElementById("mthemeid").value;
 
+    if (theme == "" || theme == null) {
+        $(".theme-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/UpdateMissionTheme",
+            data: { theme: theme, themmeid: themmeid },
+            success: function (result) {
+                $(".btn-close").click();
+                Theme();
 
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/UpdateMissionTheme",
-        data: { theme: theme, themmeid: themmeid },
-        success: function (result) {
-            $(".btn-close").click();
-            Theme();
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
-        }
-    });
 }
 function Addtheme() {
 
     var theme = document.getElementById("missionTheme").value;
 
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/AddMissionTheme",
-        data: { theme: theme },
-        success: function (result) {
-            $(".btn-close").click();
-            Theme();
+    if (theme == "" || theme == null) {
+        $(".theme-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/AddMissionTheme",
+            data: { theme: theme },
+            success: function (result) {
+                $(".btn-close").click();
+                Theme();
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
-        }
-    });
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
+
+
 }
 /*---------------------------------------------------------------------------------------- -Skill --------------------------------------------------- */
 
 function DeleteSkill(skillid) {
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/DeleteSkill",
-        data: { skillid: skillid },
-        success: function (res) {
-            Skills();
-        },
-        error: function () {
-            alert("User Error")
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Admin/DeleteSkill",
+                data: { skillid: skillid },
+                success: function (res) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Skill has been deleted.',
+                        'success'
+                    )
+
+                    Skills();
+                },
+                error: function () {
+                    alert("Skill Error")
+                }
+            });
+
         }
-    });
+    })
 }
 function EditSkill(SkillId) {
     $.ajax({
@@ -272,38 +344,51 @@ function UpdateSkill() {
     var skill = document.getElementById("mskill").value;
     var skillid = document.getElementById("mskillid").value;
 
+    if (skill == "" || skill == null) {
+        $(".skill-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/UpdateSkill",
+            data: { skill: skill, skillid: skillid },
+            success: function (result) {
+                $(".btn-close").click();
+                Skills();
 
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/UpdateSkill",
-        data: { skill: skill, skillid: skillid },
-        success: function (result) {
-            $(".btn-close").click();
-            Skills();
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
-        }
-    });
 }
 function AddSkill() {
     var skill = document.getElementById("missionSkill").value;
+    if (skill == "" || skill == null) {
+        $(".skill-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/AddSkill",
+            data: { skill: skill },
+            success: function (result) {
+                $(".btn-close").click();
+                Skills();
 
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
 
-    $.ajax({
-        method: "POST",
-        url: "/Admin/Admin/AddSkill",
-        data: { skill: skill },
-        success: function (result) {
-            $(".btn-close").click();
-            Skills();
+}
+function skillPress() {
+    $(".skill-validation").addClass("d-none");
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
-        }
-    });
 }
 
 //---------------------------------------------------Application--------------------------------------
@@ -338,7 +423,20 @@ function reject(id) {
         }
     })
 }
-//--------------------------------------------------------Admin--------------------------------------------------
+//--------------------------------------------------------User--------------------------------------------------
+function changeUser() {
+
+    var file = document.getElementById("InputImg").files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.onload = function (e) {
+        document.getElementById('Img').src = reader.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+
 function editAdminUser(id) {
 
     $.ajax({
@@ -363,7 +461,7 @@ function editAdminUser(id) {
             document.getElementById('City').value = res.user.cityId;
             document.getElementById('Country').value = res.user.countryId;
 
-            document.getElementById('Img').src = res.user.avatar; 
+            document.getElementById('Img').src = res.user.avatar;
 
         },
         error: function () {
@@ -395,20 +493,42 @@ function UpdateUser() {
     var Country = document.getElementById('Country').value;
 
     var file = document.getElementById("InputImg").files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function (e) {
+    if (file != undefined) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
 
-        var base64Image = e.target.result;
-        console.log(base64Image);
+            var base64Image = e.target.result;
+            console.log(base64Image);
 
+            $.ajax({
+
+                url: "/Admin/Admin/EditUser",
+                method: "POST",
+                data:
+                {
+                    'Image': base64Image, 'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+                    'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
+                },
+                success: function (res) {
+
+                    User();
+                },
+                error: function () {
+                    alert("user Edit error")
+                }
+
+            })
+        }
+    }
+    else {
         $.ajax({
 
             url: "/Admin/Admin/EditUser",
             method: "POST",
             data:
             {
-                'Image': base64Image, 'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+                'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
                 'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
             },
             success: function (res) {
@@ -421,6 +541,11 @@ function UpdateUser() {
 
         })
     }
+
+
+
+
+
 }
 
 function AddUser() {
@@ -482,6 +607,147 @@ function DeleteUser(id) {
         }
     })
 
+}
+//----------------------------------------------------------banner -------------------------------------------
+
+function BannerChange() {
+    document.getElementById("imginput").click();
+}
+
+function change() {
+
+    var file = document.getElementById("imginput").files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.onload = function (e) {
+        document.getElementById('imgTag').src = reader.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+function AddUpdateBanner() {
+
+
+    //var img = document.getElementById("imginput").files[0];
+    var desc = document.getElementById("discrption").value;
+    var sort = document.getElementById("sortorder").value;
+    var id = document.getElementById("BannerId").value;
+
+    var file = document.getElementById("imginput").files[0];
+
+    if (file != undefined) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+
+            document.getElementById('imgTag').src = reader.result;
+            var base64Image = e.target.result;
+            console.log(base64Image);
+
+            $.ajax({
+
+                url: "/Admin/Admin/AddBanner",
+                method: "POST",
+                data: { 'Id': id, 'image': base64Image, 'desc': desc, 'sort': sort },
+                success: function (res) {
+                    $(".btn-close").click();
+                    Management();
+                },
+                error: function () {
+                    alert("banner Edit error")
+                }
+
+
+            })
+        }
+    }
+    else {
+        $.ajax({
+
+            url: "/Admin/Admin/AddBanner",
+            method: "POST",
+            data: { 'Id': id, 'desc': desc, 'sort': sort },
+            success: function (res) {
+                $(".btn-close").click();
+                Management();
+            },
+            error: function () {
+                alert("banner Edit error")
+            }
+
+
+        })
+    }
+
+
+}
+
+
+function EditBanner(id) {
+
+    $.ajax({
+
+        url: "/Admin/Admin/GetBannerById",
+        method: "GET",
+        data: { 'Id': id },
+        success: function (res) {
+            console.log(res);
+            var i = document.getElementById("BannerId").value = res.bannerId;
+            document.getElementById("imgTag").src = res.image;
+            document.getElementById("discrption").value = res.text;
+            document.getElementById("sortorder").value = res.sortOrder;
+        },
+        error: function () {
+            alert("banner Edit error")
+        }
+
+
+    })
+}
+function Addbanner() {
+
+    document.getElementById("BannerId").value = 0;
+    document.getElementById("imgTag").src = "/image/blank.jpeg";
+    document.getElementById("discrption").value = null;
+    document.getElementById("sortorder").value = null;
+}
+
+function deletebanner(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+
+
+            $.ajax({
+                url: "/Admin/Admin/DeleteBanner",
+                method: "POST",
+                data: { 'Id': id },
+                success: function (res) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Banner has been deleted.',
+                        'success'
+                    )
+                    Management()
+                },
+                error: function () {
+                    alert("banner delete error")
+                }
+
+
+            });
+
+        }
+    })
 }
 //----------------------------------------------------------Misison-------------------------------------------
 
@@ -552,8 +818,8 @@ function EditMission(id) {
 //    }
 //});
 
-const input = document.querySelector(".file")
-let imagesArray = []
+//const input = document.querySelector(".file")
+//let imagesArray = []
 
 function SaveMission() {
     var files = document.getElementById("fileInput").files;
@@ -578,7 +844,7 @@ function SaveMission() {
                 const contents = event.target.result; // get the contents of the file
                 imageFiles.push(contents); // push the contents to the imageFiles array
             });
-            reader.readAsDataURL(file); 
+            reader.readAsDataURL(file);
 
 
 
@@ -591,7 +857,7 @@ function SaveMission() {
         console.log("Img:", imageFiles)
         console.log("pdf:", pdfFiles)
     };
-   
+
 }
 
 function AddMission(id) {
@@ -600,7 +866,7 @@ function AddMission(id) {
 
         url: "/Admin/Admin/AddMission",
         method: "GET",
-        data: {id:id},
+        data: { id: id },
         success: function (res) {
             $("#Admin").html(res);
         },
@@ -610,4 +876,104 @@ function AddMission(id) {
 
 
     })
+}
+
+const inputDiv = document.querySelector(".input-div")
+const input = document.querySelector("#imageupload")
+const output = document.querySelector("#preview")
+let imagesArray = [];
+let FilesToUpload = [];
+let FilesNameToUpload = [];
+let DelImg = [];
+$(output).html("");
+
+//input.addEventListener("change", () => {
+
+//    const files = input.files
+//    for (let i = 0; i < files.length; i++) {
+//        imagesArray.push(files[i])
+//        FilesNameToUpload.push(files[i].name)
+//    }
+
+//    displayImages()
+//})
+
+function dk1() {
+    alert("dalh");
+    const input = document.querySelector("#imageupload")
+
+    const files = input.files
+    for (let i = 0; i < files.length; i++) {
+        imagesArray.push(files[i])
+        FilesNameToUpload.push(files[i].name)
+    }
+    console.log(imagesArray)
+    displayImages()
+
+
+}
+
+//inputDiv.addEventListener("drop", () => {
+//    e.preventDefault()
+//    const files = e.dataTransfer.files
+//    for (let i = 0; i < files.length; i++) {
+//        if (!files[i].type.match("image")) continue;
+
+//        if (imagesArray.every(image => image.name !== files[i].name))
+//            imagesArray.push(files[i])
+//    }
+//    displayImages()
+//})
+
+
+function dk2() {
+    e.preventDefault()
+    const files = e.dataTransfer.files
+    for (let i = 0; i < files.length; i++) {
+        if (!files[i].type.match("image")) continue;
+
+        if (imagesArray.every(image => image.name !== files[i].name))
+            imagesArray.push(files[i])
+    }
+    displayImages()
+
+}
+
+
+function displayImages() {
+    $(output).html("");
+    FilesToUpload.length = 0;
+
+    if (imagesArray != null) {
+        imagesArray.forEach((image, i) => {
+            var file = imagesArray[i];
+            console.log(file)
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $(output).append(`<div class="image">
+                                                                 <img src="${event.target.result}" alt="image">
+                                                                 <button type="button" class="position-absolute btn image-close-btn" onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
+                                                               </div>`)
+                FilesToUpload.push(event.target.result);
+            }
+
+            reader.readAsDataURL(file);
+
+
+        })
+
+        console.log("aiufh", FilesToUpload);
+    }
+}
+
+function deleteImage(i) {
+    console.log($(this).parent())
+    console.log(imagesArray[i])
+
+    imagesArray.splice(i, 1);
+    DelImg.push(imagesArray[i]);
+    console.log("del", DelImg)
+
+    console.log("hihjdjd", imagesArray);
+    displayImages()
 }
