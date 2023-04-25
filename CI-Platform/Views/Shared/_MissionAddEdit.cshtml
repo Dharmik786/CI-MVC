@@ -1,21 +1,39 @@
 ﻿@using CI_Entity.ViewModel
 @model MissionVM
 
-
-
 <style>
     output img {
         width: 100px;
         height: 100px;
     }
-</style>
 
+    .input-div1 {
+        width: 100%;
+        height: 200px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border: 2px dotted black;
+        background-color: white;
+        position: relative;
+    }
+
+    .file {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+</style>
 <div class="container mt-4">
 
     <h3>Add/Edit Mission</h3>
     <hr class="m-2" />
 
-    <form asp-controller="Admin" asp-action="AddEditMission" asp-area="Admin" method="post" enctype="multipart/form-data">
+    <form asp-controller="Admin" asp-action="AddEditMission" class="dropzone" id="my-awesome-dropzone" asp-area="Admin" method="post" enctype="multipart/form-data">
         <div class="row mb-5">
             <input asp-for="missionId" type="hidden" id="MissioniId" />
             <div class="col-md-6 col-12 mb-2">
@@ -71,6 +89,8 @@
                 </select>
             </div>
 
+            
+
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <lable>Start Date</lable>
                 <input asp-for="startDate" type="datetime-local" class="form-control" id="Sdate" />
@@ -78,6 +98,15 @@
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <lable>End Date</lable>
                 <input asp-for="endDate" type="datetime-local" class="form-control" id="Edate" />
+            </div>
+           
+            <div class="col-lg-6 col-md-6 col-12 mb-2 ">
+                <lable>Enter GoalObjective Text</lable>
+                <input asp-for="goalObjectiveText" type="text" class="form-control" id="seats" />
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 mb-2 ">
+                <lable>Enter GoalObjective value</lable>
+                <input asp-for="goalValue" type="number" min="1" class="form-control" id="seats" />
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
@@ -91,7 +120,7 @@
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
-                <lable>Select Mission Theme </lable>x
+                <lable>Select Mission Theme </lable>
                 <select asp-for="missionThemeId" class="form-select" id="Theme">
                     @if (Model.missionThemes != null)
                     {
@@ -217,82 +246,152 @@
                 </div>
             </div>
 
+            <lable>Select Mission Document/Image </lable>
+            <div class="bg-opacity-25 mb-3 " style="border:1px solid black"> 
+             
+                <div class="form-control w-100 p-1 fallback" style="height:40px;">
+                    <input name="file" type="file" multiple class="form-control w-100 h-100 " style="opacity:0;">
+                </div>
 
-            @*<div class="col-12 mb-2 ">
-                <lable>Select Mission Images</lable>
-                <input asp-for="Images" type="file" class="file-input file form-control" id="fileInput" multiple="multiple" accept="image/png, image/jpeg">
-            </div>
+                <div class="dz-message" onclick="showSave()" data-dz-message><span>Drag and drop files here or click to upload.</span></div>
 
+                <div class="dropzone-previews">
+                    @if (Model.DocFiles != null)
+                    {
+                        @foreach (var img in Model.DocFiles)
+                        {
+                            <div class="dz-preview dz-file-preview" id=@img.Name>
+                                <div class="dz-image"><img data-dz-thumbnail=""></div>
+                                <div class="dz-details">
+                                    <div class="dz-size"><span data-dz-size=""><strong>@(img.Length / 1000)</strong> KB</span></div>
+                                    <div class="dz-filename"><span data-dz-name="">@img.FileName</span></div>
+                                </div>
+                                <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress=""></span> </div>
+                                <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+                                <div class="dz-success-mark">
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <title>Check</title>
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="dz-error-mark">
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <title>Error</title>
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                                                <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <a class="dz-remove" href="javascript:undefined;" data-dz-remove onclick="Removedoc(@img.Name)"><i class="bi bi-trash"></i></a>
+                            </div>
+                        }
+                    }
 
-            <output class="mb-2">
-
-            </output>*@
-
-            <div class="row mt-2">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label>Upload Your Photos</label>
-                        <div class="input-div d-flex justify-content-center align-items-center text-center bg-white position-relative border" ondrop="dk2()" style="height:150px">
-                            <p>Drag & drop photos here or <strong>Browse</strong></p>
-                            <input id="imageupload" type="file"  class="file" onchange="dk1()" multiple accept="image/jpeg, image/png, image/jpg" required />
-                        </div>
-                    </div>
+                    @if (Model.ImageFiles != null)
+                    {
+                        @foreach (var img in Model.ImageFiles)
+                        {
+                            <div class="dz-preview dz-file-preview" id=@img.MissionMediaId>
+                                <div class="dz-image"><img data-dz-thumbnail style="width:inherit;height:inherit" src=@img.MediaPath></div>
+                                <div class="dz-details">
+                                    <div class="dz-size"><span data-dz-size=""><strong></strong> KB</span></div>
+                                    <div class="dz-filename"><span data-dz-name=""></span></div>
+                                </div>
+                                <div class="dz-progress"> <span class="dz-upload" data-dz-uploadprogress=""></span> </div>
+                                <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+                                <div class="dz-success-mark">
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <title>Check</title>
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="dz-error-mark">
+                                    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <title>Error</title>
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">
+                                                <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <a class="dz-remove" href="javascript:undefined;" data-dz-remove onclick="Removeimg(@img.MissionMediaId)"><i class="bi bi-trash"></i></a>
+                            </div>
+                        }
+                    }
 
                 </div>
             </div>
 
 
-            <div class="mb-2" id="preview">
-
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div>
-                @if (Model.missionMedia != null)
-                {
-                    foreach (var m in Model.missionMedia)
-                    {
-                        <div class="image">
-                            <img src="@m.MediaPath" alt="image" style="height:100px;width:100px;">
-                            <span onclick="deleteImage(0)" style="color:black;">×</span>
-                        </div>
-                    }
-                }
-            </div>
-            <div class="col-12 mb-2 ">
-                <lable>Select Mission Document</lable>
-                <input asp-for="Docs" type="file" class="file-input file form-control" multiple="multiple" accept=".pdf,.doc,.xls">
-            </div>
-
+           
+       
 
 
             <div class="col-12 mb-2">
                 <lable>Mission Video Url</lable>
-                <input type="url" class="form-control" />
+                <input type="url" asp-for="url" class="form-control" />
             </div>
 
             <div class="col-12 d-flex">
                 <button class="form-control modal-close-btn">Cancle</button>
-                <button type="submit" class="form-control modal-save-btn">Submit</button>
+                <button type="submit" id="missionSave" class="form-control modal-save-btn">Submit</button>
             </div>
 
         </div>
     </form>
 </div>
+
 <script>
+
+    
+    
+
+    Dropzone.autoDiscover = false;
+
+    $(document).ready(function () {
+        var myDropzone = new Dropzone("#my-awesome-dropzone", {
+            url: "AddEditMission",
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 10, // MB
+            acceptedFiles: '.jpeg,.png,.jpg,.pdf,.docx,.xlxs',
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            dictRemoveFile: '<i class="bi bi-trash"></i>',
+            previewsContainer: '.dropzone-previews',
+            clickable: '.dz-message',
+
+        });
+        $('#missionSave').on('click', function (e) {
+            e.preventDefault();
+            myDropzone.processQueue();
+        });
+    });
+
+    $(document).ready(function () {
+
+
+        myDropzone.on('sendingmultiple', function () {
+            // Add any additional data you want to send with the request
+            var data = $('#my-awesome-dropzone').serializeArray();
+            $.each(data, function (key, el) {
+                myDropzone.options.params[el.name] = el.value;
+            });
+        });
+
+        myDropzone.on('successmultiple', function (files, response) {
+            // Do something when the upload is successful
+        });
+    });
+
     function ved1() {
         var a = document.getElementById("s1");
         var c = document.getElementById("s2");
@@ -336,43 +435,48 @@
 
 
     function SaveSkill() {
-
         $("#userskilldiv").html($("#s2").html());
-
         $("#userskilldiv2").html($("#s2").html());
-        //$("#userskilldiv2")
-        // $("#multiselect_to2").html($("#multiselect_to").html());
         $("#userskilldiv2 option").attr("selected", "selected");
-        //$("#multiselect_to1 option").addClass("bg-white");
+        $(".btn-close").click();
     }
 
+    function Removedoc(docId) {
+        $.ajax({
+            url: '/Admin/Admin/delDoc',
+            type: 'POST',
+            data: { docId: docId },
 
-            //document.getElementById('skillSave').addEventListener("click", e => {
-            //    var id = document.getElementById("MissioniId").value;
-            //    alert(id);
-            //    var selectedSkills = [];
-            //    const skillsSelected = $('#s2 option');
+            success: function (response) {
 
-            //    for (var i = 0; i < skillsSelected.length; i++) {
-            //        selectedSkills.push(skillsSelected[i].value);
-            //    }
 
-            //    console.log(selectedSkills);
-            //    $.ajax({
-            //        url: '/Admin/Admin/SaveMissionSkills',
-            //        type: 'POST',
-            //        data: { selectedSkills: selectedSkills, id: id },
+                document.getElementById(docId).style.display = "none";
 
-            //        success: function (response) {
-            //            alert("save")
-            //            $('#userskilldiv').html($(response).find('#userskilldiv').html());
-            //            document.getElementById('close').click();
+            },
+            error: function () {
+                alert("could not comment");
+            }
+        });
+    }
 
-            //        },
-            //        error: function () {
-            //            alert("could not comment");
-            //        }
-            //    });
-            //});
+    function Removeimg(imgId) {
+        $.ajax({
+            url: '/Admin/Admin/delImg',
+            type: 'POST',
+            data: { imgId: imgId },
+
+            success: function (response) {
+
+                //document.getElementById("themeName").value = response.title;
+                /*            $('#AdminMissionmodal').html($(response).find('#AdminMissionmodal').html());*/
+                document.getElementById(imgId).style.display = "none";
+
+            },
+            error: function () {
+                alert("could not comment");
+            }
+        });
+    }
+
 
 </script>

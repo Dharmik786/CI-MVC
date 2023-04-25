@@ -493,12 +493,9 @@ public partial class CIDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("document_name");
-            entity.Property(e => e.DocumentPath)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("document_path");
+            entity.Property(e => e.DocumentPath).HasColumnName("document_path");
             entity.Property(e => e.DocumentType)
-                .HasMaxLength(255)
+                .HasMaxLength(250)
                 .IsUnicode(false)
                 .HasColumnName("document_type");
             entity.Property(e => e.MissionId).HasColumnName("mission_id");
@@ -567,11 +564,12 @@ public partial class CIDbContext : DbContext
             entity.Property(e => e.DeletedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("deleted_at");
+            entity.Property(e => e.MediaInBytes).HasColumnName("media_in_bytes");
             entity.Property(e => e.MediaName)
                 .HasMaxLength(255)
                 .HasColumnName("media_name");
             entity.Property(e => e.MediaPath)
-                .HasMaxLength(255)
+                .HasColumnType("text")
                 .HasColumnName("media_path");
             entity.Property(e => e.MediaType)
                 .HasMaxLength(255)

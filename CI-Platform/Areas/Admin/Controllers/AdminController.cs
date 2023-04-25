@@ -233,8 +233,10 @@ namespace CI_Platform.Areas.Admin.Controllers
         public IActionResult EditMission(int id)
         {
             var Mission = _IUser.GetMissionNtId(id);
+
             return Json(new { success = true, Mission = Mission });
         }
+        [HttpGet]
         public IActionResult AddMission(int id)
         {
             MissionVM vm = new MissionVM();
@@ -244,8 +246,17 @@ namespace CI_Platform.Areas.Admin.Controllers
             vm.skills = _IUser.skills();
             vm.missionThemes = _IUser.missionThemes();
 
+
+
             if (id != 0)
             {
+                var finalurl = "";
+                var VideoURLs = _IUser.missionMedia().Where(e => e.MissionId == id && e.MediaType == "Video").ToList();
+                foreach (var videoURL in VideoURLs)
+                {
+                    finalurl = finalurl + videoURL.MediaPath + "\r\n";
+                }
+
                 var mission = _IUser.GetMissionNtId(id);
                 vm.title = mission.Title;
                 vm.shortDescription = mission.ShortDescription;
@@ -257,12 +268,21 @@ namespace CI_Platform.Areas.Admin.Controllers
                 vm.missionType = mission.MissionType;
                 vm.startDate = (DateTime)mission.StartDate;
                 vm.endDate = (DateTime)mission.EndDate;
-                if (mission.MissionType == "Time")
-                {
                     vm.seats = Convert.ToInt32(mission.Seats);
+                vm.url = finalurl;
+
+                if (mission.Deadline != null)
+                {
                     vm.deadline = (DateTime)mission.Deadline;
                 }
 
+                var time = _CIDbContext.GoalMissions.FirstOrDefault(e => e.MissionId == id);
+                if(time != null)
+                {
+                    vm.goalObjectiveText = time.GoalObjectiveText;
+                    vm.goalValue = time.GoalValue;
+
+                }
 
                 vm.missionThemeId = mission.ThemeId;
                 vm.missionMedia = _IUser.GetMissionMediaById(id);
@@ -273,29 +293,80 @@ namespace CI_Platform.Areas.Admin.Controllers
                         where !vm.missionSkills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
                         select row1;
                 vm.RemainingSkill = r.ToList();
+                var imgfiles = _CIDbContext.MissionMedia.Where(m => m.MissionId == id && m.MediaType != "Video" && m.DeletedAt == null).ToList();
+                var docfiles = _CIDbContext.MissionDocuments.Where(m => m.MissionId == id && m.DeletedAt == null).ToList();
+                vm.ImageFiles = new List<MissionMedium>();
+                int i = 1;
+                if (imgfiles.Count > 0)
+                {
+                    foreach (var ifile in imgfiles)
+                    {
+                        vm.ImageFiles.Add(ifile);
+                    }
+                }
+                i = 0;
+                vm.DocFiles = new List<IFormFile>();
+                foreach (var ifile in docfiles)
+                {
+                    i++;
+                    string fileName = "example" + i + "." + ifile.DocumentType;  // specify the file name and extension
+                    string contentType = ifile.MissionDocumentId.ToString();
+                    MemoryStream ms = new MemoryStream(ifile.DocumentPath);
+                    var file = new FormFile(ms, 0, ms.Length, contentType, fileName);
+                    vm.DocFiles.Add(file);
+                }
+
             }
 
 
 
             return PartialView("_MissionAddEdit", vm);
-        }
-        //[HttpPost]
-        //public async Task<IActionResult> SaveMissionSkills(long[] selectedSkills, int id)
-        //{
-        //    _IUser.UpdateMissionSkill(selectedSkills, id);
-        //    return Json(new { suceess = true });
-        //}
+            }
+
 
         [HttpPost]
         public IActionResult AddEditMission(MissionVM model)
         {
+            if(model.missionId == 0 || model.missionId == null)
+            {
+                var files = Request.Form.Files;
+                _IUser.AddMission(model, files);
+            }
+            else
+            {
+                var files = Request.Form.Files;
+                _IUser.EditMission(model, files);
 
-            _IUser.AddEditMission(model);
+            }
+            
 
             return RedirectToAction("Admin", "Admin");
         }
 
+        [HttpPost]
+        public IActionResult delDoc(string docId)
+        {
+            _IUser.delDoc(long.Parse(docId));
+            return Json(new { success = true });
+        }
 
+        [HttpPost]
+        public IActionResult delImg(long imgId)
+        {
+            _IUser.delImg(imgId);
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteMission(long missionId)
+        {
+            _IUser.DeleteMission(missionId);
+            //var missionvm = new AdminMissionViewModel();
+            //missionvm.missions = _IHome.Allmissions();
+            //missionvm.countries = _IHome.allcountry();
+            //missionvm.cities = _IHome.AllCity();
+            //missionvm.themes = _IHome.alltheme();
+            return Json(new { success = true });
+        }
 
         //------------------------------------------------Banner Management---------------------------------
         public IActionResult AddBanner(int id, string Image, string desc, int sort)

@@ -85,7 +85,7 @@ namespace CI_PlatForm.Repository.Repository
 
         public List<Mission> mission()
         {
-            return _CIDbContext.Missions.ToList();
+            return _CIDbContext.Missions.Where(e=>e.DeletedAt==null).ToList();
         }
 
         public List<User> user()
@@ -657,7 +657,7 @@ namespace CI_PlatForm.Repository.Repository
                 if (Img != null)
                 {
 
-                user.Avatar = Img;
+                    user.Avatar = Img;
                 }
 
                 _CIDbContext.Update(user);
@@ -680,7 +680,7 @@ namespace CI_PlatForm.Repository.Repository
                 if (Img != null)
                 {
 
-                user.Avatar = Img;
+                    user.Avatar = Img;
                 }
 
                 _CIDbContext.Add(user);
@@ -728,63 +728,346 @@ namespace CI_PlatForm.Repository.Repository
             return true;
         }
 
-        public bool AddEditMission(MissionVM mission)
+        public bool AddMission(MissionVM mission, IFormFileCollection? files)
         {
+            Mission m = new Mission();
+            m.Title = mission.title;
+            m.ShortDescription = mission.shortDescription;
+            m.Description = mission.description;
+            m.CountryId = mission.countryId;
+            m.CityId = mission.cityId;
+            m.OrganizationName = mission.OrganisationName;
+            m.OrganizationDetail = mission.OrganisationDetail;
+            m.MissionType = mission.missionType;
+            m.StartDate = mission.startDate;
+            m.EndDate = mission.endDate;
+            m.Seats = Convert.ToString(mission.seats);
+            m.ThemeId = mission.missionThemeId;
+            _CIDbContext.Add(m);
+            _CIDbContext.SaveChanges();
 
-            if (mission.missionId == 0)
+            if (mission.selectedSkills != null)
             {
-                MissionVM m = new MissionVM();
-                m.title = mission.title;
-                m.shortDescription = mission.shortDescription;
-                m.description = mission.description;
-                m.countryId = mission.countryId;
-                m.cityId = mission.cityId;
-                m.OrganisationName = mission.OrganisationName;
-                m.OrganisationDetail = mission.OrganisationDetail;
-                m.missionType = mission.missionType;
-                m.startDate = mission.startDate;
-                m.endDate = mission.endDate;
-                m.seats = mission.seats;
-                if (mission.missionType == "Goal")
+                foreach(var s in mission.selectedSkills)
                 {
-                    m.deadline = mission.deadline;
+                    MissionSkill ms = new MissionSkill();
+                    ms.MissionId = m.MissionId;
+                    ms.SkillId = Convert.ToInt64(s);
+                    ms.CreatedAt= DateTime.Now; 
+                    _CIDbContext.Add(ms);
+                    _CIDbContext.SaveChanges();
                 }
-                m.missionThemeId = mission.missionThemeId;
-
-                if (mission.Images != null)
-                {
-                    foreach (var i in mission.Images)
-                    {
-                        var FileName = "";
-                        using (var ms = new MemoryStream())
-                        {
-                            i.CopyToAsync(ms); ;
-                            var imageBytes = ms.ToArray();
-                            var base64String = Convert.ToBase64String(imageBytes);
-                            FileName = "data:image/png;base64," + base64String;
-                        }
-                        MissionMedium md = new MissionMedium();
-                        md.MissionId = mission.missionId;
-                        md.MediaName = FileName;
-                        md.CreatedAt = DateTime.Now;
-                    }
-                }
-
-
-                if (mission.Docs != null)
-                {
-                    foreach (var doc in mission.Docs)
-                    {
-
-                    }
-                }
-
+                
+                
             }
+            if (mission.missionType == "Time")
+            {
+                var missiongoal = new GoalMission();
+                missiongoal.MissionId = m.MissionId;
+                missiongoal.GoalObjectiveText = "default";
+                missiongoal.GoalValue = "0";
+                _CIDbContext.Add(missiongoal);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var missiongoal = new GoalMission();
+                missiongoal.MissionId = m.MissionId;
+                missiongoal.GoalObjectiveText = mission.goalObjectiveText;
+                missiongoal.GoalValue = mission.goalValue;
+                _CIDbContext.Add(missiongoal);
+                _CIDbContext.SaveChanges();
+            }
+            if (mission.url != null)
+            {
+                var videoUrls = mission.url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var videoUrl in videoUrls)
+                {
+                    var missionMedia = new MissionMedium();
+                    missionMedia.CreatedAt = DateTime.Now;
+                    missionMedia.MissionId = m.MissionId;
+                    missionMedia.MediaPath = videoUrl;
+                    missionMedia.MediaType = "Video";
+                    _CIDbContext.Add(missionMedia);
+                    _CIDbContext.SaveChanges();
+                }
+            }
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    if (file.ContentType.Contains("pdf") || file.ContentType.Contains("docx") || file.ContentType.Contains("xlxs"))
+                    {
+                        byte[] fileBytes;
+                        using (var stream = new MemoryStream())
+                        {
+                            file.CopyTo(stream);
+                            fileBytes = stream.ToArray();
+                        }
+                        var missionmedia = new MissionDocument();
+                        missionmedia.MissionId = m.MissionId;
+                        var ext = file.ContentType.Split("/");
+                        missionmedia.DocumentType = ext[1];
+                        missionmedia.DocumentName = file.FileName;
+                        missionmedia.DocumentPath = fileBytes;
+                        _CIDbContext.Add(missionmedia);
+                        
+                    }
+                    else
+                    {
+                        byte[] fileBytes;
+                        using (var stream = new MemoryStream())
+                        {
+                            file.CopyTo(stream);
+                            fileBytes = stream.ToArray();
+                        }
+                        string base64String = Convert.ToBase64String(fileBytes);
+                        var missionmedia = new MissionMedium();
+                        missionmedia.MissionId = m.MissionId;
+                        var ext = file.ContentType.Split("/");
+                        missionmedia.MediaType = ext[1];
+                        missionmedia.MediaInBytes = fileBytes;
+                        missionmedia.MediaName = file.FileName;
+                        missionmedia.MediaPath = "data:image/" + ext[1] + ";base64," + base64String;
+                        _CIDbContext.Add(missionmedia);
+                        
+                    }
+                }
+            }
+            _CIDbContext.SaveChanges();
             return true;
         }
+        public bool EditMission(MissionVM mission, IFormFileCollection? files)
+        {
+            Mission m = _CIDbContext.Missions.FirstOrDefault(f => f.MissionId == mission.missionId);
+            m.Title = mission.title;
+            m.ShortDescription = mission.shortDescription;
+            m.Description = mission.description;
+            m.CountryId = mission.countryId;
+            m.CityId = mission.cityId;
+            m.OrganizationName = mission.OrganisationName;
+            m.OrganizationDetail = mission.OrganisationDetail;
+            m.MissionType = mission.missionType;
+            m.StartDate = mission.startDate;
+            m.EndDate = mission.endDate;
+            m.Seats = Convert.ToString(mission.seats);
+            if (mission.missionType == "Time")
+            {
+                var missiongoal = _CIDbContext.GoalMissions.FirstOrDefault(g => g.MissionId == m.MissionId);
+                missiongoal.MissionId = m.MissionId;
+                missiongoal.GoalObjectiveText = "default";
+                missiongoal.GoalValue = "0";
+                _CIDbContext.Update(missiongoal);
+                _CIDbContext.SaveChanges();
+            }
+            else
+            {
+                var missiongoal = _CIDbContext.GoalMissions.FirstOrDefault(g => g.MissionId == m.MissionId);
+                missiongoal.MissionId = m.MissionId;
+                missiongoal.GoalObjectiveText = mission.goalObjectiveText;
+                missiongoal.GoalValue = mission.goalValue;
+                _CIDbContext.Update(missiongoal);
+                _CIDbContext.SaveChanges();
+            }
+            m.ThemeId = mission.missionThemeId;
+            _CIDbContext.Update(m);
+            _CIDbContext.SaveChanges();
+
+            if (mission.selectedSkills != null)
+            {
+                var missionskill = _CIDbContext.MissionSkills.Where(e => e.MissionId == mission.missionId).ToList();
+
+                if (missionskill.Count() > 0)
+                {
+                    foreach (var skill in missionskill)
+                    {
+                        _CIDbContext.Remove(skill);
+                        _CIDbContext.SaveChanges(true);
+                    }
+                }
+
+                foreach (var s in mission.selectedSkills)
+                {
+                    MissionSkill ms = new MissionSkill();
+                    ms.MissionId = m.MissionId;
+                    ms.SkillId = Convert.ToInt64(s);
+                    ms.CreatedAt = DateTime.Now;
+                    _CIDbContext.Add(ms);
+                    _CIDbContext.SaveChanges();
+                }
+
+
+            }
+
+
+
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    if (file.ContentType.Contains("pdf") || file.ContentType.Contains("docx") || file.ContentType.Contains("xlxs"))
+                    {
+                        byte[] fileBytes;
+                        using (var stream = new MemoryStream())
+                        {
+                            file.CopyTo(stream);
+                            fileBytes = stream.ToArray();
+                        }
+                        var missionmedia = new MissionDocument();
+                        missionmedia.MissionId = m.MissionId;
+                        var ext = file.ContentType.Split("/");
+                        missionmedia.DocumentType = ext[1];
+                        missionmedia.DocumentName = file.FileName;
+                        missionmedia.DocumentPath = fileBytes;
+                        _CIDbContext.Add(missionmedia);
+
+                    }
+                    else
+                    {
+                        byte[] fileBytes;
+                        using (var stream = new MemoryStream())
+                        {
+                            file.CopyTo(stream);
+                            fileBytes = stream.ToArray();
+                        }
+                        string base64String = Convert.ToBase64String(fileBytes);
+                        var missionmedia = new MissionMedium();
+                        missionmedia.MissionId = m.MissionId;
+                        var ext = file.ContentType.Split("/");
+                        missionmedia.MediaType = ext[1];
+                        missionmedia.MediaInBytes = fileBytes;
+                        missionmedia.MediaName = file.FileName;
+                        missionmedia.MediaPath = "data:image/" + ext[1] + ";base64," + base64String;
+                        _CIDbContext.Add(missionmedia);
+
+                    }
+                }
+            }
+            if (mission.url != null)
+            {
+                var videoUrls = mission.url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var videoUrl in videoUrls)
+                {
+                    var missionMedia = new MissionMedium();
+                    missionMedia.CreatedAt = DateTime.Now;
+                    missionMedia.MissionId = m.MissionId;
+                    missionMedia.MediaPath = videoUrl;
+                    missionMedia.MediaType = "Video";
+                    _CIDbContext.Add(missionMedia);
+                    _CIDbContext.SaveChanges();
+                }
+            }
+            _CIDbContext.SaveChanges();
+            return true;
+        }
+
+        public void delDoc(long id)
+        {
+            var doc = _CIDbContext.MissionDocuments.FirstOrDefault(d => d.MissionDocumentId == id);
+            doc.DeletedAt = DateTime.Now;
+            _CIDbContext.Update(doc);
+            _CIDbContext.SaveChanges();
+        }
+        public void delImg(long id)
+        {
+            var doc = _CIDbContext.MissionMedia.FirstOrDefault(d => d.MissionMediaId == id);
+            doc.DeletedAt = DateTime.Now;
+            _CIDbContext.Update(doc);
+            _CIDbContext.SaveChanges();
+        }
+
+        public void DeleteMission(long missionId)
+        {
+            var mission = _CIDbContext.Missions.FirstOrDefault(t => t.MissionId == missionId);
+            mission.DeletedAt = DateTime.Now;
+            mission.UpdatedAt = DateTime.Now;
+            _CIDbContext.Update(mission);
+            var missionApplication = _CIDbContext.MissionApplications.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in missionApplication)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var skills = _CIDbContext.MissionSkills.Where(t => t.MissionId == missionId).ToList();
+            foreach (var skill in skills)
+            {
+                skill.DeletedAt = DateTime.Now;
+                skill.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(skill);
+
+            }
+            var timesheets = _CIDbContext.Timesheets.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in timesheets)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var story = _CIDbContext.Stories.Where(t => t.MissionId == missionId).ToList();
+            foreach (var skill in story)
+            {
+                skill.DeletedAt = DateTime.Now;
+                skill.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(skill);
+
+            }
+            var favmission = _CIDbContext.FavoriteMissions.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in favmission)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var comment = _CIDbContext.Comments.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in comment)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var missionRating = _CIDbContext.MissionRatings.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in missionRating)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var missionmedia = _CIDbContext.MissionMedia.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in missionmedia)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var missiondoc = _CIDbContext.MissionDocuments.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in missiondoc)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            var goalmission = _CIDbContext.GoalMissions.Where(t => t.MissionId == missionId).ToList();
+            foreach (var timesheet in goalmission)
+            {
+                timesheet.DeletedAt = DateTime.Now;
+                timesheet.UpdatedAt = DateTime.Now;
+                _CIDbContext.Update(timesheet);
+
+            }
+            _CIDbContext.SaveChanges();
+        }
+
         public Banner GetBannerById(int id)
         {
-            var banner = _CIDbContext.Banners.FirstOrDefault(e=>e.BannerId == id);
+            var banner = _CIDbContext.Banners.FirstOrDefault(e => e.BannerId == id);
             return banner;
         }
         public bool AddBanner(int id, string image, string description, int sort)
@@ -818,10 +1101,10 @@ namespace CI_PlatForm.Repository.Repository
         public bool DeleteBanner(int id)
         {
 
-            var banner = _CIDbContext.Banners.FirstOrDefault(e=>e.BannerId==id);
+            var banner = _CIDbContext.Banners.FirstOrDefault(e => e.BannerId == id);
             banner.DeletedAt = DateTime.Now;
             _CIDbContext.Update(banner);
-            _CIDbContext.SaveChanges() ;
+            _CIDbContext.SaveChanges();
             return true;
         }
     }

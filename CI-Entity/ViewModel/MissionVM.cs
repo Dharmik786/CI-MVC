@@ -11,6 +11,9 @@ namespace CI_Entity.ViewModel
     public class MissionVM
     {
         public List<Country> countries { get; set; }
+        public List<IFormFile> DocFiles { get; set; } 
+        public List<MissionMedium> ImageFiles { get; set; } 
+        public string url { get; set; }
         public List<City> cities { get; set; }
         public List<Mission> Missions { get; set; }
         public List<Skill> skills { get; set; }
@@ -18,6 +21,8 @@ namespace CI_Entity.ViewModel
         public List<MissionTheme> missionThemes { get; set; }
         public List<MissionSkill> missionSkills { get; set; }
         public string title { get; set; }
+        public string goalObjectiveText { get; set; }
+        public string goalValue { get; set; }
         public string shortDescription { get; set; }
 
         public string description { get; set; }

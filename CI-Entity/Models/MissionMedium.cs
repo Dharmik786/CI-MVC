@@ -7,6 +7,8 @@ public partial class MissionMedium
 {
     public long MissionMediaId { get; set; }
 
+    public byte[]? MediaInBytes { get; set; }
+
     public long MissionId { get; set; }
 
     public string? MediaName { get; set; }

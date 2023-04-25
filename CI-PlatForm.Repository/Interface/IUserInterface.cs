@@ -88,11 +88,17 @@ namespace CI_PlatForm.Repository.Interface
 
         public bool UpdateMissionSkill(long[] skills,int id);
 
-        public bool AddEditMission(MissionVM mission);
+        public bool AddMission(MissionVM mission, IFormFileCollection? files);
+        public bool EditMission(MissionVM mission, IFormFileCollection? files);
 
         public bool AddBanner(int id,string image,string description,int sort);
         public List<Banner> GetBanner();
         public Banner GetBannerById(int id) ;
         public bool DeleteBanner(int id);
+        public void delDoc(long id);
+        public void delImg(long id);
+
+        public void DeleteMission(long missionId);
     }
+
 }

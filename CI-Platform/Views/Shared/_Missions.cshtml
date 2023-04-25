@@ -46,15 +46,23 @@
                     @{
                         var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == item.MissionId);
                     }
-
-                    @if (img.MediaPath != "")
+                    @if (img != null)
                     {
-                        <img class="card-img-top card-img" src="@img.MediaPath" ; alt="Card image cap">
+                        @if (img.MediaPath != "")
+                        {
+                            <img class="card-img-top card-img" src="@img.MediaPath" ; alt="Card image cap">
+                        }
+                        else
+                        {
+                            <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
+                        }
                     }
                     else
                     {
-                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
+                        <img class="card-img-top card-img" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png" style="height:34vh" ; alt="Card image cap">
                     }
+
+                   
 
                     @if (applied != null)
                     {
@@ -292,16 +300,22 @@
                     @{
                         var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == i.MissionId);
                     }
+                    @if (img!=null){
+                        @if (img.MediaPath != "")
+                        {
+                            <img src="@img.MediaPath" height="100%" class="card-img-top" alt="wait">
 
-                    @if (img.MediaPath != "")
-                    {
-                        <img src="@img.MediaPath" height="100%" class="card-img-top" alt="wait">
-
+                        }
+                        else
+                        {
+                            <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
+                        }
                     }
                     else
                     {
-                        <img class="card-img-top card-img" src="@img.Default" style="height:34vh" ; alt="Card image cap">
+                        <img class="card-img-top card-img" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png" style="height:34vh" ; alt="Card image cap">
                     }
+                   
 
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId));

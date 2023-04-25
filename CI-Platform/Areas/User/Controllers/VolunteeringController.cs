@@ -82,18 +82,22 @@ namespace CI_Platform.Areas.User.Controllers
             int rat = 0;
             var ratingList = vMMission.missionRatings.Where(m => m.MissionId == vMMission.singleMission.MissionId).ToList();
 
-            if (ratingList.Count() > 0)
+            if(ratingList.Count > 0)
             {
-
-                foreach (var r in ratingList)
+                if (ratingList.Count() > 0)
                 {
-                    rat = rat + int.Parse(r.Rating);
-                }
-                avgRating = rat / ratingList.Count();
-            }
-            ViewBag.rat = ratingList.Count();
 
-            vMMission.avgrating = avgRating;
+                    foreach (var r in ratingList)
+                    {
+                        rat = rat + int.Parse(r.Rating);
+                    }
+                    avgRating = rat / ratingList.Count();
+                }
+                ViewBag.rat = ratingList.Count();
+
+                vMMission.avgrating = avgRating;
+            }
+            
 
 
 

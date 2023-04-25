@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#example').DataTable();
     /* $('.user').click();*/
-    Mission();
+    User();
     currentTime();
 });
 
@@ -751,41 +751,41 @@ function deletebanner(id) {
 }
 //----------------------------------------------------------Misison-------------------------------------------
 
-function EditMission(id) {
-    alert(id);
+//function EditMission(id) {
+//    alert(id);
 
-    $.ajax({
-        url: "/Admin/Admin/EditMission",
-        method: "GET",
-        data: { id: id },
-        success: function (res) {
-            console.log(res)
+//    $.ajax({
+//        url: "/Admin/Admin/EditMission",
+//        method: "GET",
+//        data: { id: id },
+//        success: function (res) {
+//            console.log(res)
 
-            document.getElementById('Mid').value = res.mission.missionId;
-            document.getElementById('Title').value = res.mission.title;
-            document.getElementById('ShortDescription').value = res.mission.shortDescription;
-            document.getElementById('Description').value = res.mission.description;
-            document.getElementById('Country').value = res.mission.countryId;
-            document.getElementById('City').value = res.mission.cityId;
-            document.getElementById('OrName').value = res.mission.organizationName;
-            document.getElementById('OrDetail').value = res.mission.organizationDetail;
-            document.getElementById('Type').value = res.mission.missionType;
-            document.getElementById('Sdate').value = res.mission.startDate;
-            document.getElementById('Edate').value = res.mission.endDate;
-            document.getElementById('seats').value = res.mission.seats;
-            document.getElementById('Deadline').value = res.mission.deadline;
-            document.getElementById('Theme').value = res.mission.themeId;
-            document.getElementById('Skill').value = res.mission.skillId;
+//            document.getElementById('Mid').value = res.mission.missionId;
+//            document.getElementById('Title').value = res.mission.title;
+//            document.getElementById('ShortDescription').value = res.mission.shortDescription;
+//            document.getElementById('Description').value = res.mission.description;
+//            document.getElementById('Country').value = res.mission.countryId;
+//            document.getElementById('City').value = res.mission.cityId;
+//            document.getElementById('OrName').value = res.mission.organizationName;
+//            document.getElementById('OrDetail').value = res.mission.organizationDetail;
+//            document.getElementById('Type').value = res.mission.missionType;
+//            document.getElementById('Sdate').value = res.mission.startDate;
+//            document.getElementById('Edate').value = res.mission.endDate;
+//            document.getElementById('seats').value = res.mission.seats;
+//            document.getElementById('Deadline').value = res.mission.deadline;
+//            document.getElementById('Theme').value = res.mission.themeId;
+//            document.getElementById('Skill').value = res.mission.skillId;
 
-            //document.getElementById('Img').src = res.Mission.avatar;
+//            //document.getElementById('Img').src = res.Mission.avatar;
 
-        },
-        error: function () {
-            alert("Get user details error")
-        }
+//        },
+//        error: function () {
+//            alert("Get user details error")
+//        }
 
-    })
-}
+//    })
+//}
 
 //const fileInput = document.getElementById('fileInput');
 
@@ -878,14 +878,76 @@ function AddMission(id) {
     })
 }
 
-const inputDiv = document.querySelector(".input-div")
-const input = document.querySelector("#imageupload")
-const output = document.querySelector("#preview")
-let imagesArray = [];
-let FilesToUpload = [];
-let FilesNameToUpload = [];
-let DelImg = [];
-$(output).html("");
+function deletemission(missionId) {
+
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: true
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this goalsheet!",
+        icon: 'warning',
+        width: '300',
+        height: '100',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Admin/Admin/DeleteMission',
+                type: 'POST',
+                data: { missionId: missionId },
+
+                success: function (response) {
+
+                    swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        'Your goalsheet has been deleted.',
+                        'success'
+                    )
+                    /* $('#example').html($(response).find('#example').html());*/
+
+                    Mission();
+
+                },
+                error: function () {
+                    alert("could not comment");
+                }
+            });
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+
+            )
+        }
+    })
+
+
+
+
+
+}
+
+//const inputDiv = document.querySelector(".input-div")
+//const input = document.querySelector("#imageupload")
+//const output = document.querySelector("#preview")
+//let imagesArray = [];
+//let FilesToUpload = [];
+//let FilesNameToUpload = [];
+//let DelImg = [];
+//$(output).html("");
 
 //input.addEventListener("change", () => {
 
@@ -899,7 +961,7 @@ $(output).html("");
 //})
 
 function dk1() {
-    alert("dalh");
+   
     const input = document.querySelector("#imageupload")
 
     const files = input.files
@@ -926,54 +988,54 @@ function dk1() {
 //})
 
 
-function dk2() {
-    e.preventDefault()
-    const files = e.dataTransfer.files
-    for (let i = 0; i < files.length; i++) {
-        if (!files[i].type.match("image")) continue;
+//function dk2() {
+//    e.preventDefault()
+//    const files = e.dataTransfer.files
+//    for (let i = 0; i < files.length; i++) {
+//        if (!files[i].type.match("image")) continue;
 
-        if (imagesArray.every(image => image.name !== files[i].name))
-            imagesArray.push(files[i])
-    }
-    displayImages()
+//        if (imagesArray.every(image => image.name !== files[i].name))
+//            imagesArray.push(files[i])
+//    }
+//    displayImages()
 
-}
-
-
-function displayImages() {
-    $(output).html("");
-    FilesToUpload.length = 0;
-
-    if (imagesArray != null) {
-        imagesArray.forEach((image, i) => {
-            var file = imagesArray[i];
-            console.log(file)
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                $(output).append(`<div class="image">
-                                                                 <img src="${event.target.result}" alt="image">
-                                                                 <button type="button" class="position-absolute btn image-close-btn" onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
-                                                               </div>`)
-                FilesToUpload.push(event.target.result);
-            }
-
-            reader.readAsDataURL(file);
+//}
 
 
-        })
+//function displayImages() {
+//    $(output).html("");
+//    FilesToUpload.length = 0;
 
-        console.log("aiufh", FilesToUpload);
-    }
-}
+//    if (imagesArray != null) {
+//        imagesArray.forEach((image, i) => {
+//            var file = imagesArray[i];
+//            console.log(file)
+//            var reader = new FileReader();
+//            reader.onload = function (event) {
+//                $(output).append(`<div class="image">
+//                                                                 <img src="${event.target.result}" alt="image">
+//                                                                 <button type="button" class="position-absolute btn image-close-btn" onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
+//                                                               </div>`)
+//                FilesToUpload.push(event.target.result);
+//            }
 
-function deleteImage(i) {
-    console.log($(this).parent())
-    console.log(imagesArray[i])
+//            reader.readAsDataURL(file);
 
-    imagesArray.splice(i, 1);
-    DelImg.push(imagesArray[i]);
-    console.log("del", DelImg)
 
-    console.log("hihjdjd", imagesArray);
-    displayImages()
-}
+//        })
+
+//        console.log("aiufh", FilesToUpload);
+//    }
+//}
+
+//function deleteImage(i) {
+//    console.log($(this).parent())
+//    console.log(imagesArray[i])
+
+//    imagesArray.splice(i, 1);
+//    DelImg.push(imagesArray[i]);
+//    console.log("del", DelImg)
+
+//    console.log("hihjdjd", imagesArray);
+//    displayImages()
+//}
