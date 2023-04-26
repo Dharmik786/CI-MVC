@@ -44,13 +44,13 @@
 
                 <div class="img-event">
                     @{
-                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == item.MissionId);
+                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == item.MissionId && u.MediaType !="Video");
                     }
                     @if (img != null)
                     {
                         @if (img.MediaPath != "")
                         {
-                            <img class="card-img-top card-img" src="@img.MediaPath" ; alt="Card image cap">
+                            <img class="card-img-top card-img" src=@img.MediaPath  alt="Card image cap">
                         }
                         else
                         {
@@ -62,7 +62,7 @@
                         <img class="card-img-top card-img" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png" style="height:34vh" ; alt="Card image cap">
                     }
 
-                   
+
 
                     @if (applied != null)
                     {
@@ -171,8 +171,8 @@
                     </div>
                     @{
                         var goalobj = Model.goalMissions.Where(e => e.MissionId == item.MissionId).FirstOrDefault();
-                        var s =0;
-                        if(item.MissionType == "Goal")
+                        var s = 0;
+                        if (item.MissionType == "Goal")
                         {
                             var goalValue = Model.timesheets.Where(e => e.MissionId == item.MissionId && e.DeletedAt == null).ToList();
                             var goal = Model.goal.FirstOrDefault(e => e.MissionId == item.MissionId);
@@ -184,7 +184,7 @@
                                     sum = sum + Convert.ToInt32(g.Action);
 
                                 }
-                                 s = ((sum*100) / Convert.ToInt32(goal.GoalValue));
+                                s = ((sum * 100) / Convert.ToInt32(goal.GoalValue));
                             }
                         }
                     }
@@ -213,7 +213,7 @@
                     <div class="d-flex">
                         <div><img src="/Image/Seats-left.png" class="mt-2"></div>
                         <div class="ms-2">
-                            @item.Availability <p class="seat">seat Left</p>
+                            @item.Seats <p class="seat">seat Left</p>
                         </div>
 
 
@@ -298,9 +298,10 @@
             <div class="card col-12">
                 <div class="card-img-container col-3 p-0">
                     @{
-                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == i.MissionId);
+                        var img = Model.missionMedia.FirstOrDefault(u => u.MissionId == i.MissionId && u.MediaType != "Video");
                     }
-                    @if (img!=null){
+                    @if (img != null)
+                    {
                         @if (img.MediaPath != "")
                         {
                             <img src="@img.MediaPath" height="100%" class="card-img-top" alt="wait">
@@ -315,7 +316,7 @@
                     {
                         <img class="card-img-top card-img" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-login.png" style="height:34vh" ; alt="Card image cap">
                     }
-                   
+
 
                     @{
                         var applied = Model.missionApplications.FirstOrDefault(e => e.MissionId == i.MissionId && e.UserId == Convert.ToInt32(userId));
@@ -466,7 +467,7 @@
                                         <img class="" src="/Image/Seats-left.png" />
                                     </div>
                                     <div class="p-2">
-                                        <h6 class=" mb-0">@i.Availability</h6>
+                                        <h6 class=" mb-0">@i.Seats</h6>
                                         <small>Seat Left</small>
                                     </div>
                                 </div>
@@ -519,11 +520,18 @@
                                     </div>
                                     <div class="">
                                         <h6 class="pt-3 mb-0">Skill</h6>
-                                        @*@foreach (var j in missionSkill)
-                                    {
-                                    <small>@j.Skill.SkillName, </small>
-                                    }*@
-                                        <small>j.Skill.SkillName, </small>
+                                        @{
+                                            var missionSkill = Model.missionSkills.Where(e => e.MissionId == @i.MissionId).ToList();
+                                        }
+                                        @if (missionSkill != null)
+                                        {
+                                            @foreach (var j in missionSkill)
+                                            {
+                                                <small>@j.Skill.SkillName </small>
+                                            }
+                                        }
+                                        
+                                        
                                     </div>
                                 </div>
 
@@ -628,7 +636,7 @@
             success: function (result) {
                 console.log("Liked or Unliked mission.");
     @* $('.add_fav').html($(result).find('.add_fav').html());*@
-                                                                            },
+                                                                                },
             error: function () {
                 alert("please login first.");
             }

@@ -338,8 +338,13 @@ namespace CI_Platform.Areas.Admin.Controllers
                 _IUser.EditMission(model, files);
 
             }
-            
 
+            model.Missions = _IUser.mission();
+            model.countries = _IUser.countries();
+            model.cities = _IUser.cities();
+            model.skills = _IUser.skills();
+            model.missionThemes = _IUser.missionThemes();
+            ///return PartialView("_MissionA", model);
             return RedirectToAction("Admin", "Admin");
         }
 

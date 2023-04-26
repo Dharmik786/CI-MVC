@@ -55,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    <td class="text-d">@i.Status</td>
+                                    <td class="text-danger">@i.Status</td>
                                 }
                                 <td>
                                     <i class="bi bi-pencil-square Edit-btn" data-bs-toggle="modal" data-bs-target="#exampleModal1"
@@ -89,27 +89,37 @@
                                                         <div class="row mt-2">
                                                             <div class="col-12 col-md-6 col-lg-4">
                                                                 <label>First Name</label>
-                                                                <input type="text" class="form-control" id="Fname" placeholder="Firstname">
+                                                                <input type="text" onkeyup="Fnamekey()" class="form-control" id="Fname" placeholder="Firstname">
+                                                                <span id="Fname-val" class="d-none text-danger">Please Enter the First Name</span>
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4">
                                                                 <label>Last Name</label>
-                                                                <input type="text" class="form-control" id="Lname" placeholder="Lastname">
+                                                                <input type="text" class="form-control" id="Lname" placeholder="Lastname" onkeyup="Lnamekey()">
+                                                                <span id="Lname-val" class="d-none text-danger">Please Enter The Last Name</span>
+
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4">
                                                                 <label>Email Address</label>
-                                                                <input type="email" class="form-control" id="Email" placeholder="Email">
+                                                                <input type="email" class="form-control" id="Email" placeholder="Email" onkeyup="Emailkey()">
+                                                                <span id="Email-val" class="d-none text-danger">Please Enter The Email</span>
+
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4 mt-2">
                                                                 <label>Password</label>
-                                                                <input type="password" class="form-control" id="Password" placeholder="Password">
+                                                                <input type="password" class="form-control" id="Password" placeholder="Password" onkeyup="Passkey()">
+                                                                <span id="Pass-val" class="d-none text-danger">Please Enter The Password</span>
+
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4 mt-2">
                                                                 <label>Employee Id</label>
                                                                 <input type="text" class="form-control " id="Employeeid" placeholder="Employee">
+
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4 mt-2">
                                                                 <label>Department</label>
-                                                                <input type="text" class="form-control" id="Department" placeholder="Department">
+                                                                <input type="text" class="form-control" id="Department" placeholder="Department" onkeyup="Depkey()">
+                                                                <span id="dep-val" class="d-none text-danger">Please Enter The Department</span>
+
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4 mt-2">
                                                                 <label>Country</label>
@@ -134,9 +144,8 @@
                                                             </div>
                                                             <div class="col-12 col-md-6 col-lg-4 mt-2">
                                                                 <label>Status</label>
-                                                                <select class="form-control " id="Status">
-                                                                    <option disabled selected>Select City</option>
-                                                                    <option value="Active">Active</option>
+                                                                <select class="form-control" id="Status" >
+                                                                    <option selected value="Active">Active</option>
                                                                     <option value="In-Active">In-Active</option>
 
                                                                 </select>
@@ -153,7 +162,7 @@
 
                                                 <div class="modal-footer">
                                                     <button type="button" data-bs-dismiss="modal" class="modal-close-btn">Close</button>
-                                                    <button type="button" data-bs-dismiss="modal" class="modal-save-btn" onclick="UpdateUser()">Save</button>
+                                                    <button type="button"  class="modal-save-btn" onclick="UpdateUser()">Save</button>
                                                 </div>
                                             </div>
                                         </div>

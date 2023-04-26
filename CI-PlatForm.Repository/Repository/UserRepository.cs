@@ -51,6 +51,10 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.Admins.Where(e => e.Email == email && e.Password == password).FirstOrDefault();
         }
+        public List<MissionDocument> GetMissionDocument()
+        {
+            return _CIDbContext.MissionDocuments.Where(e=>e.DeletedAt == null).ToList();
+        }
 
         public User Forget(string Email)
         {
@@ -252,7 +256,7 @@ namespace CI_PlatForm.Repository.Repository
             return _CIDbContext.Stories.ToList();
         }
 
-        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
+        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId , string url)
         {
             if (storyId == 0)
             {
@@ -262,10 +266,27 @@ namespace CI_PlatForm.Repository.Repository
                 st.Title = title;
                 st.Description = description;
                 st.Status = "PENDING";
-                st.CreatedAt = date;
+                st.PublishedAt = date;
+                st.CreatedAt = DateTime.Now;
                 _CIDbContext.Stories.Add(st);
                 _CIDbContext.SaveChanges();
+
+                if (url != null)
+                {
+                    var videoUrls = url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var videoUrl in videoUrls)
+                    {
+                        var s = new StoryMedium();
+                        s.CreatedAt = DateTime.Now;
+                        s.StoryId = st.StoryId;
+                        s.StoryPath = videoUrl;
+                        s.StoryType = "Video";
+                        _CIDbContext.Add(s);
+                        _CIDbContext.SaveChanges();
+                    }
+                }
                 return st.StoryId;
+
             }
             else
             {
@@ -275,10 +296,40 @@ namespace CI_PlatForm.Repository.Repository
                 st.Title = title;
                 st.Description = description;
                 st.Status = "PENDING";
-                st.CreatedAt = date;
+                st.PublishedAt = date;
+                st.CreatedAt = DateTime.Now;
                 _CIDbContext.Stories.Update(st);
                 _CIDbContext.SaveChanges();
+                if (url != null)
+                {
+                    var media = _CIDbContext.StoryMedia.Where(e=>e.StoryId  == st.StoryId && e.StoryType =="Video").ToList();
+
+                    if (media != null)
+                    {
+                        foreach(var i in media)
+                        {
+                            _CIDbContext.Remove(i);
+                            _CIDbContext.SaveChanges();
+                        }
+                    }
+
+                    var videoUrls = url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var videoUrl in videoUrls)
+                    {
+                        var s = new StoryMedium();
+                        s.CreatedAt = DateTime.Now;
+                        s.StoryId = st.StoryId;
+                        s.StoryPath = videoUrl;
+                        s.StoryType = "Video";
+                        _CIDbContext.Add(s);
+                        _CIDbContext.SaveChanges();
+                    }
+                }
+
+
                 return st.StoryId;
+
+
             }
 
 
@@ -303,7 +354,7 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.SaveChanges();
 
         }
-        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId)
+        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId, string url)
         {
             if (storyId == 0)
             {
@@ -313,9 +364,24 @@ namespace CI_PlatForm.Repository.Repository
                 st.Title = title;
                 st.Description = description;
                 st.Status = "DRAFT";
-                st.CreatedAt = date;
+                st.PublishedAt = date;
+                st.CreatedAt = DateTime.Now;
                 _CIDbContext.Stories.Add(st);
                 _CIDbContext.SaveChanges();
+                if (url != null)
+                {
+                    var videoUrls = url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var videoUrl in videoUrls)
+                    {
+                        var s = new StoryMedium();
+                        s.CreatedAt = DateTime.Now;
+                        s.StoryId = st.StoryId;
+                        s.StoryPath = videoUrl;
+                        s.StoryType = "Video";
+                        _CIDbContext.Add(s);
+                        _CIDbContext.SaveChanges();
+                    }
+                }
                 return st.StoryId;
             }
             else
@@ -324,10 +390,38 @@ namespace CI_PlatForm.Repository.Repository
                 story.MissionId = missionId;
                 story.UserId = userId;
                 story.Title = title;
+                story.PublishedAt = date;
                 story.Description = description;
                 story.UpdatedAt = DateTime.Now;
                 _CIDbContext.Update(story);
                 _CIDbContext.SaveChanges();
+
+                if (url != null)
+                {
+                    var media = _CIDbContext.StoryMedia.Where(e => e.StoryId == story.StoryId && e.StoryType == "Video").ToList();
+
+                    if (media != null)
+                    {
+                        foreach (var i in media)
+                        {
+                            _CIDbContext.Remove(i);
+                            _CIDbContext.SaveChanges();
+                        }
+                    }
+
+                    var videoUrls = url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var videoUrl in videoUrls)
+                    {
+                        var s = new StoryMedium();
+                        s.CreatedAt = DateTime.Now;
+                        s.StoryId = story.StoryId;
+                        s.StoryPath = videoUrl;
+                        s.StoryType = "Video";
+                        _CIDbContext.Add(s);
+                        _CIDbContext.SaveChanges();
+                    }
+                }
+
                 return story.StoryId;
 
             }
@@ -693,6 +787,7 @@ namespace CI_PlatForm.Repository.Repository
         public bool DeleteUserById(int Id)
         {
             var u = _CIDbContext.Users.FirstOrDefault(e => e.UserId == Id);
+            
             _CIDbContext.Remove(u);
             _CIDbContext.SaveChanges();
             return true;
@@ -743,6 +838,7 @@ namespace CI_PlatForm.Repository.Repository
             m.EndDate = mission.endDate;
             m.Seats = Convert.ToString(mission.seats);
             m.ThemeId = mission.missionThemeId;
+            m.Deadline = mission.deadline;
             _CIDbContext.Add(m);
             _CIDbContext.SaveChanges();
 
@@ -851,6 +947,7 @@ namespace CI_PlatForm.Repository.Repository
             m.StartDate = mission.startDate;
             m.EndDate = mission.endDate;
             m.Seats = Convert.ToString(mission.seats);
+            m.Deadline = mission.deadline;
             if (mission.missionType == "Time")
             {
                 var missiongoal = _CIDbContext.GoalMissions.FirstOrDefault(g => g.MissionId == m.MissionId);
@@ -945,6 +1042,16 @@ namespace CI_PlatForm.Repository.Repository
             }
             if (mission.url != null)
             {
+                var video = _CIDbContext.MissionMedia.Where(e => e.MissionId == m.MissionId && e.MediaType == "Video").ToList();
+                if (video != null)
+                {
+                    foreach(var v in video)
+                    {
+                        _CIDbContext.Remove(v);
+                        _CIDbContext.SaveChanges();
+                    }
+                }
+
                 var videoUrls = mission.url.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var videoUrl in videoUrls)
                 {
@@ -1104,6 +1211,17 @@ namespace CI_PlatForm.Repository.Repository
             var banner = _CIDbContext.Banners.FirstOrDefault(e => e.BannerId == id);
             banner.DeletedAt = DateTime.Now;
             _CIDbContext.Update(banner);
+            _CIDbContext.SaveChanges();
+            return true;
+        }
+        public bool ContactUs(UserProfile userProfile)
+        {
+            ContactU contactU = new ContactU();
+            contactU.UserName = userProfile.Name;
+            contactU.Email = userProfile.Email; 
+            contactU.Subject= userProfile.Subject;
+            contactU.Message= userProfile.Message;
+            _CIDbContext.Add(contactU);
             _CIDbContext.SaveChanges();
             return true;
         }

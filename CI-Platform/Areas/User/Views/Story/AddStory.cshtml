@@ -27,16 +27,18 @@
         <form asp-controller="Story" asp-action="addStoryDetail" enctype="multipart/form-data" method="post">
             <div class="row ">
                 <div class="col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
-                    <lable class="fs-6">Select mission</lable>
+                    <lable class="fs-6">Select mission</lable>  
                     @if (userId != null)
                     {
                         var m = Model.missionId;
                         <select asp-for="missionId" class="form-select" aria-label="Default select example">
+                            <option selected disabled>--Select Mission-- </option>
                             @foreach (var i in Model.missionApplications)
                             {
                                 <option value="@i.Mission.MissionId">@i.Mission.MissionId @i.Mission.Title</option>
                             }
                         </select>
+                        <span asp-validation-for="missionId" class="text-danger"></span>
                     }
                     else
                     {
@@ -76,7 +78,7 @@
             <div class="row mt-4  form-group">
                 <label class="fs-5">Enter Video URL</label>
 
-                <input type="text" placeholder="Enter your URL" class="col-12 border-1 border-black  mt-1 mb-2" style="height:40px; border-radius:5px" />
+                <input type="text" asp-for="url" placeholder="Enter your URL" class="col-12 border-1 border-black  mt-1 mb-2" style="height:40px; border-radius:5px" />
 
             </div>
 
@@ -176,3 +178,5 @@
 
 </body>
 </html>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

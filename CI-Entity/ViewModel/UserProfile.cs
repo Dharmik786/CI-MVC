@@ -26,7 +26,7 @@ namespace CI_Entity.ViewModel
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
+        
         public List<Country> countries { get; set; }
         public List<City> cities { get; set; }
         public List<Skill> skills { get; set; }
@@ -47,6 +47,10 @@ namespace CI_Entity.ViewModel
         public IFormFile Avatar { get; set; }
         public string Email { get; set; }   
         public string Name { get; set; }
+        [Required(ErrorMessage = "Subject is a Required field.")]
+        public string Subject { get; set; }
+        [Required(ErrorMessage = "Message is a Required field.")]
+        public string Message { get; set; }
 
 
     }

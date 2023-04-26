@@ -470,14 +470,30 @@ function editAdminUser(id) {
 
     })
 }
+function Fnamekey() {
+    $("#Fname-val").addClass("d-none");
+}
+function Lnamekey() {
+    $("#Lname-val").addClass("d-none");
+}
+function Emailkey() {
+    $("#Email-val").addClass("d-none");
+}
+function Passkey() {
+    $("#Pass-val").addClass("d-none");
+}
+function Depkey() {
+    $("#dep-val").addClass("d-none");
+}
 
 function ImgDiv() {
 
     $("#InputImg").click();
 }
 
-function UpdateUser() {
 
+
+function UpdateUser() {
 
     var Id = document.getElementById('userId').value;
 
@@ -491,27 +507,65 @@ function UpdateUser() {
     var status = document.getElementById('Status').value;
     var City = document.getElementById('City').value;
     var Country = document.getElementById('Country').value;
-
     var file = document.getElementById("InputImg").files[0];
-    if (file != undefined) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function (e) {
 
-            var base64Image = e.target.result;
-            console.log(base64Image);
 
+    if (Fname == null || Fname == "") {
+        $("#Fname-val").removeClass("d-none");
+    }
+    else if (Lname == null || Lname == "") {
+        $("#Lname-val").removeClass("d-none")
+    }
+    else if (Email == null || Email == "") {
+        $("#Email-val").removeClass("d-none")
+    }
+    else if (Password == null || Password == "") {
+        $("#Pass-val").removeClass("d-none")
+    }
+    else if (Department == null || Department == "") {
+        $("#dep-val").removeClass("d-none")
+    }
+    else {
+        if (file != undefined) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+
+                var base64Image = e.target.result;
+                console.log(base64Image);
+
+                $.ajax({
+
+                    url: "/Admin/Admin/EditUser",
+                    method: "POST",
+                    data:
+                    {
+                        'Image': base64Image, 'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+                        'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
+                    },
+                    success: function (res) {
+                        $(".btn-close").click();
+                        User();
+                    },
+                    error: function () {
+                        alert("user Edit  img error")
+                    }
+
+                })
+            }
+        }
+        else {
             $.ajax({
 
                 url: "/Admin/Admin/EditUser",
                 method: "POST",
                 data:
                 {
-                    'Image': base64Image, 'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
+                    'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
                     'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
                 },
                 success: function (res) {
-
+                    $(".btn-close").click();
                     User();
                 },
                 error: function () {
@@ -521,31 +575,6 @@ function UpdateUser() {
             })
         }
     }
-    else {
-        $.ajax({
-
-            url: "/Admin/Admin/EditUser",
-            method: "POST",
-            data:
-            {
-                'Id': Id, 'Fname': Fname, 'Lname': Lname, 'Email': Email, 'Password': Password, 'Employeeid': Employeeid, 'Department': Department,
-                'Profiletext': Profiletext, 'status': status, 'Country': Country, 'City': City
-            },
-            success: function (res) {
-
-                User();
-            },
-            error: function () {
-                alert("user Edit error")
-            }
-
-        })
-    }
-
-
-
-
-
 }
 
 function AddUser() {
@@ -821,6 +850,10 @@ function deletebanner(id) {
 //const input = document.querySelector(".file")
 //let imagesArray = []
 
+function Cancle() {
+    Mission()
+}
+
 function SaveMission() {
     var files = document.getElementById("fileInput").files;
     console.log(files);
@@ -883,8 +916,8 @@ function deletemission(missionId) {
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
+            confirmButton: 'btn-success',
+            cancelButton: 'btn-danger'
         },
         buttonsStyling: true
     })
@@ -961,7 +994,7 @@ function deletemission(missionId) {
 //})
 
 function dk1() {
-   
+
     const input = document.querySelector("#imageupload")
 
     const files = input.files

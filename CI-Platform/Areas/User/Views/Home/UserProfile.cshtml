@@ -339,20 +339,20 @@
                                         <div class="row">
                                             <div class="col-12 mb-3">
                                                 <label for="exampleFormControlTextarea1" class="form-label col-6">User Name</label>
-                                                <input type="text" value="@Model.Name" class=" form-control  col-12 " placeholder="User Name" disabled>
+                                                <input type="text" asp-for="Name" value="@Model.Name" class=" form-control  col-12 " placeholder="User Name" disabled>
 
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label for="exampleFormControlTextarea1" class="form-label col-6">Email</label>
-                                                <input type="email" value="@Model.Email" class=" form-control  col-12" placeholder="Email" disabled>
+                                                <input type="email" asp-for="Email" value="@Model.Email" class=" form-control  col-12" placeholder="Email" disabled>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label for="exampleFormControlTextarea1" class="form-label col-6">subject</label>
-                                                <input type="text" class=" form-control  col-12 " placeholder="subject">
+                                                <input type="text" asp-for="Subject" class=" form-control  col-12 " placeholder="subject">
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label for="exampleFormControlTextarea1" class="form-label col-6"> Message</label>
-                                                <textarea class="form-control col-12" placeholder="Message"></textarea>
+                                                <textarea asp-for="Message" class="form-control col-12" placeholder="Message"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -383,6 +383,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
             crossorigin="anonymous"></script>
+
 </body>
 <script src="/js/UserProfile.js"></script>
 

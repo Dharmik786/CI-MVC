@@ -43,7 +43,9 @@ namespace CI_Platform.Areas.User.Controllers
             vMMission.users = _IUser.user().Where(u => u.UserId != Convert.ToInt32(userId)).ToList();
             vMMission.timesheets = _IUser.timesheets();
             vMMission.goal = _IUser.goalMissions().Where(e=>e.DeletedAt==null).ToList();
+            vMMission.missionSkills = _IUser.GetMissionSkill();
 
+            vMMission.missionDocuments = _IUser.GetMissionDocument();
             MissionRating ratin = vMMission.missionRatings.FirstOrDefault(e => e.MissionId == missionid && e.UserId == Convert.ToInt32(userId));
             vMMission.userRate = ratin != null ? int.Parse(ratin.Rating) : 0;
 

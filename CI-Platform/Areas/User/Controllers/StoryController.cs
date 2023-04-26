@@ -125,8 +125,14 @@ namespace CI_Platform.Areas.User.Controllers
                 ms.missionId = s.MissionId;
                 ms.title = s.Title;
                 ms.editor1 = s.Description;
-                ms.date = s.CreatedAt;
+                ms.date = (DateTime)s.PublishedAt;
                 ms.storyId = storyId;
+                
+                var media =  _CIDbContext.StoryMedia.Where(e=>e.StoryId == storyId).FirstOrDefault();
+                if (media != null)
+                {
+                    ms.url = media.StoryPath;
+                }
 
                 var sm = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
                 ms.attachment = new List<IFormFile>();
@@ -167,7 +173,7 @@ namespace CI_Platform.Areas.User.Controllers
             if (action == "submit")
             {
                 var userId = HttpContext.Session.GetString("user");
-                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
+                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId,model.url);
 
                 if (model.attachment != null)
                 {
@@ -195,7 +201,7 @@ namespace CI_Platform.Areas.User.Controllers
             else if (action == "save")
             {
                 var userId = HttpContext.Session.GetString("user");
-                var sId = _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId);
+                var sId = _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId,model.url);
 
                 if (model.attachment != null)
                 {

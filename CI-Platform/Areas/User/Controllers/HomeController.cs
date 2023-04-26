@@ -1,5 +1,4 @@
-﻿
-using CI_Entity.Models;
+﻿using CI_Entity.Models;
 using CI_Entity.ViewModel;
 using CI_Platform.Models;
 using CI_PlatForm.Repository.Interface;
@@ -88,7 +87,7 @@ namespace CI_Platform.Areas.User.Controllers
 
         [HttpPost]
         public IActionResult AddTimeSheet(MissionList model)
-        {
+            {
             var userId = HttpContext.Session.GetString("user");
             _IUser.AddTime(model.missionId, Convert.ToInt32(userId), model.hour, model.min, model.action, model.date, model.notes, model.Hidden);
             return RedirectToAction("VolunteeringTimeSheet", "Home");
@@ -257,8 +256,12 @@ namespace CI_Platform.Areas.User.Controllers
 
         }
 
-        //[HttpPost]
-        //public IActionResult
+        [HttpPost]
+        public IActionResult ContactUs(UserProfile model)
+        {
+            _IUser.ContactUs(model);
+            return RedirectToAction("UserProfile", "Home");
+        }
 
 
 

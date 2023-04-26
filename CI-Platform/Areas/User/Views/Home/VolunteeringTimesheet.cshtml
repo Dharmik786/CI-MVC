@@ -13,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/Volunteeringtimesheet.css" asp-append-version="true" />
-
 </head>
 <body>
     <div class="container timesheet">
@@ -36,7 +35,7 @@
                             <i class="bi bi-plus-lg me-2 "></i>
                             <span> ADD</span>
                         </button>
-                        @*Modal Time aDD*@
+                        @*Modal Time Add*@
                         <div class="modal fade " id="TimeADDbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog  modal-dialog-centered">
                                 <div class="modal-content">
@@ -50,7 +49,7 @@
                                                 <div class="row">
                                                     <lable class="col-6 fs-6">Mission</lable>
                                                     <select class=" datediv  py-1 ro col-12" asp-for="missionId" aria-label="Default select example">
-
+                                                        <option selected disabled>--Select Mission---</option>
                                                         @foreach (var i in Model.missionApplications)
                                                         {
                                                             if (i.Mission.MissionType == "Time")
@@ -59,6 +58,7 @@
                                                             }
                                                         }
                                                     </select>
+                                                    <span asp-validation-for="missionId" class="text-danger"></span>
 
                                                 </div>
                                                 <div class="row mt-2">
@@ -69,10 +69,13 @@
                                                     <div class=" col-12 col-xl-6 col-1g-6 p-0">
                                                         <label class=" col-8 fs-6"> Hours</label>
                                                         <input asp-for="hour" type="number" min="0" max="23" placeholder="Enter Spent Hours " class="py-1 datediv rounded-1 w-100 px-2 " />
+                                                        <span asp-validation-for="hour" class="text-danger"></span>
                                                     </div>
                                                     <div class=" col-12 col-xl-6 col-1g-6 p-0  ">
                                                         <label class=" col-8 fs-6"> Minutes</label>
                                                         <input asp-for="min" type="number" min="0" max="59" placeholder="Enter Spent Minutes " class=" ms-0 ms-xl-2  py-1 datediv rounded-1   w-100  me-2" />
+                                                        <span asp-validation-for="min" class="text-danger"></span>
+
                                                     </div>
                                                 </div>
                                                 <div class="row mt-1">
@@ -112,10 +115,11 @@
                         </thead>
 
                         <tbody>
-
-                            @foreach (var i in Model.timesheets)
+                            @if (Model.timesheets != null)
                             {
-                                 if (i.Mission.MissionType == "Time")
+                                @foreach (var i in Model.timesheets)
+                                {
+                                    if (i.Mission.MissionType == "Time")
                                     {
                                         <tr>
                                             <td>@i.MissionId @i.Mission.Title</td>
@@ -131,63 +135,66 @@
                                             <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="TimeDelete(this.id)" /></td>
                                         </tr>
                                     }
-                                
-                               
-                                  @*Time Edit button*@
-                                <div class="modal fade " id="TimeEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog  modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form asp-controller="Home" asp-action="AddTimeSheet" method="post">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Hours</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="container">
-                                                        <div class="row">
-                                                            <lable class="col-6 fs-6">Mission</lable>
-                                                            <select class=" datediv  py-1 ro col-12" asp-for="missionId" id="TimemissionId" aria-label="Default select example">
-                                                                @foreach (var k in Model.missionApplications)
-                                                                {
-                                                                    if (i.Mission.MissionType == "Time")
+
+
+                                    @*Time Edit button*@
+                                    <div class="modal fade " id="TimeEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog  modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form asp-controller="Home" asp-action="AddTimeSheet" method="post">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Hours</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <lable class="col-6 fs-6">Mission</lable>
+                                                                <select class=" datediv  py-1 ro col-12" asp-for="missionId" id="TimemissionId" aria-label="Default select example">
+                                                                    @foreach (var k in Model.missionApplications)
                                                                     {
-                                                                        <option value="@k.Mission.MissionId">@k.Mission.MissionId @k.Mission.Title</option>
+                                                                        if (i.Mission.MissionType == "Time")
+                                                                        {
+                                                                            <option value="@k.Mission.MissionId">@k.Mission.MissionId @k.Mission.Title</option>
+                                                                        }
                                                                     }
-                                                                }
-                                                            </select>
+                                                                </select>
 
-                                                        </div>
-                                                        <div class="row mt-2">
-                                                            <lable class="col-6 fs-6">Date Volunteered</lable>
-                                                            <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="datetime-local" />
-                                                        </div>
-                                                        <div class="row mt-1 ">
-                                                            <div class=" col-12 col-xl-6 col-1g-6 p-0">
-                                                                <label class=" col-8 fs-6"> Hours</label>
-                                                                <input asp-for="hour" id="hour1" type="number" min="0" max="23" placeholder="Enter Spent Hours " class="py-1 datediv rounded-1 w-100 px-2 " />
                                                             </div>
-                                                            <div class=" col-12 col-xl-6 col-1g-6 p-0  ">
-                                                                <label class=" col-8 fs-6"> Minutes</label>
-                                                                <input asp-for="min" id="min1" type="number" min="0" max="59" placeholder="Enter Spent Minutes " class=" ms-0 ms-xl-2  py-1 datediv rounded-1   w-100  me-2" />
+                                                            <div class="row mt-2">
+                                                                <lable class="col-6 fs-6">Date Volunteered</lable>
+                                                                <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="datetime-local" />
                                                             </div>
-                                                        </div>
-                                                        <div class="row mt-1">
-                                                            <label class=" col-8 fs-6"> Enter Your Message</label>
+                                                            <div class="row mt-1 ">
+                                                                <div class=" col-12 col-xl-6 col-1g-6 p-0">
+                                                                    <label class=" col-8 fs-6"> Hours</label>
+                                                                    <input asp-for="hour" id="hour1" type="number" min="0" max="23" placeholder="Enter Spent Hours " class="py-1 datediv rounded-1 w-100 px-2 " />
+                                                               
+                                                                </div>
+                                                                <div class=" col-12 col-xl-6 col-1g-6 p-0  ">
+                                                                    <label class=" col-8 fs-6"> Minutes</label>
+                                                                    <input asp-for="min" id="min1" type="number" min="0" max="59" placeholder="Enter Spent Minutes " class=" ms-0 ms-xl-2  py-1 datediv rounded-1   w-100  me-2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-1">
+                                                                <label class=" col-8 fs-6"> Enter Your Message</label>
 
-                                                            <textarea asp-for="notes" id="notes1" class=" datediv rounded-1 mt-1 " placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                                                <textarea asp-for="notes" id="notes1" class=" datediv rounded-1 mt-1 " placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <input type="hidden" asp-for="Hidden" id="TimeSheetId1">
-                                                <div class="modal-footer">
-                                                    <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="rounded-pill addbtn  px-3 py-1" onclick="UpdateTimeSheet(@i.TimesheetId)" >Update</button>
-                                                </div>
-                                            </form>
+                                                    <input type="hidden" asp-for="Hidden" id="TimeSheetId1">
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="rounded-pill addbtn  px-3 py-1" onclick="UpdateTimeSheet(@i.TimesheetId)">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
+                            
 
                         </tbody>
 
@@ -240,6 +247,7 @@
 
                                                     <label class=" col-8 fs-6"> Date of Volunteered</label>
                                                     <input asp-for="date" type="Date" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " />
+                                                    <span asp-validation-for="date" class="text-danger"></span>
 
 
                                                 </div>
@@ -361,4 +369,6 @@
 </body>
 <script src="~/js/TimeSheet.js"></script>
 
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </html>

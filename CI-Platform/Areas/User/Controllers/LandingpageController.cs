@@ -78,6 +78,8 @@ namespace CI_Platform.Areas.User.Controllers
             missionList.users = _IUser.user();
             missionList.timesheets = _IUser.timesheets();
             missionList.goal = _IUser.goalMissions();
+            missionList.missionSkills = _CIDbContext.MissionSkills.ToList();
+            missionList.skills = _IUser.skills();
             //missionList.userId = userId;
             List<Mission> mission = _IUser.mission().ToList();
 

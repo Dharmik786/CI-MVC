@@ -27,6 +27,10 @@
         opacity: 0;
         cursor: pointer;
     }
+
+    .dropzone {
+    border:none!important;
+    }
 </style>
 <div class="container mt-4">
 
@@ -39,35 +43,46 @@
             <div class="col-md-6 col-12 mb-2">
                 <lable>Title</lable>
                 <input type="text" asp-for="title" id="Title" class="form-control" />
+                <span asp-validation-for="title" class="text-danger"></span>
             </div>
 
             <div class="col-md-6 col-12 mb-2">
                 <lable>Short Description</lable>
                 <input asp-for="shortDescription" type="text" id="ShortDescription" class="form-control" />
+                <span asp-validation-for="shortDescription" class="text-danger"></span>
+
             </div>
 
             <div class="col-12 mb-2">
                 <lable>Description</lable>
                 <textarea asp-for="description" class="form-control" id="Description"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                 <lable>Select Country</lable>
                 <select asp-for="countryId" class="form-select" id="Country">
+                    <option selected disabled>--select Country--</option>
                     @foreach (var i in Model.countries)
                     {
                         <option value="@i.CountryId">@i.Name</option>
                     }
                 </select>
+                <span asp-validation-for="countryId" class="text-danger"></span>
+
             </div>
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                 <lable>Select City</lable>
                 <select asp-for="cityId" class="form-select" id="City">
+                    <option selected disabled>--select City--</option>
                     @foreach (var i in Model.cities)
                     {
                         <option value="@i.CityId">@i.Name</option>
                     }
                 </select>
+                <span asp-validation-for="cityId" class="text-danger"></span>
+
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
@@ -106,12 +121,12 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
                 <lable>Enter GoalObjective value</lable>
-                <input asp-for="goalValue" type="number" min="1" class="form-control" id="seats" />
+                <input asp-for="goalValue" type="number"  class="form-control" id="seats" />
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
                 <lable>Total Seats</lable>
-                <input asp-for="seats" type="int" class="form-control" id="seats" />
+                <input asp-for="seats" type="number" class="form-control" id="seats"  />
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
@@ -331,7 +346,7 @@
 
 
            
-       
+        
 
 
             <div class="col-12 mb-2">
@@ -340,8 +355,13 @@
             </div>
 
             <div class="col-12 d-flex">
-                <button class="form-control modal-close-btn">Cancle</button>
-                <button type="submit" id="missionSave" class="form-control modal-save-btn">Submit</button>
+                <button class="form-control modal-close-btn" type="button"  onclick="Cancle()" >Cancle</button>
+
+                <button type="submit" class="btn savebtn" id="missionSave"  style="display:none;">Save changes</button>
+
+                @*<button type="submit" class="btn savebtn" id="missionSave1" onclick="SaveSkills()">Save changes</button>*@
+
+                <button type="submit" id="missionSave1"class="form-control modal-save-btn">Submit</button>
             </div>
 
         </div>
@@ -350,7 +370,10 @@
 
 <script>
 
-    
+    function showSave() {
+        document.getElementById("missionSave").style.display = "";
+        document.getElementById("missionSave1").style.display = "none";
+    }
     
 
     Dropzone.autoDiscover = false;
@@ -480,3 +503,6 @@
 
 
 </script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

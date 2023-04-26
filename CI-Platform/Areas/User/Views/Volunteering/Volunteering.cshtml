@@ -23,64 +23,74 @@
         <div class="row">
             @{
                 var userId = Context.Session.GetString("user");
-                
+                var missionMedia = Model.missionMedia.Where(e => e.MissionId == Model.singleMission.MissionId && e.DeletedAt == null).ToList();
             }
 
+
             <div class="col-12 col-lg-6 col-md-12 col-sm-12 p-1 ">
-                <div class="car1">
+                <div class="container p-0">
 
-                    <!-- Full-width images with number text -->
-                    <div class="mySlides">
-                        <div class="numbertext">1 / 6</div>
-                        <img src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png" style="width:100%">
-                    </div>
 
-                    <div class="mySlides">
-                        <div class="numbertext">2 / 6</div>
-                        <img src="/Image/img1.png" style="width:100%">
-                    </div>
+                    @{
+                        int num = 0;
+                    }
+                    @foreach (var media in missionMedia)
+                    {
 
-                    <div class="mySlides">
-                        <div class="numbertext">3 / 6</div>
-                        <img src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-2.png" style="width:100%">
-                    </div>
+                        @if (media.MediaType == "Video")
+                        {
+                            num++;
+                            <div class="mySlides">
+                                <div class="numbertext">@num/ @missionMedia.Count()</div>
+                                <iframe class="img-fluid vol-page-crousel" id="vol-page-crousel"
+                                        src=@media.MediaPath style="height:355px;object-fit:cover;width:100%" alt=""></iframe>
 
-                    <div class="mySlides">
-                        <div class="numbertext">4 / 6</div>
-                        <img src="/Image/img11.png" style="width:100%">
-                    </div>
-
+                            </div>
+                        }
+                        else
+                        {
+                            num++;
+                            <div class="mySlides">
+                                <div class="numbertext">@num/ @missionMedia.Count()</div>
+                                <img src="@media.MediaPath" style="height:355px;object-fit:cover;width:100%">
+                            </div>
+                        }
+                    }
 
 
                     <!-- Next and previous buttons -->
-                    @*<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>*@
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
                     <!-- Image text -->
                     <!-- Thumbnail images -->
-                    <div class="row mt-3 ">
-                        <div class="column" style="width:25%">
-                            <img class="demo cursor" src="/Image/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
-                        </div>
-                        <div class="column" style="width:25%">
-                            <img class="demo cursor" src="/Image/img1.png" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
-                        </div>
-                        <div class="column" style="width:25%">
-                            <img class="demo cursor" src="/Image/Grow-Trees-On-the-path-to-environment-sustainability-1.png" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
-                        </div>
-                        <div class="column" style="width:25%">
-                            <img class="demo cursor" src="/Image/img11.png" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
-                        </div>
+                    <div class="row mt-1" style="flex-wrap: inherit;overflow-x: scroll">
+                      
+                        @{
+                            int num1 = 0;
+                        }
+                        @foreach (var media in missionMedia)
+                        {
+                            num1++;
+                            @if (media.MediaType == "Video")
+                            {
+                                <div class="col-6 col-lg-3 col-4">
+                                    <iframe src=@media.MediaPath title="W3Schools Free Online Web Tutorials" onclick="currentSlide(@num1)" style="overflow:hidden;width:100%"></iframe>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-6 col-lg-3 col-4">
+                                    <img class="demo cursor" src="@media.MediaPath" style="width:100%;height:100%" onclick="currentSlide(@num1)" alt="Northern Lights">
+                                </div>
+                            }
+                        }
 
-                        @*<div class="column">
-                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
-                        </div>
-                        <div class="column">
-                        <img class="demo cursor" src="/Images/Animal-welfare-&-save-birds-campaign-1.png" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
-                        </div>*@
                     </div>
+
                 </div>
             </div>
+
 
             <div class="card col-12 col-lg-6 col-md-12 col-sm-12" style="border:none;">
 
@@ -107,7 +117,7 @@
                                     sum = sum + Convert.ToInt32(g.Action);
 
                                 }
-                                 w = ((sum * 100) / Convert.ToInt32(goal.GoalValue));
+                                w = ((sum * 100) / Convert.ToInt32(goal.GoalValue));
                             }
                         }
                     }
@@ -136,7 +146,7 @@
                             <p class="me-2 pt-2">
                                 <img src="/Image/Seats-left.png" />
                                 <div>
-                                    <div> @Model.singleMission.Availability</div>
+                                    <div> @Model.singleMission.Seats</div>
                                     <div>Seats Left</div>
                                 </div>
                             </p>
@@ -159,7 +169,7 @@
                                     <div class="progress mt-2" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         <div class="progress-bar bg-warning" style="width: @w%">25%</div>
                                     </div>
-                                            
+
                                 </div>
                             }
                         </div>
@@ -362,7 +372,7 @@
                                     if (Pending == null)
                                     {
                                         <div class="d-flex justify-content-center">
-                                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn"  onclick="applyMission(@Model.singleMission.MissionId)" disabled>Applied</button>
+                                            <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Applied</button>
                                         </div>
                                     }
                                     else
@@ -423,11 +433,28 @@
                                 sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </p>
                         </div>
+                        @{
+                            var docs = Model.missionDocuments.Where(e => e.MissionId == Model.singleMission.MissionId).ToList();
+                        }
+
+
                         <div class="mt-4">
                             <h3>Documents</h3>
                             <div class="d-flex">
-                                <button class="doc-btn p-2 m-1" onclick='openDocs("/MissionDocs/Week1.pdf")'><img src="/Image/pdf.png" />abhi.pdf</button>
-                                <button class="doc-btn p-2 m-1"><img src="/Image/pdf.png" />shubh.pdf</button>
+                                @if (docs != null)
+                                {
+                                    foreach (var d in docs)
+                                    {
+
+                                        @* <button class="doc-btn p-2 m-1" onclick='openDocs("@d.DocumentPath")'><img src="/Image/pdf.png" />abhi.pdf</button>*@
+                                        <button class="hrbtn d-flex align-items-center p-2 justify-content-center ms-3 mt-2" style="width:fit-content; height:5vh" onclick="downloadDocument('@d.DocumentName', '@Convert.ToBase64String(d.DocumentPath)')">
+                                            <img src="/images/@(d.DocumentType).png" />
+                                            <span class="ms-2">
+                                                @d.DocumentName
+                                            </span>
+                                        </button>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
@@ -522,10 +549,17 @@
                     <div class="row mt-3">
                         <div class="col-3 ms-2">Skills</div>
                         <div class="col-8">
-                            @*@foreach(var i in Model.missionSkills)
+                            @{
+                                var missionSkill = Model.missionSkills.Where(e => e.MissionId == Model.singleMission.MissionId).ToList();
+                            }
+                            @if (missionSkill != null)
                             {
-                            <span>@i.Skill.SkillName, </span>
-                            }*@
+                                @foreach (var i in missionSkill)
+                                {
+                                    <span>@i.Skill.SkillName, </span>
+                                }
+                            }
+
                         </div>
                     </div>
 
@@ -615,6 +649,21 @@
             function openDocs(url) {
                 window.open(url);
             }
+
+            function downloadDocument(documentName, documentData) {
+                const byteArray = Uint8Array.from(atob(documentData), c => c.charCodeAt(0));
+                const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = documentName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+
+
 
             function recent(index, missionid) {
                 $.ajax({
@@ -728,7 +777,7 @@
                 $.ajax({
                     type: 'POST',
                     url: "/User/Volunteering/cmtDelete",
-                    data: { 'cmtId': cmtid, 'missionId': missionid }, 
+                    data: { 'cmtId': cmtid, 'missionId': missionid },
                     success: function (res) {
                         console.log("comt delete")
                         $('.cmtdiv').html($(res).find('.cmtdiv').html());

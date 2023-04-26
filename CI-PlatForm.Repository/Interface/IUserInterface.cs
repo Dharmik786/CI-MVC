@@ -24,7 +24,7 @@ namespace CI_PlatForm.Repository.Interface
         public List<City> cities();
         public List<Skill> skills();
         public List<MissionTheme> missionThemes();
-
+        public List<MissionDocument> GetMissionDocument();
         public List<GoalMission> goalMissions();
         public List<FavoriteMission> favoriteMissions();
         public List<MissionRating> MissionRatings();
@@ -43,9 +43,10 @@ namespace CI_PlatForm.Repository.Interface
         public MissionApplication applymission(int missionId, int userId);
         public List<Story> stories();
         public List<StoryMedium> storyMedia();
-        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+
+        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId,string url);
         public void AddStoryMedia(string mediaType, string mediaPath, long missionId, long userId, long storyId, long sId);
-        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId);
+        public long SaveStory(long missionId, long userId, string title, string description, DateTime date, long storyId,string url);
         public void DraftDelete(int storyId);
         public void RemoveMedia(long stroryId);
         public void cmtdetele(int cmtId, int userId);
@@ -99,6 +100,8 @@ namespace CI_PlatForm.Repository.Interface
         public void delImg(long id);
 
         public void DeleteMission(long missionId);
+        public bool ContactUs(UserProfile userProfile);
+
     }
 
 }
