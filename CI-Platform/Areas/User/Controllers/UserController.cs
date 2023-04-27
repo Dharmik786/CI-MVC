@@ -31,7 +31,7 @@ namespace CI_Platform.Areas.User.Controllers
         {
             HttpContext.Session.Clear();
             LoginVM vm = new LoginVM();
-            vm.banners = _IUser.GetBanner().Where(e=>e.DeletedAt==null).ToList();
+            vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
             return View(vm);
         }
 
@@ -40,7 +40,8 @@ namespace CI_Platform.Areas.User.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            if(model.Email!=null || model.Password != null)
+
+            if (model.Email != null || model.Password != null)
             {
                 var admin = _IUser.GetAdminDetails(model.Email, model.Password);
                 var user = _IUser.Login(model.Email, model.Password);
@@ -48,7 +49,7 @@ namespace CI_Platform.Areas.User.Controllers
 
                 if (admin != null)
                 {
-                    HttpContext.Session.SetInt32("AdminId",Convert.ToInt32(admin.AdminId));
+                    HttpContext.Session.SetInt32("AdminId", Convert.ToInt32(admin.AdminId));
                     return RedirectToAction("Admin", "Admin", new { area = "Admin" });
                 }
                 else
@@ -74,12 +75,14 @@ namespace CI_Platform.Areas.User.Controllers
                     }
                 }
             }
-             
+
+
             LoginVM vm = new LoginVM();
             vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
 
             //return RedirectToAction("Login", "User");
             return View(vm);
+
         }
 
         //--------------------------------------------------REGISTRATION---------------------------------------------
@@ -93,7 +96,7 @@ namespace CI_Platform.Areas.User.Controllers
         [HttpPost]
         public IActionResult Registration(Registration user)
         {
-            
+
             if (ModelState.IsValid)
             {
                 if (_IUser.Registration(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.ConfirmPassword) == true)

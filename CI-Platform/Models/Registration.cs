@@ -6,7 +6,7 @@ namespace CI_Platform.Models
     public class Registration
     {
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "The Old Password field is required.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The First Name field is required.")]
         public string FirstName { get; set; }
 
         [Required]

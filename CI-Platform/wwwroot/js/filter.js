@@ -8,10 +8,13 @@ var listArray = [];
 var filterList = document.querySelector(".filter-list");
 
 var len = listArray.length;
+var count = 0;
 
 for (var checkbox of checkboxes) {
     checkbox.addEventListener("click", function () {
         if (this.checked == true) {
+            count++;
+            clear()
             addElement(this, this.value);
         }
         else {
@@ -20,6 +23,7 @@ for (var checkbox of checkboxes) {
         }
     })
 }
+
 
 function addElement(current, value) {
     let filtersSection = document.querySelector(".filters-section");
@@ -56,6 +60,25 @@ function addElement(current, value) {
     mySearch();
 
 }
+
+function clear() {
+    if (count >= 0) {
+  
+        $(".clear-all").html(" ");
+        let filtersSection = document.querySelector(".filters-section");
+
+        let clearAll = document.createElement('span');
+        clearAll.classList.add('clear-all');
+        clearAll.classList.add('ps-3');
+        clearAll.classList.add('pe-1');
+        clearAll.classList.add('me-2');
+        clearAll.innerHTML = "Clear All";
+
+        filtersSection.appendChild(clearAll);
+    }
+
+}
+
 
 function removeElement(value) {
 

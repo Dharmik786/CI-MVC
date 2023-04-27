@@ -28,6 +28,7 @@ namespace CI_Entity.ViewModel
         public List<IFormFile> attachment { get; set; }
         public long storyId { get; set; }
         public List<Mission> mission { get; set; }
+        public List<string> ImgList { get; set; }
 
     }
 }

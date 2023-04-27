@@ -15,7 +15,7 @@ namespace CI_Entity.ViewModel
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string? Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+       [Required(ErrorMessage = "Please Enter The Password")]
         public string? Password { get; set; }
 
 

@@ -1,4 +1,4 @@
-﻿ @using CI_Entity.ViewModel
+﻿@using CI_Entity.ViewModel
 @model StoryModel
 @{
     Layout = "_navbar1";
@@ -27,7 +27,7 @@
         <form asp-controller="Story" asp-action="addStoryDetail" enctype="multipart/form-data" method="post">
             <div class="row ">
                 <div class="col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
-                    <lable class="fs-6">Select mission</lable>  
+                    <lable class="fs-6">Select mission</lable>
                     @if (userId != null)
                     {
                         var m = Model.missionId;
@@ -35,7 +35,11 @@
                             <option selected disabled>--Select Mission-- </option>
                             @foreach (var i in Model.missionApplications)
                             {
+                                if (i.DeletedAt == null)
+                                {
+                                    
                                 <option value="@i.Mission.MissionId">@i.Mission.MissionId @i.Mission.Title</option>
+                                }
                             }
                         </select>
                         <span asp-validation-for="missionId" class="text-danger"></span>
@@ -85,20 +89,35 @@
             <label class=" fs-5 mt-2 "> Upload Your Photos</label>
             <div class="input-div">
                 <p>Drag & drop photos here or <strong>Browse</strong></p>
-                <input type="file" class="file-input file" asp-for="attachment" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+                <input type="file" class="file-input file" id="imageupload" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
             </div>
-            <output>
-                @if (Model.storyMedia != null)
-                {
-                    foreach (var m in Model.storyMedia)
-                    {
-                        <div class="image">
-                            <img src="@m.StoryPath" alt="image">
-                            <span onclick="deleteImage(0)" style="color:black;">×</span>
-                        </div>
-                    }
-                }
+            <output id="preview">
+               
             </output>
+
+            <output class="d-flex" id="1">
+
+             <div class="imgdiv d-flex">
+                    @if (Model.storyMedia != null)
+                    {
+                        foreach (var m in Model.storyMedia)
+                        {
+                            @if (m.StoryType != "Video")
+                            {
+                                <div class="image" id="@m.StoryMediaId">
+                                    <img src="@m.StoryPath" alt="image" style="height:100px;">
+                                    <span onclick="DeleteImg(@m.StoryMediaId)" style="color:black;cursor:pointer">×</span>
+                                </div>
+                            }
+
+                        }
+                    }
+             </div>
+           
+            </output>
+            <select id="img-select" class="d-none" multiple asp-for="ImgList">
+             
+            </select>
 
 
             <div class="row flex-column flex-md-row mt-4 mb-2">
@@ -127,42 +146,118 @@
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
     <script>
-        CKEDITOR.replace('editor1');
-         
-        const inputDiv = document.querySelector(".input-div")
-        const input = document.querySelector(".file")
-        const output = document.querySelector("output")
-        let imagesArray = []
 
-        input.addEventListener("change", () => {
+        CKEDITOR.replace('editor1');
+
+        function DeleteImg(id){
+          
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/User/Story/DeleteImg",
+                        data: { 'id': id },
+                        success: function (res) {
+
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            document.getElementById(id).style.display = "none";
+                            $('.imgdiv').html($(res).find('.imgdiv').html());
+
+                        },
+                        error: function () {
+                            alert("User Error")
+                        }
+                    });
+
+                   
+                }
+
+               
+
+
+            })
+
+           
+        }
+
+        //=============================Image Preview================
+        const inputDiv = document.querySelector(".input-div")
+        const input = document.querySelector("#imageupload")
+        const output = document.querySelector("#preview")
+        const imgsender = document.querySelector("#img-select")
+
+        let imagesArray = [];
+        let FilesToUpload = [];
+        let FilesNameToUpload = [];
+        let DelImg = [];
+        $("#preview").html("");
+
+        $("#imageupload").on("change", () => {
+
             const files = input.files
             for (let i = 0; i < files.length; i++) {
-                imagesArray.push(files[i])
+
+                FilesNameToUpload.push(files[i].name)
+                var file = files[i]
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    FilesToUpload.push(event.target.result);
+                    displayImages()
+                }
+
+                reader.readAsDataURL(file);
+
             }
-            displayImages()
+
+          
         })
-        inputDiv.addEventListener("drop", () => {
-            e.preventDefault()
-            const files = e.dataTransfer.files
-            for (let i = 0; i < files.length; i++) {
-                if (!files[i].type.match("image")) continue;
-                if (imagesArray.every(image => image.name !== files[i].name))
-                    imagesArray.push(files[i])
-            }
-            displayImages()
-        })
+
+
+
+
         function displayImages() {
-            let images = ""
-            imagesArray.forEach((image, index) => {
-                images += `<div class="image">
-                                      <img src="${URL.createObjectURL(image)}" alt="image">
-                                      <span onclick="deleteImage(${index})" style="color:black;">&times;</span>
-                                   </div>`
-            })
-            output.innerHTML = images
+            $("#preview").html("");
+
+            setTimeout(function () {
+                for (let i = 0; i < FilesToUpload.length; i++) {
+                    $("#preview").append(`<div class="image"><img src="${FilesToUpload[i]}" alt="image">
+                                                             <button type="button" class="position-absolute image-close-btn " onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
+                                                           </div>`)
+                }
+
+            }, 100)
+
+            console.log(FilesToUpload)
+            $("#img-select").html("")   
+            for (let j = 0; j < FilesToUpload.length; j++) {
+
+                const selectElement = document.getElementById("img-select");
+                const optionElement = document.createElement("option");
+                optionElement.text = FilesToUpload[j];
+                optionElement.value = FilesToUpload[j];
+                optionElement.selected = true;
+                selectElement.appendChild(optionElement)
+            } 
         }
-        function deleteImage(index) {
-            imagesArray.splice(index, 1)
+
+        function deleteImage(i) {
+            FilesToUpload.splice(i, 1);
+            FilesNameToUpload.splice(i, 1);
+
             displayImages()
         }
         function loginalert() {

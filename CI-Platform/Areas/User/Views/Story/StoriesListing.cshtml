@@ -46,7 +46,7 @@
                 <div class="missioncard col-12 col-md-6 col-lg-4 mb-2">
                     <div class="card">
                         @{
-                            var storyMedia = Model.storyMedia.FirstOrDefault(e => e.StoryId == i.StoryId);
+                            var storyMedia = Model.storyMedia.FirstOrDefault(e => e.StoryId == i.StoryId && e.StoryType!="Video");
                         }
                         <div class="img-event">
 

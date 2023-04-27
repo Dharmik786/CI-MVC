@@ -301,7 +301,7 @@
                         var MissionEndDate = Model.singleMission.EndDate.ToString().Split(" ")[0];
                         DateTime EndDate = DateTime.Parse(MissionEndDate).Date;
                         DateTime Deadline = EndDate.AddDays(-5);
-                        if (Deadline < DateTime.Now)
+                        if (Model.singleMission.Deadline < DateTime.Now)
                         {
                             isClosed = 1;
                         }
@@ -354,7 +354,7 @@
                         @if (isClosed == 1)
                         {
                             <div class="d-flex justify-content-center">
-                                <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:black;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Mission Closed</button>
+                                <button class="ps-3 pe-3 pt-2 pb-2 Apply-btn" id="applybtn" style="color:orange;" onclick="applyMission(@Model.singleMission.MissionId)" disabled>Mission Closed</button>
                             </div>
                         }
                         else

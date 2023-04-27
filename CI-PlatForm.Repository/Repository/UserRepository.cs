@@ -45,7 +45,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public User Login(string Email, string Password)
         {
-            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password).FirstOrDefault();
+            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password && u.DeletedAt==null && u.Status=="Active").FirstOrDefault();
         }
         public Admin GetAdminDetails(string email, string password)
         {
@@ -53,9 +53,12 @@ namespace CI_PlatForm.Repository.Repository
         }
         public List<MissionDocument> GetMissionDocument()
         {
-            return _CIDbContext.MissionDocuments.Where(e=>e.DeletedAt == null).ToList();
+            return _CIDbContext.MissionDocuments.Where(e => e.DeletedAt == null).ToList();
         }
-
+        public List<StoryMedium> GetStoryMediaByStoryId(int id)
+        {
+            return _CIDbContext.StoryMedia.Where(e => e.StoryId == id && e.DeletedAt == null).ToList();
+        }
         public User Forget(string Email)
         {
             return _CIDbContext.Users.FirstOrDefault(u => u.Email == Email);
@@ -89,7 +92,7 @@ namespace CI_PlatForm.Repository.Repository
 
         public List<Mission> mission()
         {
-            return _CIDbContext.Missions.Where(e=>e.DeletedAt==null).ToList();
+            return _CIDbContext.Missions.Where(e => e.DeletedAt == null).ToList();
         }
 
         public List<User> user()
@@ -256,7 +259,7 @@ namespace CI_PlatForm.Repository.Repository
             return _CIDbContext.Stories.ToList();
         }
 
-        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId , string url)
+        public long SubmitStory(long missionId, long userId, string title, string description, DateTime date, long storyId, string url)
         {
             if (storyId == 0)
             {
@@ -302,11 +305,11 @@ namespace CI_PlatForm.Repository.Repository
                 _CIDbContext.SaveChanges();
                 if (url != null)
                 {
-                    var media = _CIDbContext.StoryMedia.Where(e=>e.StoryId  == st.StoryId && e.StoryType =="Video").ToList();
+                    var media = _CIDbContext.StoryMedia.Where(e => e.StoryId == st.StoryId && e.StoryType == "Video").ToList();
 
                     if (media != null)
                     {
-                        foreach(var i in media)
+                        foreach (var i in media)
                         {
                             _CIDbContext.Remove(i);
                             _CIDbContext.SaveChanges();
@@ -773,7 +776,7 @@ namespace CI_PlatForm.Repository.Repository
                 user.CityId = City;
                 if (Img != null)
                 {
-
+                        
                     user.Avatar = Img;
                 }
 
@@ -787,8 +790,8 @@ namespace CI_PlatForm.Repository.Repository
         public bool DeleteUserById(int Id)
         {
             var u = _CIDbContext.Users.FirstOrDefault(e => e.UserId == Id);
-            
-            _CIDbContext.Remove(u);
+            u.DeletedAt = DateTime.Now;
+            _CIDbContext.Update(u);
             _CIDbContext.SaveChanges();
             return true;
         }
@@ -844,17 +847,17 @@ namespace CI_PlatForm.Repository.Repository
 
             if (mission.selectedSkills != null)
             {
-                foreach(var s in mission.selectedSkills)
+                foreach (var s in mission.selectedSkills)
                 {
                     MissionSkill ms = new MissionSkill();
                     ms.MissionId = m.MissionId;
                     ms.SkillId = Convert.ToInt64(s);
-                    ms.CreatedAt= DateTime.Now; 
+                    ms.CreatedAt = DateTime.Now;
                     _CIDbContext.Add(ms);
                     _CIDbContext.SaveChanges();
                 }
-                
-                
+
+
             }
             if (mission.missionType == "Time")
             {
@@ -907,7 +910,7 @@ namespace CI_PlatForm.Repository.Repository
                         missionmedia.DocumentName = file.FileName;
                         missionmedia.DocumentPath = fileBytes;
                         _CIDbContext.Add(missionmedia);
-                        
+
                     }
                     else
                     {
@@ -926,7 +929,7 @@ namespace CI_PlatForm.Repository.Repository
                         missionmedia.MediaName = file.FileName;
                         missionmedia.MediaPath = "data:image/" + ext[1] + ";base64," + base64String;
                         _CIDbContext.Add(missionmedia);
-                        
+
                     }
                 }
             }
@@ -1045,7 +1048,7 @@ namespace CI_PlatForm.Repository.Repository
                 var video = _CIDbContext.MissionMedia.Where(e => e.MissionId == m.MissionId && e.MediaType == "Video").ToList();
                 if (video != null)
                 {
-                    foreach(var v in video)
+                    foreach (var v in video)
                     {
                         _CIDbContext.Remove(v);
                         _CIDbContext.SaveChanges();
@@ -1177,8 +1180,15 @@ namespace CI_PlatForm.Repository.Repository
             var banner = _CIDbContext.Banners.FirstOrDefault(e => e.BannerId == id);
             return banner;
         }
+        public Banner CheckBannerSortOrder(int sortOrder)
+        {
+            var s = _CIDbContext.Banners.FirstOrDefault(e => e.SortOrder == sortOrder);
+            return s;
+
+        }
         public bool AddBanner(int id, string image, string description, int sort)
         {
+
             if (id == 0)
             {
                 Banner banner = new Banner();
@@ -1188,6 +1198,8 @@ namespace CI_PlatForm.Repository.Repository
                 banner.CreatedAt = DateTime.Now;
                 _CIDbContext.Add(banner);
                 _CIDbContext.SaveChanges();
+
+
             }
             else
             {
@@ -1218,9 +1230,9 @@ namespace CI_PlatForm.Repository.Repository
         {
             ContactU contactU = new ContactU();
             contactU.UserName = userProfile.Name;
-            contactU.Email = userProfile.Email; 
-            contactU.Subject= userProfile.Subject;
-            contactU.Message= userProfile.Message;
+            contactU.Email = userProfile.Email;
+            contactU.Subject = userProfile.Subject;
+            contactU.Message = userProfile.Message;
             _CIDbContext.Add(contactU);
             _CIDbContext.SaveChanges();
             return true;

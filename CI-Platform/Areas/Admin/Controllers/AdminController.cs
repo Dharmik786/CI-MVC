@@ -262,7 +262,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 vm.shortDescription = mission.ShortDescription;
                 vm.description = mission.Description;
                 vm.countryId = mission.CountryId;
-                vm.countryId = mission.CountryId;
+                vm.cityId = mission.CityId;
                 vm.OrganisationName = mission.OrganizationName;
                 vm.OrganisationDetail = mission.OrganizationDetail;
                 vm.missionType = mission.MissionType;
@@ -344,7 +344,7 @@ namespace CI_Platform.Areas.Admin.Controllers
             model.cities = _IUser.cities();
             model.skills = _IUser.skills();
             model.missionThemes = _IUser.missionThemes();
-            ///return PartialView("_MissionA", model);
+            //return PartialView("_MissionA", model);
             return RedirectToAction("Admin", "Admin");
         }
 

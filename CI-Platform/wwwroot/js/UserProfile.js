@@ -6,6 +6,32 @@ window.addEventListener("load", function () {
     loader.style.display = "none";
 })
 
+function validatePassword(password) {
+    // password must be at least 8 characters long
+    if (password.length < 8) {
+        return false;
+    }
+
+    // password must contain at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+        return false;
+    }
+
+    // password must contain at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+        return false;
+    }
+
+    // password must contain at least one special character
+    if (!/[\W_]/.test(password)) {
+        return false;
+    }
+
+    // password is valid
+    return true;
+}
+
+
 function oldp() {
     $('#old').addClass('d-none');
 }
@@ -14,26 +40,34 @@ function ChangePsw() {
     var NewPsw = document.getElementById('inputPassword2').value;
     var CnfPsw = document.getElementById('inputPassword3').value;
 
+    const isValid = validatePassword(NewPsw)
+
     if (oldPsw == "") {
         $('#old').removeClass('d-none');
         $('#old').addClass('d-inline!important');
     }
 
     else if (NewPsw == "") {
-        alert("Please Enter New Password")
+        Swal.fire('Please Enter New Password')
     }
     else if (CnfPsw == "") {
-        alert("Please Enter Confrim Password")
+        Swal.fire('Please Enter Confrim Password')
     }
     else if (NewPsw != CnfPsw) {
-        alert("Passowrd and Confrim Password Does not Match");
+        Swal.fire('Passowrd and Confrim Password Does not Match')
+
     }
+    else if (isValid == false) {
+        Swal.fire('Password is not Valid')
+    }
+
     else {
         $.ajax({
             type: "POST",
             url: "/User/Home/ChangePassword",
             data: { 'oldPsw': oldPsw, 'NewPsw': NewPsw, 'CnfPsw': CnfPsw },
             success: function (result) {
+      
                 if (result == true) {
                     document.getElementById("PswClose").click();
                     Swal.fire({
@@ -45,7 +79,12 @@ function ChangePsw() {
                     })
                 }
                 else if (result == false) {
-                    alert("Your Old Passoword is Incorrect")
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Old Password is incorrect',
+                      
+                    })
                 }
             },
             error: function () {
@@ -58,7 +97,7 @@ function ChangePsw() {
 
 }
 
-document.getElementById('imgDiv').addEventListener("click", e => { 
+document.getElementById('imgDiv').addEventListener("click", e => {
     document.getElementById('inputImg').click();
 });
 

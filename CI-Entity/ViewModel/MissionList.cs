@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
 
 //using Microsoft.Build.Framework;
 
@@ -59,6 +60,8 @@ namespace CI_Entity.ViewModel
 
         public string title { get; set; }
         public string editor1 { get; set; }
+
+       
         public DateTime date { get; set; }
         public List<IFormFile> attachment { get; set; }
         public long storyId { get; set; }
@@ -72,6 +75,8 @@ namespace CI_Entity.ViewModel
         [Required(ErrorMessage = "Minute field is Required")]
 
         public int? min { get; set; }
+        [Required(ErrorMessage = "Please Enter the Action")]
+
         public int? action { get; set; }
         public long Hidden { get; set; }
 

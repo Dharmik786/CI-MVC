@@ -7,6 +7,8 @@ using CI_PlatForm.Repository.Interface;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using System.Text;
 using MimeTypes.Core;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Security.Policy;
 
 namespace CI_Platform.Areas.User.Controllers
 {
@@ -40,6 +42,7 @@ namespace CI_Platform.Areas.User.Controllers
             var userId = HttpContext.Session.GetString("user");
             MissionList missionList = new MissionList();
             missionList.stories = _IUser.stories();
+            missionList.storyMedia = _IUser.GetStoryMediaByStoryId(storyId);
             if (userId != null)
             {
 
@@ -69,7 +72,7 @@ namespace CI_Platform.Areas.User.Controllers
         {
             //ViewBag.UserId = int.Parse(userId);
 
-            foreach (var i in emailList)        
+            foreach (var i in emailList)
             {
                 try
                 {
@@ -84,7 +87,7 @@ namespace CI_Platform.Areas.User.Controllers
                     var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
 
                     var message = new MailMessage(fromAddress, toAddress)
-                    {   
+                    {
                         Subject = subject,
                         Body = body,
                         IsBodyHtml = true
@@ -127,8 +130,8 @@ namespace CI_Platform.Areas.User.Controllers
                 ms.editor1 = s.Description;
                 ms.date = (DateTime)s.PublishedAt;
                 ms.storyId = storyId;
-                
-                var media =  _CIDbContext.StoryMedia.Where(e=>e.StoryId == storyId).FirstOrDefault();
+
+                var media = _CIDbContext.StoryMedia.Where(e => e.StoryId == storyId && e.StoryType =="Video").FirstOrDefault();
                 if (media != null)
                 {
                     ms.url = media.StoryPath;
@@ -136,7 +139,6 @@ namespace CI_Platform.Areas.User.Controllers
 
                 var sm = _IUser.storyMedia().Where(e => e.StoryId == storyId).ToList();
                 ms.attachment = new List<IFormFile>();
-                //ms.attachment = sm.StoryPath;
 
                 foreach (var img in sm)
                 {
@@ -173,57 +175,88 @@ namespace CI_Platform.Areas.User.Controllers
             if (action == "submit")
             {
                 var userId = HttpContext.Session.GetString("user");
-                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId,model.url);
+                var sId = _IUser.SubmitStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId, model.url);
 
-                if (model.attachment != null)
+
+                if (model.ImgList != null)
                 {
-                    if (model.storyId != 0)
+                    foreach (var i in model.ImgList)
                     {
-                        _IUser.RemoveMedia(storyId);
-                    }
 
-                    foreach (var i in model.attachment)
-                    {
-                        var FileName = "";
-                        using (var ms = new MemoryStream())
-                        {
-                            await i.CopyToAsync(ms);
-                            var imageBytes = ms.ToArray();
-                            var base64String = Convert.ToBase64String(imageBytes);
-                            FileName = "data:image/png;base64," + base64String;
-                        }
-
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
+                        StoryMedium sm = new StoryMedium();
+                        sm.StoryId = sId;
+                        sm.StoryType = "Image";
+                        sm.StoryPath = i;
+                        _CIDbContext.Add(sm);
+                        _CIDbContext.SaveChanges();
+                       
                     }
                 }
+                
+
+                //if (model.attachment != null)
+                //{
+                //    if (model.storyId != 0)
+                //    {
+                //        _IUser.RemoveMedia(storyId);
+                //    }
+
+                //    foreach (var i in model.attachment)
+                //    {
+                //        var FileName = "";
+                //        using (var ms = new MemoryStream())
+                //        {
+                //            await i.CopyToAsync(ms);
+                //            var imageBytes = ms.ToArray();
+                //            var base64String = Convert.ToBase64String(imageBytes);
+                //            FileName = "data:image/png;base64," + base64String;
+                //        }
+
+                //        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
+                //    }
+                //}
 
             }
             else if (action == "save")
             {
                 var userId = HttpContext.Session.GetString("user");
-                var sId = _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId,model.url);
-
-                if (model.attachment != null)
+                var sId = _IUser.SaveStory(model.missionId, Convert.ToInt32(userId), model.title, model.editor1, model.date, model.storyId, model.url);
+                if (model.ImgList != null)
                 {
-                    if (model.storyId != 0)
+                    foreach (var i in model.ImgList)
                     {
-                        _IUser.RemoveMedia(storyId);
-                    }
 
-                    foreach (var i in model.attachment)
-                    {
-                        var FileName = "";
-                        using (var ms = new MemoryStream())
-                        {
-                            await i.CopyToAsync(ms);
-                            var imageBytes = ms.ToArray();
-                            var base64String = Convert.ToBase64String(imageBytes);
-                            FileName = "data:image/png;base64," + base64String;
-                        }
+                        StoryMedium sm = new StoryMedium();
+                        sm.StoryId = sId;
+                        sm.StoryType = "Image";
+                        sm.StoryPath = i;
+                        _CIDbContext.Add(sm);
+                        _CIDbContext.SaveChanges();
 
-                        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
                     }
                 }
+                
+                //if (model.attachment != null)
+                //{
+                //    if (model.storyId != 0)
+                //    {
+                //        _IUser.RemoveMedia(storyId);
+                //    }
+
+                //    foreach (var i in model.attachment)
+                //    {
+                //        var FileName = "";
+                //        using (var ms = new MemoryStream())
+                //        {
+                //            await i.CopyToAsync(ms);
+                //            var imageBytes = ms.ToArray();
+                //            var base64String = Convert.ToBase64String(imageBytes);
+                //            FileName = "data:image/png;base64," + base64String;
+                //        }
+
+                //        _IUser.AddStoryMedia(i.ContentType.Split("/")[0], FileName, model.missionId, Convert.ToInt32(userId), model.storyId, sId);
+                //    }
+                //}
             }
             else
             {
@@ -250,6 +283,13 @@ namespace CI_Platform.Areas.User.Controllers
         {
             _IUser.DraftDelete(storyId);
             return true;
+        }
+        public ActionResult DeleteImg(int id)
+        {
+            var media = _CIDbContext.StoryMedia.FirstOrDefault(e=>e.StoryMediaId == id);
+            _CIDbContext.Remove(media);
+            _CIDbContext.SaveChanges();
+            return Json(new { success = true });
         }
     }
 }

@@ -1,4 +1,13 @@
-﻿#side-bar {
+﻿.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #f98635!important;
+    border-color: #f98635!important;
+}
+.page-link {
+    color: #f98635!important;
+}
+#side-bar {
     background-color: #f98635;
 }
 

@@ -98,10 +98,10 @@ namespace CI_PlatForm.Repository.Interface
         public bool DeleteBanner(int id);
         public void delDoc(long id);
         public void delImg(long id);
-
+        public Banner CheckBannerSortOrder(int sortOrder);
         public void DeleteMission(long missionId);
         public bool ContactUs(UserProfile userProfile);
-
+        public List<StoryMedium> GetStoryMediaByStoryId(int id);
     }
 
 }
