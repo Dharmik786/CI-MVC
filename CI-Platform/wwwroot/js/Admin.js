@@ -217,9 +217,11 @@ function EditTheme(ThemeId) {
         }
     });
 }
+
 function themeKey() {
     $(".theme-validation").addClass("d-none");
 }
+
 function UpdateTheme() {
 
     var theme = document.getElementById("mtheme").value;
@@ -245,6 +247,7 @@ function UpdateTheme() {
     }
 
 }
+
 function Addtheme() {
 
     var theme = document.getElementById("missionTheme").value;
@@ -307,6 +310,7 @@ function DeleteSkill(skillid) {
         }
     })
 }
+
 function EditSkill(SkillId) {
     $.ajax({
         method: "GET",
@@ -364,6 +368,7 @@ function UpdateSkill() {
     }
 
 }
+
 function AddSkill() {
     var skill = document.getElementById("missionSkill").value;
     if (skill == "" || skill == null) {
@@ -492,6 +497,35 @@ function ImgDiv() {
 }
 
 
+function validatePassword(password) {
+    // password must be at least 8 characters long
+    if (password.length < 8) {
+        return false;
+    }
+
+    // password must contain at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+        return false;
+    }
+
+    // password must contain at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+        return false;
+    }
+
+    // password must contain at least one special character
+    if (!/[\W_]/.test(password)) {
+        return false;
+    }
+
+    // password is valid
+    return true;
+}
+
+function validateEmail(Email) {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/;
+    return emailRegex.test(Email);
+}
 
 function UpdateUser() {
 
@@ -519,11 +553,18 @@ function UpdateUser() {
     else if (Email == null || Email == "") {
         $("#Email-val").removeClass("d-none")
     }
-    else if (Password == null || Password == "") {
-        $("#Pass-val").removeClass("d-none")
-    }
     else if (Department == null || Department == "") {
         $("#dep-val").removeClass("d-none")
+    }
+    else if (validateEmail(Email) == false) {
+        $("#Email-val").removeClass("d-none")
+    }
+    else if (validatePassword(Password) == false) {
+        $("#Pass-val").removeClass("d-none")
+    }
+    else if (status == null) {
+        alert("skillpde")
+        $("#status-val").removeClass("d-none")
     }
     else {
         if (file != undefined) {
@@ -532,7 +573,7 @@ function UpdateUser() {
             reader.onload = function (e) {
 
                 var base64Image = e.target.result;
-                console.log(base64Image);
+
 
                 $.ajax({
 
@@ -587,7 +628,6 @@ function AddUser() {
     document.getElementById('Employeeid').value = null;
     document.getElementById('Department').value = null;
     document.getElementById('Profiletext').value = null;
-    document.getElementById('Status').value = null;
     document.getElementById('City').value = null;
     document.getElementById('Country').value = null;
     document.getElementById('Img').src = null;

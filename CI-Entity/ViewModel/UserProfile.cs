@@ -32,7 +32,9 @@ namespace CI_Entity.ViewModel
         public List<Skill> skills { get; set; }
         public List<Skill> RemainingSkill { get; set; }
         public List<UserSkill> Userskills { get; set; }
+        [Required(ErrorMessage = "First Name is a Required field.")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Last Name is a Required field.")]
         public string LastName { get; set; }
         public string EmployeeId { get; set; }
         public string Manger { get; set; }
@@ -45,7 +47,8 @@ namespace CI_Entity.ViewModel
         public string Availablity { get; set; }
         public string LinkedIn { get; set; }
         public IFormFile Avatar { get; set; }
-        public string Email { get; set; }   
+        public string Email { get; set; }  
+
         public string Name { get; set; }
         [Required(ErrorMessage = "Subject is a Required field.")]
         public string Subject { get; set; }

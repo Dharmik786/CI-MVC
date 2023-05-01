@@ -35,8 +35,14 @@ namespace CI_Entity.ViewModel
         public long countryId { get; set; }
         [Required(ErrorMessage = "City Name is a Required field.")]
         public long cityId { get; set; }
+        [Required(ErrorMessage = "Organisation Name is a Required field.")]
+
         public string OrganisationName { get; set; }
+        [Required(ErrorMessage = "Organisation Details is a Required field.")]
+
         public string OrganisationDetail { get; set; }
+        [Required(ErrorMessage = "Select Missin Type")]
+
         public string missionType { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }

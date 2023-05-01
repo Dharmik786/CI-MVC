@@ -80,7 +80,7 @@ namespace CI_Platform.Areas.User.Controllers
             MissionList m = new MissionList();
             m.users = _IUser.user();
             m.mission = _IUser.mission();
-            m.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId)).ToList();
+            m.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId) && u.DeletedAt == null).ToList();
             m.timesheets = _IUser.timesheets().Where(U => U.UserId == Convert.ToInt64(userId)).ToList();
             return View(m);
         }

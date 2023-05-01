@@ -57,12 +57,15 @@
                                 <label for="exampleFormControlInput1" class="form-label">Name*</label>
                                 <input type="text" class="form-control" asp-for="FirstName"
                                        placeholder="Enter your name">
+                                       <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">
                                 <label for="exampleFormControlInput1" class="form-label">Surname*</label>
                                 <input type="text" class="form-control" asp-for="LastName"
                                        placeholder="Enter your surname">
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">

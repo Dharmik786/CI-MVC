@@ -88,11 +88,13 @@
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                 <lable>Organisation Name</lable>
                 <input asp-for="OrganisationName" type="text" class="form-control" id="OrName" />
+                <span asp-validation-for="OrganisationName" class="text-danger"></span>
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                 <lable>Organisation Detail</lable>
                 <input asp-for="OrganisationDetail" type="text" class="form-control" id="OrDetail" />
+                <span asp-validation-for="OrganisationDetail" class="text-danger"></span>
             </div>
 
             <div class="col-lg-4 col-md-6 col-12 mb-2">
@@ -102,17 +104,21 @@
                     <option value="Goal">Goal</option>
                     <option value="Time">Time</option>
                 </select>
+                <span asp-validation-for="missionType" class="text-danger"></span>
             </div>
 
             
 
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <lable>Start Date</lable>
-                <input asp-for="startDate" type="datetime-local" class="form-control" id="Sdate" />
+                <input asp-for="startDate" type="date" class="form-control" id="Sdate" min="2023-02-23" />
+                <span asp-validation-for="startDate" class="text-danger"></span>
             </div>
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <lable>End Date</lable>
-                <input asp-for="endDate" type="datetime-local" class="form-control" id="Edate" />
+                <input asp-for="endDate" type="datetime-local" class="form-control" id="Edate" min="2023-02-23" />
+                <span asp-validation-for="endDate" class="text-danger"></span>
+
             </div>
            
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
@@ -126,12 +132,15 @@
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
                 <lable>Total Seats</lable>
-                <input asp-for="seats" type="number" class="form-control" id="seats"  />
+                <input asp-for="seats" type="number" class="form-control" id="seats" min="1"  />
+                <span asp-validation-for="seats" class="text-danger"></span>
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
                 <lable>Mission DeadLine</lable>
-                <input asp-for="deadline" type="datetime-local" class="form-control" id="Deadline" />
+                <input asp-for="deadline" type="datetime-local" class="form-control" id="Deadline" min="2023-02-23" />
+                <span asp-validation-for="deadline" class="text-danger"></span>
+
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
@@ -358,8 +367,6 @@
                 <button class="form-control modal-close-btn" type="button"  onclick="Cancle()" >Cancle</button>
 
                 <button type="submit" class="btn savebtn" id="missionSave"  style="display:none;">Save changes</button>
-
-                @*<button type="submit" class="btn savebtn" id="missionSave1" onclick="SaveSkills()">Save changes</button>*@
 
                 <button type="submit" id="missionSave1"class="form-control modal-save-btn">Submit</button>
             </div>

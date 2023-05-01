@@ -1,6 +1,6 @@
 ﻿.page-item.active .page-link {
     z-index: 3;
-    color: #fff;
+    color: #fff!important;
     background-color: #f98635!important;
     border-color: #f98635!important;
 }
@@ -24,6 +24,9 @@ body {
     overflow-x: hidden;
 }
 .status{
+    cursor:pointer;
+}
+.nav >li{
     cursor:pointer;
 }
 .nav > li > a:hover {
@@ -54,11 +57,11 @@ body {
     }
 
 .del-btn {
-    cursor: pointer;
+    cursor: pointer!important;
 }
 
 .Edit-btn {
-    cursor: pointer;
+    cursor: pointer!important;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
@@ -120,3 +123,6 @@ th.sorting::after {
 .pagination{
     margin-bottom:0px!important;
 }
+    .pagination > li:hover {
+        border-color: none!important;
+    }

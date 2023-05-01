@@ -67,7 +67,7 @@ $(document).ready(function () {
 
 //search
 function mySearch(jpg) {
-
+    check();
     
     console.log(jpg);
 
@@ -96,10 +96,16 @@ function mySearch(jpg) {
     });
     console.log(theme)
 
+    var skill = [];
+    $("input[type='checkbox'][name='skill']:checked").each(function () {
+        skill.push($(this).val());
+    })
+    console.log(skill)
+
     $.ajax({
         url: "/User/Landingpage/_Missions",
         type: "POST",
-        data: { 'search': Search, 'sortValue': id, 'country': country, 'city': city, 'theme': theme, 'jpg': jpg },
+        data: { 'search': Search, 'sortValue': id, 'country': country, 'city': city, 'theme': theme, 'skill': skill, 'jpg': jpg },
 
         success: function (res) {
             $("#missions").html('');

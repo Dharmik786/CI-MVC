@@ -65,7 +65,7 @@ namespace CI_Platform.Areas.User.Controllers
 
         }
 
-        public IActionResult _Missions(long userId, int missionid, string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme, int jpg)
+        public IActionResult _Missions(long userId, int missionid, string? search, int? pageIndex, string? sortValue, string[] country, string[] city, string[] theme, string[] skill, int jpg)
         {
             var id = HttpContext.Session.GetString("user");
 
@@ -96,9 +96,7 @@ namespace CI_Platform.Areas.User.Controllers
             List<FavoriteMission> fav = _IUser.favoriteMissions().ToList();
             var msn = _IUser.mission().ToList();
 
-            //var f = from M in mission.AsEnumerable()
-            //        where fav.AsEnumerable().Select(e => e.MissionId).Contains(M.MissionId)
-            //        select M;
+
             var f = from M in mission.AsEnumerable()
                     join F in fav.AsEnumerable() on M.MissionId equals F.MissionId
                     select M;
@@ -151,9 +149,15 @@ namespace CI_Platform.Areas.User.Controllers
                     mission = mission.ToList();
                     break;
             }
+            var s = from M in _CIDbContext.MissionSkills
+                    join S in _CIDbContext.Skills
+                    on M.SkillId equals S.SkillId
+                    select M;
+
+
 
             //filter
-            if (country.Length > 0 || city.Length > 0 || theme.Length > 0)
+            if (country.Length > 0 || city.Length > 0 || theme.Length > 0 || skill.Length > 0)
             {
 
                 if (country.Length > 0)
@@ -167,6 +171,12 @@ namespace CI_Platform.Areas.User.Controllers
                 if (theme.Length > 0)
                 {
                     mission = mission.Where(s => theme.Contains(s.Theme.Title)).ToList();
+                }
+                if (skill.Length > 0)
+                {
+                    var tempFill = missionList.missionSkills.Where(x => skill.Contains(x.Skill.SkillName)).Select(x => x.MissionId).ToList();
+                    mission = mission.Where(e => tempFill.Contains(e.MissionId)).ToList();
+
                 }
                 if (mission.Count() == 0)
                 {
@@ -199,4 +209,3 @@ namespace CI_Platform.Areas.User.Controllers
 
     }
 }
-    

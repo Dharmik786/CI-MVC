@@ -63,7 +63,8 @@
                                                 </div>
                                                 <div class="row mt-2">
                                                     <lable class="col-6 fs-6">Date Volunteered</lable>
-                                                    <input asp-for="date" class="col-12  datediv py-1 rounded-1" type="date" min="23-01-2023" max="31-12-2023" />
+                                                    <input asp-for="date" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23" >
+                                                    <span asp-validation-for="date" class="text-danger"></span>
                                                 </div>
                                                 <div class="row mt-1 ">
                                                     <div class=" col-12 col-xl-6 col-1g-6 p-0">
@@ -163,7 +164,8 @@
                                                             </div>
                                                             <div class="row mt-2">
                                                                 <lable class="col-6 fs-6">Date Volunteered</lable>
-                                                                <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="datetime-local" />
+                                                                <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23" >
+                                                                <span asp-validation-for="date" class="text-danger"></span>
                                                             </div>
                                                             <div class="row mt-1 ">
                                                                 <div class=" col-12 col-xl-6 col-1g-6 p-0">
@@ -251,7 +253,7 @@
                                                 <div class="row mt-1 ">
 
                                                     <label class=" col-8 fs-6"> Date of Volunteered</label>
-                                                    <input asp-for="date" type="Date" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " />
+                                                    <input asp-for="date" type="Date" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " min="2023-02-23">
                                                     <span asp-validation-for="date" class="text-danger"></span>
                                                         
 
@@ -355,7 +357,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="rounded-pill addbtn  px-3 py-1">   </button>
+                                                    <button type="submit" class="rounded-pill addbtn  px-3 py-1">Submit</button>
                                                 </div>
                                             </form>
                                         </div>

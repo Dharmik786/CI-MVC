@@ -8,12 +8,10 @@ var listArray = [];
 var filterList = document.querySelector(".filter-list");
 
 var len = listArray.length;
-var count = 0;
 
 for (var checkbox of checkboxes) {
     checkbox.addEventListener("click", function () {
         if (this.checked == true) {
-            count++;
             clear()
             addElement(this, this.value);
         }
@@ -49,6 +47,7 @@ function addElement(current, value) {
         console.log(current);
         current.checked = false;
         mySearch();
+
     })
 
     crossButton.innerHTML = cross;
@@ -58,90 +57,48 @@ function addElement(current, value) {
     createdTag.appendChild(crossButton);
     filtersSection.appendChild(createdTag);
     mySearch();
-
 }
 
 function clear() {
-    if (count >= 0) {
-  
-        $(".clear-all").html(" ");
-        let filtersSection = document.querySelector(".filters-section");
 
-        let clearAll = document.createElement('span');
-        clearAll.classList.add('clear-all');
-        clearAll.classList.add('ps-3');
-        clearAll.classList.add('pe-1');
-        clearAll.classList.add('me-2');
-        clearAll.innerHTML = "Clear All";
+    $(".clear-all").remove();
 
-        filtersSection.appendChild(clearAll);
+    let filtersSection = document.querySelector(".filters-section");
+
+    let clearAll = document.createElement('span');
+    clearAll.classList.add('clear-all');
+    clearAll.classList.add('px-2');
+    clearAll.classList.add('me-2');
+    clearAll.innerHTML = "Clear All";
+    clearAll.style.cursor = 'pointer';
+    clearAll.style.border = '2px solid';
+    clearAll.style.borderRadius = '22px';
+    clearAll.style.color = '#f88634';
+    clearAll.setAttribute("onclick", "ClearAll()")
+
+    filtersSection.appendChild(clearAll);
+}
+
+function check() {
+    var numberOfChecked = $('input:checkbox:checked').length;
+    if (numberOfChecked <= 0) {
+        $(".clear-all").remove();
     }
-
 }
 
 
-function removeElement(value) {
+function ClearAll() {
+    $(".filter-close-button").click()
+    $(".clear-all").remove();
+}
 
+function removeElement(value) {
     let filtersSection = document.querySelector(".filters-section");
 
     let elementToBeRemoved = document.getElementById(value);
     filtersSection.removeChild(elementToBeRemoved);
     mySearch();
+
 }
-
-//function myFunction() {
-
-//    var input, filter, cards, cardContainer, title, i;
-//    input = document.getElementById("myFilter");
-//    filter = input.value.toUpperCase();
-//    cardContainer = document.getElementById("myItems");
-//    cards = cardContainer.getElementsByClassName("card");
-
-//    for (i = 0; i < cards.length; i++) {
-//        title = cards[i].querySelector(".card-body h5.card-title");
-//        if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-//            cards[i].style.display = "";
-//        } else {
-//            cards[i].style.display = "none";
-//        }
-//    }
-//}
-
-
-//var debounceTimer;
-
-//function debounce(func, delay)
-//{
-//    clearTimeout(debounceTimer);
-//    debounceTimer = setTimeout(func, delay);
-//}
-
-
-//document.getElementById("search-bar").addEventListener("input", function () {
-//    debounce(function () {
-//        search(document.getElementById("search-bar").value);
-//    }, 1500); // adjust the delay time as needed
-//});
-
-//function search(query) {
-//    // Get the current URL
-//    let url = window.location.href;
-
-//    let separator = url.indexOf('?') !== -1 ? '&' : '?';
-
-//    // Check if the searchQuery parameter already exists in the URL
-//    if (url.includes('searchQuery=')) {
-//        // Replace the value of the searchQuery parameter
-//        url = url.replace(/searchQuery=([^&]*)/, 'searchQuery=' + query);
-//    } else {
-//        // Append the parameter to the URL
-//        url += separator + 'searchQuery=' + query;
-//    }
-
-//    // Navigate to the updated URL
-//    window.location.href = url;
-
-
-//}
 
 

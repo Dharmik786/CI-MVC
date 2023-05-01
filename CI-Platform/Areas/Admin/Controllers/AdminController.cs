@@ -32,7 +32,7 @@ namespace CI_Platform.Areas.Admin.Controllers
         public IActionResult GetUsers()
         {
             AdminVM a = new AdminVM();
-            a.Users = _IUser.user();
+            a.Users = _IUser.user().Where(e=>e.DeletedAt == null).ToList();
             a.countries = _IUser.countries();
             a.cities = _IUser.cities();
             return PartialView("_User", a);

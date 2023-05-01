@@ -17,6 +17,109 @@
                 + Add
             </button>
 
+            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">User Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="row">
+                                    <div class="d-flex" style="justify-content:center;">
+
+                                        <input type="file" class="d-none" id="InputImg" onchange="changeUser()" />
+                                        <img id="Img" class="rounded-circle" style="height:150px;width:150px;" onclick="ImgDiv()">
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-2">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <label>First Name</label>
+                                        <input type="text" onkeyup="Fnamekey()" class="form-control" id="Fname" placeholder="Firstname">
+                                        <span id="Fname-val" class="d-none text-danger">Please Enter the First Name</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" id="Lname" placeholder="Lastname" onkeyup="Lnamekey()">
+                                        <span id="Lname-val" class="d-none text-danger">Please Enter The Last Name</span>
+
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <label>Email Address</label>
+                                        <input type="email" class="form-control" id="Email" placeholder="Email" onkeyup="Emailkey()">
+                                        <span id="Email-val" class="d-none text-danger">Please Enter valid The Email</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" id="Password" placeholder="Password" onkeyup="Passkey()">
+                                        <span id="Pass-val" class="d-none text-danger">Please Enter The Valid Password</span>
+
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>Employee Id</label>
+                                        <input type="text" class="form-control " id="Employeeid" placeholder="Employee">
+
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>Department</label>
+                                        <input type="text" class="form-control" id="Department" placeholder="Department" onkeyup="Depkey()">
+                                        <span id="dep-val" class="d-none text-danger">Please Enter The Department</span>
+
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>Country</label>
+                                        <select class="form-control " id="Country">
+                                            <option value="null" selected>Select Country</option>
+                                            @foreach (var c in Model.countries)
+                                            {
+                                                <option value="@c.CountryId">@c.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>City</label>
+                                        <select class="form-control" id="City">
+                                            <option value="null" selected>Select City</option>
+                                            @foreach (var c in Model.cities)
+                                            {
+                                                <option value="@c.CityId">@c.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                                        <label>Status</label>
+                                        <select class="form-control" id="Status">
+                                            <option value="Active" selected>Active</option>
+                                            <option value="In-Active">In-Active</option>
+
+                                        </select>
+                                            <span id="status-val" class="d-none text-danger">Please Select the status</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <label>Profile text</label>
+                                        <textarea class="form-control" id="Profiletext" placeholder="Profile text"> </textarea>
+                                    </div>
+                                    <input type="hidden" id="userId" />
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal" class="modal-close-btn">Close</button>
+                            <button type="button" class="modal-save-btn" onclick="UpdateUser()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -62,111 +165,6 @@
                                        id="@i.UserId" onclick="editAdminUser(this.id)" style="color:orange"></i> &nbsp;
 
 
-
-
-                                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">User Profile</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-
-
-                                                <div class="modal-body">
-                                                    <form>
-                                                        <div class="row">
-                                                            <div class="d-flex" style="justify-content:center;">
-
-                                                                <input type="file" class="d-none" id="InputImg"  onchange="changeUser()" />
-                                                                <img id="Img" class="rounded-circle" style="height:150px;width:150px;" onclick="ImgDiv()">
-
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="row mt-2">
-                                                            <div class="col-12 col-md-6 col-lg-4">
-                                                                <label>First Name</label>
-                                                                <input type="text" onkeyup="Fnamekey()" class="form-control" id="Fname" placeholder="Firstname">
-                                                                <span id="Fname-val" class="d-none text-danger">Please Enter the First Name</span>
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4">
-                                                                <label>Last Name</label>
-                                                                <input type="text" class="form-control" id="Lname" placeholder="Lastname" onkeyup="Lnamekey()">
-                                                                <span id="Lname-val" class="d-none text-danger">Please Enter The Last Name</span>
-
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4">
-                                                                <label>Email Address</label>
-                                                                <input type="email" class="form-control" id="Email" placeholder="Email" onkeyup="Emailkey()">
-                                                                <span id="Email-val" class="d-none text-danger">Please Enter The Email</span>
-
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>Password</label>
-                                                                <input type="password" class="form-control" id="Password" placeholder="Password" onkeyup="Passkey()">
-                                                                <span id="Pass-val" class="d-none text-danger">Please Enter The Password</span>
-
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>Employee Id</label>
-                                                                <input type="text" class="form-control " id="Employeeid" placeholder="Employee">
-
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>Department</label>
-                                                                <input type="text" class="form-control" id="Department" placeholder="Department" onkeyup="Depkey()">
-                                                                <span id="dep-val" class="d-none text-danger">Please Enter The Department</span>
-
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>Country</label>
-                                                                <select class="form-control " id="Country">
-                                                                    <option value="null" selected>Select Country</option>
-                                                                    @foreach (var c in Model.countries)
-                                                                    {
-                                                                        <option value="@c.CountryId">@c.Name</option>
-                                                                    }
-                                                                </select>
-                                                            </div>
- 
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>City</label>
-                                                                <select class="form-control" id="City">
-                                                                    <option value="null" selected>Select City</option>
-                                                                    @foreach (var c in Model.cities)
-                                                                    {
-                                                                        <option value="@c.CityId">@c.Name</option>
-                                                                    }
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-12 col-md-6 col-lg-4 mt-2">
-                                                                <label>Status</label>
-                                                                <select class="form-control" id="Status" >
-                                                                    <option selected value="Active">Active</option>
-                                                                    <option value="In-Active">In-Active</option>
-
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <label>Profile text</label>
-                                                                <textarea class="form-control" id="Profiletext" placeholder="Profile text"> </textarea>
-                                                            </div>
-                                                            <input type="hidden" id="userId" />
-                                                        </div>
-                                                    </form>
-
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" data-bs-dismiss="modal" class="modal-close-btn">Close</button>
-                                                    <button type="button"  class="modal-save-btn" onclick="UpdateUser()">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <i class="bi bi-trash del-btn" onclick="DeleteUser(@i.UserId)"></i>
                                 </td>
                             </tr>

@@ -42,7 +42,7 @@
                     <lable class="sideheader fw-bold fs-6 text-white text-break">Navigationbar</lable>
                 </div>
                 <ul class="nav nav-pills flex-column mb-auto mt-3">
-                    <li class="nav-item mt-2">
+                    <li class="nav-item mt-2" >
                         <a class="nav-link text-white d-flex user" aria-current="page" onclick="User()">
                             <i class="bi bi-person-fill sidebar-img me-2"></i>
                             <lable class="d-block d-lg-block d-md-none">User</lable>
@@ -117,8 +117,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a asp-area="User" asp-action="Login" asp-controller="User" class="dropdown-item">Log Out</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                   
                                 </ul>
                             </div>
                         </div>
@@ -128,11 +127,11 @@
                 </nav>
                 @*offCanvas*@
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="width:max-content;">
-                    <div class="offcanvas-header">
-                        <h5 id="offcanvasTopLabel">Navigationbar</h5>
+                    <div class="offcanvas-header" style="background-color:#f98635">
+                        <h5 id="offcanvasTopLabel">Admin</h5>
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <div class="offcanvas-body" style="width:max-content;background:#f98635;">
+                    <div class="offcanvas-body pt-0" style="width:max-content;background:#f98635;">
                         
                         <ul class="nav nav-pills flex-column mb-auto mt-3">
                             <li class="nav-item mt-2">
@@ -184,15 +183,13 @@
                                 </a>
                             </li>
                             <li>
-                                <div class="dropdown">
-                                    <button class="btn ms-auto me-3 dropdown-toggle  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/Image/user1.png" alt="mdo" width="40" height="40" class="rounded-circle loginimg" style="height:30px;width:30px;">
+                                <div class="dropdown" style="box-shadow:none">
+                                    <button class="btn ms-auto me-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="/Image/volunteer6.png" width="40" height="40" class="rounded-circle loginimg" style="height:30px;width:30px;">
                                         Dropdown button
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><a asp-area="User" asp-action="Login" asp-controller="User" class="dropdown-item">Log Out</a></li>
                                     </ul>
                                 </div>
                             </li>
