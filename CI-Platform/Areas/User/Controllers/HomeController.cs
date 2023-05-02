@@ -56,7 +56,7 @@ namespace CI_Platform.Areas.User.Controllers
         {
             return View();
         }
-        public IActionResult landingpage()
+        public IActionResult Landingpage()
         {
             return View();
         }
@@ -270,7 +270,9 @@ namespace CI_Platform.Areas.User.Controllers
 
         public IActionResult Policy()
         {
-            return View();
+            UserProfile u = new UserProfile();
+            u.CmsPage = _IUser.GetCmsPage();
+            return View(u);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

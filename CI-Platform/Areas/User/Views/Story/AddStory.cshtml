@@ -61,7 +61,7 @@
 
                 <div class="form-group col-11 col-lg-4 col-md-6 col-sm-11 mt-2">
                     <label class="fs-6" asp-for="date">Date</label>
-                    <input type="datetime-local" asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" />
+                    <input type="date" asp-for="date" placeholder="Select Date" class="col-12 border-1 p-2 " style="height:40px; border-radius:5px" min="2023-02-22"/>
                     <span asp-validation-for="date" class="text-danger"></span>
 
                 </div>
@@ -104,9 +104,9 @@
                         {
                             @if (m.StoryType != "Video")
                             {
-                                <div class="image" id="@m.StoryMediaId">
+                                <div class="image m-1" id="@m.StoryMediaId">
                                     <img src="@m.StoryPath" alt="image" style="height:100px;">
-                                    <span onclick="DeleteImg(@m.StoryMediaId)" style="color:black;cursor:pointer">×</span>
+                                    <span onclick="DeleteImg(@m.StoryMediaId)" class="bg-light" style="color:black;cursor:pointer">×</span>
                                 </div>
                             }
 
@@ -122,7 +122,7 @@
 
             <div class="row flex-column flex-md-row mt-4 mb-2">
                 <div class="col-12 col-md-2 me-auto">
-                    <button class="w-100 bg-white rounded-5 py-2 canclebtn" type="submit" name="action" value="cancle">cancel</button>
+                    <button class="w-100 bg-white rounded-5 py-2 canclebtn" asp-controller="story" asp-action="StoriesListing">cancel</button>
                 </div>
                 <div class=" col-12 col-md-2 mt-2 mt-md-0 ">
                     <button class="w-100 bg-white rounded-5 py-2 savecancelbtn" type="submit" name="action" value="save">Save</button>
@@ -216,11 +216,11 @@
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     FilesToUpload.push(event.target.result);
-                    displayImages()
+                    
                 }
 
                 reader.readAsDataURL(file);
-
+                displayImages()
             }
 
           
@@ -235,7 +235,7 @@
             setTimeout(function () {
                 for (let i = 0; i < FilesToUpload.length; i++) {
                     $("#preview").append(`<div class="image"><img src="${FilesToUpload[i]}" alt="image">
-                                                             <button type="button" class="position-absolute image-close-btn " onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
+                                                                     <button type="button" class="position-absolute image-close-btn bg-light" onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
                                                            </div>`)
                 }
 

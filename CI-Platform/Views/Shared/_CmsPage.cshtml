@@ -125,7 +125,7 @@
     CKEDITOR.replace('Description');
 
     function addcms() {
-        debugger
+        
         document.getElementById('Title').value = null;
 
         var editor = CKEDITOR.instances['Description'];
@@ -220,8 +220,6 @@
         var slug = document.getElementById('Slug').value;
         var status = document.getElementById('Status').value;
         var id = document.getElementById('CmsPageId').value;
-        alert(status)
-        console.log(status)
 
         if (status == null) {
             $("#status-validation").removeClass("d-none");

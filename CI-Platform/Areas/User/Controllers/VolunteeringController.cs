@@ -172,34 +172,41 @@ namespace CI_Platform.Areas.User.Controllers
         {
             //ViewBag.UserId = int.Parse(userId);
 
-            foreach (var i in emailList)
+            try
             {
-                var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
-                var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
-
-                var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, missionid }, Request.Scheme);
-
-                var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
-                var toAddress = new MailAddress(user.Email);
-                var subject = "Mission Request";
-                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
-
-                var message = new MailMessage(fromAddress, toAddress)
+                foreach (var i in emailList)
                 {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
+                    var userId = Convert.ToInt32(HttpContext.Session.GetString("user"));
+                    var user = _IUser.user().FirstOrDefault(u => u.UserId == i);
 
-                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
-                    EnableSsl = true
+                    var missionlink = Url.Action("Volunteering", "Volunteering", new { user = user.UserId, missionid }, Request.Scheme);
 
-                };
-                smtpClient.Send(message);
-                _IUser.AddMissionInvite(userId, missionid, user.UserId);
+                    var fromAddress = new MailAddress("ciproject18@gmail.com", "Sender Name");
+                    var toAddress = new MailAddress(user.Email);
+                    var subject = "Mission Request";
+                    var body = $"Hi,<br /><br />This is to <br /><br /><a href='{missionlink}'>{missionlink}</a>";
+
+                    var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    };
+
+                    var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential("ciproject18@gmail.com", "ypijkcuixxklhrks"),
+                        EnableSsl = true
+
+                    };
+                    smtpClient.Send(message);
+                    _IUser.AddMissionInvite(userId, missionid, user.UserId);
+                }
+            }
+          catch (Exception ex)
+            {
+               
             }
         }
 

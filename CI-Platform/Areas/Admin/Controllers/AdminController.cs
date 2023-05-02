@@ -113,16 +113,16 @@ namespace CI_Platform.Areas.Admin.Controllers
         //    _IUser.EditTheme(model.singleTheme, model.ThemeId);
         //    return RedirectToAction("Admin", "Admin");
         //}
-        public ActionResult UpdateMissionTheme(string theme, int themmeid)
+        public ActionResult UpdateMissionTheme(string theme, int themmeid,int status)
         {
-            _IUser.EditTheme(theme, themmeid);
+            _IUser.EditTheme(theme, themmeid,status);
             return Json(new { success = true });
 
         }
         [HttpPost]
-        public IActionResult AddMissionTheme(string theme)
+        public IActionResult AddMissionTheme(string theme,int status)
         {
-            _IUser.AddMissionTheme(theme);
+            _IUser.AddMissionTheme(theme,status);
             return Json(new { success = true });
         }
 
@@ -135,9 +135,9 @@ namespace CI_Platform.Areas.Admin.Controllers
             return Json(new { success = true, DeleteSkill = DeleteSkill });
         }
         [HttpPost]
-        public IActionResult AddSkill(string skill)
+        public IActionResult AddSkill(string skill,int status)
         {
-            _IUser.AddSkill(skill);
+            _IUser.AddSkill(skill,status);
             return Json(new { success = true });
         }
         public async Task<IActionResult> EditSkill(int Skillid)
@@ -145,9 +145,9 @@ namespace CI_Platform.Areas.Admin.Controllers
             var skill = _IUser.GetSkill(Skillid);
             return Json(new { success = true, skill = skill });
         }
-        public IActionResult UpdateSkill(string skill, int skillid)
+        public IActionResult UpdateSkill(string skill, int skillid,int status)
         {
-            _IUser.EditSkill(skill, skillid);
+            _IUser.EditSkill(skill, skillid,status);
             return Json(new { success = true });
         }
         public IActionResult SkillStatus(int id)
@@ -269,6 +269,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 vm.startDate = (DateTime)mission.StartDate;
                 vm.endDate = (DateTime)mission.EndDate;
                     vm.seats = Convert.ToInt32(mission.Seats);
+                vm.availability = mission.Availability;
                 vm.url = finalurl;
 
                 if (mission.Deadline != null)
@@ -292,6 +293,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 var r = from row1 in vm.skills.AsEnumerable()
                         where !vm.missionSkills.AsEnumerable().Select(r => r.SkillId).Contains(row1.SkillId)
                         select row1;
+
                 vm.RemainingSkill = r.ToList();
                 var imgfiles = _CIDbContext.MissionMedia.Where(m => m.MissionId == id && m.MediaType != "Video" && m.DeletedAt == null).ToList();
                 var docfiles = _CIDbContext.MissionDocuments.Where(m => m.MissionId == id && m.DeletedAt == null).ToList();
@@ -390,6 +392,19 @@ namespace CI_Platform.Areas.Admin.Controllers
         {
             _IUser.DeleteBanner(id);
             return Json(new { sucess = true });
+        }
+
+        public bool CheckSkill(string skill)
+        {
+            var check = _CIDbContext.Skills.FirstOrDefault(x => x.SkillName == skill);
+            if(check != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

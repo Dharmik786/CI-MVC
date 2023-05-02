@@ -62,7 +62,7 @@
                                 <li><a class="dropdown-item" asp-controller="Story" asp-action="DraftStory">Draft Story</a></li>
                                 <li><a class="dropdown-item" asp-controller="Home" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
                                 <li><a class="dropdown-item" asp-controller="Home" asp-action="UserProfile">Profile</a></li>
-                                <li><a class="dropdown-item" asp-controller="Admin" asp-action="Admin" asp-area="Admin">Admin</a></li>
+                        
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>
@@ -73,7 +73,7 @@
                         </div>
                     }
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="#">Story</a>
+                        <a class="nav-link " aria-current="page" asp-controller="Story" asp-action="StoriesListing">Story</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -127,7 +127,6 @@
                         <li><a class="dropdown-item" asp-controller="Story" asp-action="DraftStory">Draft Story</a></li>
                         <li><a class="dropdown-item" asp-controller="Home" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
                         <li><a class="dropdown-item" asp-controller="Home" asp-action="UserProfile">Profile</a></li>
-                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Admin" asp-area="Admin">Admin</a></li>
 
                         <li>
                             <hr class="dropdown-divider">

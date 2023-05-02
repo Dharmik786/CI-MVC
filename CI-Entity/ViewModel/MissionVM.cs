@@ -52,8 +52,10 @@ namespace CI_Entity.ViewModel
         public List<MissionMedium> missionMedia { get; set; }
         public long missionId { get; set; }
         public List<Skill> RemainingSkill { get; set; }
-
+        
         public List<IFormFile> Images { get; set; }
         public List<IFormFile> Docs { get; set; }
+        [Required(ErrorMessage = "availability is a Required field.")]
+        public string availability { get; set; }
     }
 }

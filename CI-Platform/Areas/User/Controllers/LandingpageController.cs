@@ -97,10 +97,10 @@ namespace CI_Platform.Areas.User.Controllers
             var msn = _IUser.mission().ToList();
 
 
-            var f = from M in mission.AsEnumerable()
-                    join F in fav.AsEnumerable() on M.MissionId equals F.MissionId
-                    select M;
-            var Fav1 = f.ToList();
+            //var f = from M in mission.AsEnumerable()
+            //        join F in fav.AsEnumerable() on M.MissionId equals F.MissionId
+            //        select M;
+            //var Fav1 = f.ToList();
 
             //Seacrh
             if (search != null)

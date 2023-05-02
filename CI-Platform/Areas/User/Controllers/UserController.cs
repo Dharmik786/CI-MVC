@@ -29,10 +29,19 @@ namespace CI_Platform.Areas.User.Controllers
         }
         public IActionResult Login()
         {
-            HttpContext.Session.Clear();
-            LoginVM vm = new LoginVM();
-            vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
-            return View(vm);
+            var u = HttpContext.Session.GetString("user");
+            var userid = Convert.ToInt32(u);
+            if (u != null)
+            {
+                return RedirectToAction("landingpage", "Landingpage", new { userid });
+            }
+            else
+            {
+                LoginVM vm = new LoginVM();
+                vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+                return View(vm);
+            }
+
         }
 
         [HttpPost]
@@ -40,6 +49,8 @@ namespace CI_Platform.Areas.User.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
+
+
 
             if (model.Email != null || model.Password != null)
             {
@@ -97,21 +108,19 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Registration(Registration user)
         {
 
-            if (ModelState.IsValid)
+            if (_IUser.Registration(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.ConfirmPassword) == true)
             {
-                if (_IUser.Registration(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.ConfirmPassword) == true)
-                {
-                    //_CIDbContext.Users.Add(user);
-                    //_CIDbContext.SaveChanges();
-                    //_IUser.AddUser(user);
-                    return RedirectToAction("Login", "User");
+                //_CIDbContext.Users.Add(user);
+                //_CIDbContext.SaveChanges();
+                //_IUser.AddUser(user);
+                return RedirectToAction("Login", "User");
 
-                }
-                else
-                {
-                    ViewBag.RegEmail = "Email Already Exist";
-                }
             }
+            else
+            {
+                ViewBag.RegEmail = "Email Already Exist";
+            }
+
             Registration r = new Registration();
             r.banners = _IUser.GetBanner();
             return View(r);

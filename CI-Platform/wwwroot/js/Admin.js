@@ -160,6 +160,10 @@ function Management() {
 
 
 /*-----------------------------------------------------------------------------------------Theme--------------------------------------------------- */
+function EmptyTheme() {
+    document.getElementById("missionTheme").value = " ";
+}
+
 function DeleteTheme(ThemeId) {
 
 
@@ -199,7 +203,6 @@ function DeleteTheme(ThemeId) {
 
 }
 
-
 function EditTheme(ThemeId) {
     $.ajax({
         method: "GET",
@@ -210,7 +213,8 @@ function EditTheme(ThemeId) {
 
             document.getElementById("mtheme").value = result.missionTheme.title;
             document.getElementById("mthemeid").value = result.missionTheme.missionThemeId;
-
+            var z=document.getElementById("ThmeStatus2").value = result.missionTheme.status;
+           
         },
         error: function () {
             alert("Editt Theme Error")
@@ -226,7 +230,7 @@ function UpdateTheme() {
 
     var theme = document.getElementById("mtheme").value;
     var themmeid = document.getElementById("mthemeid").value;
-
+    var status = document.getElementById("ThmeStatus2").value;
     if (theme == "" || theme == null) {
         $(".theme-validation").removeClass("d-none");
     }
@@ -234,7 +238,7 @@ function UpdateTheme() {
         $.ajax({
             method: "POST",
             url: "/Admin/Admin/UpdateMissionTheme",
-            data: { theme: theme, themmeid: themmeid },
+            data: { theme: theme, themmeid: themmeid, status: status },
             success: function (result) {
                 $(".btn-close").click();
                 Theme();
@@ -251,7 +255,8 @@ function UpdateTheme() {
 function Addtheme() {
 
     var theme = document.getElementById("missionTheme").value;
-
+    var status = document.getElementById("ThmeStatus1").value;
+   
     if (theme == "" || theme == null) {
         $(".theme-validation").removeClass("d-none");
     }
@@ -259,7 +264,7 @@ function Addtheme() {
         $.ajax({
             method: "POST",
             url: "/Admin/Admin/AddMissionTheme",
-            data: { theme: theme },
+            data: { theme: theme, status: status },
             success: function (result) {
                 $(".btn-close").click();
                 Theme();
@@ -273,7 +278,11 @@ function Addtheme() {
 
 
 }
-/*---------------------------------------------------------------------------------------- -Skill --------------------------------------------------- */
+/*----------------------------------------------------------------------------------------- Skill --------------------------------------------------- */
+
+function EmptySkill() {
+    document.getElementById("missionSkill").value = " ";
+}
 
 function DeleteSkill(skillid) {
 
@@ -321,6 +330,7 @@ function EditSkill(SkillId) {
 
             document.getElementById("mskill").value = result.skill.skillName;
             document.getElementById("mskillid").value = result.skill.skillId;
+            document.getElementById("SkillStatus2").value = result.skill.status;
 
         },
         error: function () {
@@ -347,6 +357,7 @@ function SkillStatus(id) {
 function UpdateSkill() {
     var skill = document.getElementById("mskill").value;
     var skillid = document.getElementById("mskillid").value;
+    var status = document.getElementById("SkillStatus2").value;
 
     if (skill == "" || skill == null) {
         $(".skill-validation").removeClass("d-none");
@@ -355,7 +366,7 @@ function UpdateSkill() {
         $.ajax({
             method: "POST",
             url: "/Admin/Admin/UpdateSkill",
-            data: { skill: skill, skillid: skillid },
+            data: { skill: skill, skillid: skillid, status: status },
             success: function (result) {
                 $(".btn-close").click();
                 Skills();
@@ -371,6 +382,7 @@ function UpdateSkill() {
 
 function AddSkill() {
     var skill = document.getElementById("missionSkill").value;
+    var status = document.getElementById("SkillStatus1").value;
     if (skill == "" || skill == null) {
         $(".skill-validation").removeClass("d-none");
     }
@@ -378,7 +390,7 @@ function AddSkill() {
         $.ajax({
             method: "POST",
             url: "/Admin/Admin/AddSkill",
-            data: { skill: skill },
+            data: { skill: skill, status: status },
             success: function (result) {
                 $(".btn-close").click();
                 Skills();
@@ -391,43 +403,136 @@ function AddSkill() {
     }
 
 }
+
 function skillPress() {
     $(".skill-validation").addClass("d-none");
 
 }
 
+
+function CheckSkill() {
+    var c = document.getElementById("missionSkill").value;
+    if (c == null) {
+        $(".skill-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/CheckSkill",
+            data: { 'skill':c },
+            success: function (result) {
+                if (result == true) {
+                    Swal.fire('This Skill is already Exist!','Please Enter Another Skill')
+                }
+                if (result == false) {
+                    AddSkill();
+                }
+
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
+}
+
+function CheckUpdateSkill() {
+    var c = document.getElementById("missionSkill").value;
+    if (c == null) {
+        $(".skill-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "/Admin/Admin/CheckSkill",
+            data: { 'skill': c },
+            success: function (result) {
+                if (result == true) {
+                    Swal.fire('This Skill is already Exist!', 'Please Enter Another Skill')
+                }
+                if (result == false) {
+                    UpdateSkill()
+                }
+
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
+}
+
 //---------------------------------------------------Application--------------------------------------
 function approve(id) {
 
-    $.ajax({
-        method: "GET",
-        url: "/Admin/Admin/ApproveApplication",
-        data: { id: id },
-        success: function (result) {
-            Application();
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Approve it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                method: "GET",
+                url: "/Admin/Admin/ApproveApplication",
+                data: { id: id },
+                success: function (result) {
+                    Swal.fire(
+                        'Approved!',
+                        'Your file has been Approved.',
+                        'success'
+                    )
+                    Application();
+
+                },
+                error: function () {
+                    alert("Editt Theme Error")
+                }
+            })
+
         }
     })
 }
 
 function reject(id) {
 
-    $.ajax({
-        method: "GET",
-        url: "/Admin/Admin/RejectApplication",
-        data: { id: id },
-        success: function (result) {
-            Application();
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Reject it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
 
-        },
-        error: function () {
-            alert("Editt Theme Error")
+            $.ajax({
+                method: "GET",
+                url: "/Admin/Admin/RejectApplication",
+                data: { id: id },
+                success: function (result) {
+                    Swal.fire(
+                        'Rejected!',
+                        'Your file has been Rejected.',
+                        'success'
+                    )
+                    Application();
+
+                },
+                error: function () {
+                    alert("Editt Theme Error")
+                }
+            })
         }
     })
 }
+
 //--------------------------------------------------------User--------------------------------------------------
 function changeUser() {
 
@@ -475,6 +580,7 @@ function editAdminUser(id) {
 
     })
 }
+
 function Fnamekey() {
     $("#Fname-val").addClass("d-none");
 }

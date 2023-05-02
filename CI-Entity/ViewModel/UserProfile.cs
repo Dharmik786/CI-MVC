@@ -36,25 +36,25 @@ namespace CI_Entity.ViewModel
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Last Name is a Required field.")]
         public string LastName { get; set; }
+        [Required(ErrorMessage = "Employee Id is a Required field.")]
         public string EmployeeId { get; set; }
         public string Manger { get; set; }
-        public string Title { get; set; }
-        public string Department { get; set; }
-        public string MyProfile { get; set; }
-        public string WhyIVol { get; set; }
+        public string? Title { get; set; }
+        public string? Department { get; set; }
+        public string? MyProfile { get; set; }
+        public string? WhyIVol { get; set; }
         public int City { get; set; }
         public int Country { get; set; }
         public string Availablity { get; set; }
-        public string LinkedIn { get; set; }
+        public string? LinkedIn { get; set; }
         public IFormFile Avatar { get; set; }
         public string Email { get; set; }  
-
         public string Name { get; set; }
         [Required(ErrorMessage = "Subject is a Required field.")]
         public string Subject { get; set; }
         [Required(ErrorMessage = "Message is a Required field.")]
         public string Message { get; set; }
 
-
+        public List<CmsPage> CmsPage{ get; set; }  
     }
 }

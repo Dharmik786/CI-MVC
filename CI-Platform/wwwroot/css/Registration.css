@@ -2,6 +2,16 @@
     margin: 0;
     padding: 0;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
 .btn{
     border: 2px solid #F88634;
     width: 100%;
@@ -63,11 +73,9 @@
         height: 110vh;
     }
 }
-/* .w-100 {
-    filter: brightness(0.7);
-} */
+
 img{
-    height: 100vh;
+    height: 100%;
 }
 
 @media screen and (max-width:991px)

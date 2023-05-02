@@ -17,7 +17,7 @@ namespace CI_PlatForm.Repository.Interface
 
         public PasswordReset passwordResets(string email, string token);
         //public PasswordReset AddPassToken(string email, string token);
-
+     
         public List<User> user();
         public List<Mission> mission();
         public List<Country> countries();
@@ -30,6 +30,7 @@ namespace CI_PlatForm.Repository.Interface
         public List<MissionRating> MissionRatings();
         public List<MissionMedium> missionMedia();
         public List<Timesheet> timesheets();
+       
         public List<Comment> comments();
         public MissionInvite AddMissionInvite(int FromUserId, int missionId, long Touserid);
         public List<MissionApplication> missionApplications();
@@ -60,13 +61,13 @@ namespace CI_PlatForm.Repository.Interface
         public List<MissionSkill> GetMissionSkill();
         public void AddUserSkills(long SkillId, int UserId);
         public Admin GetAdminDetails(string email, string password);
-        public MissionTheme AddMissionTheme(string theme);
+        public MissionTheme AddMissionTheme(string theme,int status);
         public MissionTheme DeleteTheme(int themeId);
         public MissionTheme GetTheme(int themeId);
-        public MissionTheme EditTheme(string singleTheme, int ThemeId);
-        public Skill EditSkill(string singleSkill, int skillId);
+        public MissionTheme EditTheme(string singleTheme, int ThemeId,int status);
+        public Skill EditSkill(string singleSkill, int skillId,int status);
         public Skill DeleteSkill(int skillid);
-        public Skill AddSkill(string skill);
+        public Skill AddSkill(string skill,int stuats);
         public Skill GetSkill(int skillid);
         public Skill SkillStatus(int skillid);
         public MissionApplication approveApplication(int id);

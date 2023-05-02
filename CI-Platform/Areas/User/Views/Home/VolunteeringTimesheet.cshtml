@@ -129,11 +129,11 @@
                                             <td> @i.TimesheetTime.ToString().Split(":")[1]</td>
 
                                             <td class="d-flex align-items-center mt-1">
-                                                <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn">
+                                                <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn" >
                                                     <i class="bi bi-pencil-square editimg" onclick="EditTimeSheet(@i.TimesheetId)"></i>
                                                 </button>
                                             </td>
-                                            <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="TimeDelete(this.id)" /></td>
+                                            <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="TimeDelete(this.id)" style="cursor:pointer" /></td>
                                         </tr>
                                     }
 
@@ -306,7 +306,7 @@
                                             </button>
                                         </td>
 
-                                        <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="GoalDelete(this.id)" /></td>
+                                        <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="GoalDelete(this.id)" style="cursor:pointer"/></td>
                                     </tr>
                                 }
 

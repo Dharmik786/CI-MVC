@@ -31,6 +31,7 @@ namespace CI_PlatForm.Repository.Repository
                 PhoneNumber = PhoneNumber,
                 Email = Email,
                 Password = ConfirmPassword,
+                Status = "Active"
             };
             if (c == null)
             {
@@ -43,9 +44,10 @@ namespace CI_PlatForm.Repository.Repository
                 return false;
             }
         }
+
         public User Login(string Email, string Password)
         {
-            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password && u.DeletedAt==null && u.Status=="Active").FirstOrDefault();
+            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password && u.DeletedAt == null && u.Status == "Active").FirstOrDefault();
         }
         public Admin GetAdminDetails(string email, string password)
         {
@@ -574,12 +576,20 @@ namespace CI_PlatForm.Repository.Repository
             _CIDbContext.Add(skill);
             _CIDbContext.SaveChanges();
         }
-        public MissionTheme AddMissionTheme(string theme)
+        public MissionTheme AddMissionTheme(string theme, int status)
         {
             MissionTheme mt = new MissionTheme();
             if (theme != null)
             {
                 mt.Title = theme;
+                if (status == 1)
+                {
+                    mt.Status = 1;
+                }
+                else
+                {
+                    mt.Status = 2;
+                }
                 _CIDbContext.Add(mt);
                 _CIDbContext.SaveChanges();
             }
@@ -601,10 +611,18 @@ namespace CI_PlatForm.Repository.Repository
             MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == themeId);
             return m;
         }
-        public MissionTheme EditTheme(string singleTheme, int ThemeId)
+        public MissionTheme EditTheme(string singleTheme, int ThemeId, int status)
         {
             MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == ThemeId);
             m.Title = singleTheme;
+            if (status == 1)
+            {
+                m.Status = 1;
+            }
+            else
+            {
+                m.Status = 2;
+            }
             m.UpdatedAt = DateTime.Now;
             _CIDbContext.Update(m);
             _CIDbContext.SaveChanges();
@@ -624,12 +642,13 @@ namespace CI_PlatForm.Repository.Repository
             }
             return m;
         }
-        public Skill AddSkill(string skill)
+        public Skill AddSkill(string skill,int status)
         {
             Skill mt = new Skill();
             if (skill != null)
             {
                 mt.SkillName = skill;
+                mt.Status = Convert.ToString(status);
                 _CIDbContext.Add(mt);
                 _CIDbContext.SaveChanges();
             }
@@ -640,10 +659,11 @@ namespace CI_PlatForm.Repository.Repository
         {
             return _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillid);
         }
-        public Skill EditSkill(string singleSkill, int skillId)
+        public Skill EditSkill(string singleSkill, int skillId, int s)
         {
             Skill m = _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillId);
             m.SkillName = singleSkill;
+            m.Status = Convert.ToString(s);
             m.UpdatedAt = DateTime.Now;
             _CIDbContext.Update(m);
             _CIDbContext.SaveChanges();
@@ -655,6 +675,14 @@ namespace CI_PlatForm.Repository.Repository
             app.ApprovalStatus = "Approve";
             _CIDbContext.Update(app);
             _CIDbContext.SaveChanges();
+
+            var mission = _CIDbContext.Missions.FirstOrDefault(e => e.MissionId == app.MissionId);
+            var s = int.Parse(mission.Seats);
+            var ss = s - 1;
+            mission.Seats = Convert.ToString(ss);
+            _CIDbContext.Update(mission);
+            _CIDbContext.SaveChanges();
+
             return app;
         }
         public MissionApplication rejectApplication(int id)
@@ -776,7 +804,7 @@ namespace CI_PlatForm.Repository.Repository
                 user.CityId = City;
                 if (Img != null)
                 {
-                        
+
                     user.Avatar = Img;
                 }
 
@@ -924,6 +952,7 @@ namespace CI_PlatForm.Repository.Repository
                         var missionmedia = new MissionMedium();
                         missionmedia.MissionId = m.MissionId;
                         var ext = file.ContentType.Split("/");
+
                         missionmedia.MediaType = ext[1];
                         missionmedia.MediaInBytes = fileBytes;
                         missionmedia.MediaName = file.FileName;
@@ -951,6 +980,7 @@ namespace CI_PlatForm.Repository.Repository
             m.EndDate = mission.endDate;
             m.Seats = Convert.ToString(mission.seats);
             m.Deadline = mission.deadline;
+            m.Availability = mission.availability;
             if (mission.missionType == "Time")
             {
                 var missiongoal = _CIDbContext.GoalMissions.FirstOrDefault(g => g.MissionId == m.MissionId);

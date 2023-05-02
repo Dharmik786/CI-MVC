@@ -12,7 +12,7 @@
         <h3 class="ps-2">Mission Theme</h3>
         <div class="ms-auto me-5">
             <button type="button" data-bs-toggle="modal" data-bs-target="#addTheme"
-                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;" onclick="EmptyTheme()">
                 + Add
             </button>
 
@@ -26,10 +26,15 @@
                         <form asp-controller="Admin" asp-action="AddTheme">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label >Mission Theme</label>
-                                    <input type="text" a class="form-control" id="missionTheme" onkeydown="themeKey()"> 
+                                    <label>Mission Theme</label>
+                                    <input type="text" class="form-control" id="missionTheme" onkeydown="themeKey()">
                                     <span class="text-danger theme-validation d-none">Enter The Theme</span>
                                 </div>
+                                <label>Theme Status</label>
+                                <select class="form-select" id="ThmeStatus1">
+                                    <option value="1" selected>Active</option>
+                                    <option value="2">In-Active</option>
+                                </select>
 
                             </div>
                             <div class="modal-footer">
@@ -52,6 +57,7 @@
             <thead>
                 <tr>
                     <th>Theme Title</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -62,6 +68,14 @@
                     {
                         <tr>
                             <td>@i.Title</td>
+                            @if (@i.Status == 1)
+                            {
+                                <td class="text-success">Active</td>
+                            }
+                            else
+                            {
+                                <td class="text-danger">In-Active</td>
+                            }
                             <td>
                                 <button type="button" style="border:none;background-color:white;" data-bs-toggle="modal" data-bs-target="#editTheme">
                                     <i class="bi bi-pencil-square Edit-btn" style="color:orange" onclick="EditTheme(@i.MissionThemeId)"></i> &nbsp;
@@ -72,7 +86,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <form asp-controller="Admin" asp-action="UpdateTheme" method="post">
                                                 <div class="modal-body">
@@ -82,7 +96,11 @@
                                                         <input type="text" id="mthemeid" hidden>
                                                         <span class="text-danger theme-validation d-none">Enter The Theme</span>
                                                     </div>
-
+                                                    <label>Theme Status</label>
+                                                    <select class="form-select" id="ThmeStatus2">
+                                                        <option value="1" selected>Active</option>
+                                                        <option value="2">In-Active</option>
+                                                    </select>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">Close</button>

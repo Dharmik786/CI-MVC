@@ -12,7 +12,7 @@ namespace CI_Platform.Models
         [Required]
         public string LastName { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please Provide Email")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The Email field is required.")]
         [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,3}$", ErrorMessage = "Please Provide Valid Email")]
         //[Remote(action: "EmailAlreadyExists", controller: "Login")]
         public string Email { get; set; } = null!;

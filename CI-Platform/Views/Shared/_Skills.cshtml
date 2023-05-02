@@ -12,7 +12,7 @@
         <h3 class="ps-2">Skills</h3>
         <div class="ms-auto me-5">
             <button type="button" data-bs-toggle="modal" data-bs-target="#addskill"
-                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;">
+                    class="px-3 py-1" style="color:orange;border-radius:20px;background:white;border-color:orange;" onclick="EmptySkill()">
                 + Add
             </button>
 
@@ -30,13 +30,17 @@
                                     <input type="text" asp-for="singleskill" class="form-control" id="missionSkill" onkeypress="skillPress()">
                                     <span class="text-danger skill-validation d-none">Enter The Skill</span>
                                 </div>
-
+                                <span>Skill Status</span>
+                                <select class="form-select" id="SkillStatus1">
+                                    <option value="1" selected>Active</option>
+                                    <option value="0">In-Active</option>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">
                                     Close
                                 </button>
-                                <button type="button" onclick="AddSkill()" class="modal-save-btn px-2">Add</button>
+                                <button type="button" onclick="CheckSkill()" class="modal-save-btn px-2" @*onclick="AddSkill()"*@>Add</button>
                             </div>
                         </form>
                     </div>
@@ -64,11 +68,11 @@
                             <td>@i.SkillName</td>
                             @if(i.Status == "1")
                             {
-                                <td class="text-success status" onclick="SkillStatus(@i.SkillId)">Active</td>
+                                <td class="text-success status" @*onclick="SkillStatus(@i.SkillId)*@>Active</td>
                             }
                             else
                             {
-                                <td class="text-danger status" onclick="SkillStatus(@i.SkillId)">In-Active</td>
+                                <td class="text-danger status" @*onclick="SkillStatus(@i.SkillId)*@>In-Active</td>
                             }
                             <td>
                                 <button type="button" style="border:none;background-color:white;" data-bs-toggle="modal" data-bs-target="#editskill">
@@ -91,7 +95,11 @@
                                                         <span class="text-danger skill-validation d-none">Enter The Skill</span>
 
                                                     </div>
-
+                                                    <span>Skill Status</span>
+                                                    <select class="form-select" id="SkillStatus2">
+                                                        <option value="1" selected>Active</option>
+                                                        <option value="0">In-Active</option>
+                                                    </select>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="modal-close-btn px-2" data-bs-dismiss="modal">Close</button>

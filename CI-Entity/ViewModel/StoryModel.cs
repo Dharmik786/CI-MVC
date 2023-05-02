@@ -19,7 +19,6 @@ namespace CI_Entity.ViewModel
 
         [Required(ErrorMessage = "Title is required")]
         public string title { get; set; }
-        [Required(ErrorMessage = "Date is required")]
         public DateTime date { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Title is required @@")]

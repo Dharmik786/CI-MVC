@@ -54,14 +54,14 @@
                         <hr>
                         <div class="row">
                             <div class="mb-3 col-12 col-md-6">
-                                <label for="exampleFormControlInput1" class="form-label">Name*</label>
+                                <label for="exampleFormControlInput1" class="form-label">Name<span style="color:blue">*</span></label>
                                 <input type="text" class="form-control" asp-for="FirstName"
                                        placeholder="Enter your name">
                                        <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">
-                                <label for="exampleFormControlInput1" class="form-label">Surname*</label>
+                                <label for="exampleFormControlInput1" class="form-label">Surname<span style="color:blue">*</span></label>
                                 <input type="text" class="form-control" asp-for="LastName"
                                        placeholder="Enter your surname">
                                 <span asp-validation-for="LastName" class="text-danger"></span>
@@ -69,9 +69,10 @@
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">
-                                <label for="exampleFormControlInput1" class="form-label">Employee ID</label>
+                                <label for="exampleFormControlInput1" class="form-label">Employee ID<span style="color:blue">*</span></label>
                                 <input type="text" class="form-control" asp-for="EmployeeId"
                                        placeholder="Enter your employee id">
+                                <span asp-validation-for="EmployeeId" class="text-danger"></span>
                             </div>
 
                             @* <div class="mb-3 col-12 col-md-6">
@@ -93,7 +94,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">My Profile*</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">My Profile</label>
                                 <textarea class="form-control" asp-for="MyProfile" rows="3"
                                           placeholder="Enter your comments"></textarea>
                             </div>
@@ -111,7 +112,7 @@
                         <hr>
                         <div class="row">
                             <div class="mb-3 col-12 col-md-6">
-                                <label for="exampleFormControlTextarea1" class="form-label">Country*</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Country</label>
                                 <select class="form-select " aria-label="Default select example" asp-for="Country">
                                     <option value="0">Select Country</option>
                                     @foreach (var c in Model.countries)
@@ -121,7 +122,7 @@
                                 </select>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label  class="form-label">City*</label>
+                                <label  class="form-label">City</label>
                                 <select class="form-select "  asp-for="City">
                                     <option value="0">Select City</option>
                                     @foreach (var c in Model.cities)
@@ -374,7 +375,7 @@
 
 
 
-
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
             integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
