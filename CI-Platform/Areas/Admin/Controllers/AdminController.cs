@@ -32,7 +32,7 @@ namespace CI_Platform.Areas.Admin.Controllers
         public IActionResult GetUsers()
         {
             AdminVM a = new AdminVM();
-            a.Users = _IUser.user().Where(e=>e.DeletedAt == null).ToList();
+            a.Users = _IUser.user().Where(e => e.DeletedAt == null).ToList();
             a.countries = _IUser.countries();
             a.cities = _IUser.cities();
             return PartialView("_User", a);
@@ -113,16 +113,16 @@ namespace CI_Platform.Areas.Admin.Controllers
         //    _IUser.EditTheme(model.singleTheme, model.ThemeId);
         //    return RedirectToAction("Admin", "Admin");
         //}
-        public ActionResult UpdateMissionTheme(string theme, int themmeid,int status)
+        public ActionResult UpdateMissionTheme(string theme, int themmeid, int status)
         {
-            _IUser.EditTheme(theme, themmeid,status);
+            _IUser.EditTheme(theme, themmeid, status);
             return Json(new { success = true });
 
         }
         [HttpPost]
-        public IActionResult AddMissionTheme(string theme,int status)
+        public IActionResult AddMissionTheme(string theme, int status)
         {
-            _IUser.AddMissionTheme(theme,status);
+            _IUser.AddMissionTheme(theme, status);
             return Json(new { success = true });
         }
 
@@ -135,9 +135,9 @@ namespace CI_Platform.Areas.Admin.Controllers
             return Json(new { success = true, DeleteSkill = DeleteSkill });
         }
         [HttpPost]
-        public IActionResult AddSkill(string skill,int status)
+        public IActionResult AddSkill(string skill, int status)
         {
-            _IUser.AddSkill(skill,status);
+            _IUser.AddSkill(skill, status);
             return Json(new { success = true });
         }
         public async Task<IActionResult> EditSkill(int Skillid)
@@ -145,9 +145,9 @@ namespace CI_Platform.Areas.Admin.Controllers
             var skill = _IUser.GetSkill(Skillid);
             return Json(new { success = true, skill = skill });
         }
-        public IActionResult UpdateSkill(string skill, int skillid,int status)
+        public IActionResult UpdateSkill(string skill, int skillid, int status)
         {
-            _IUser.EditSkill(skill, skillid,status);
+            _IUser.EditSkill(skill, skillid, status);
             return Json(new { success = true });
         }
         public IActionResult SkillStatus(int id)
@@ -268,7 +268,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 vm.missionType = mission.MissionType;
                 vm.startDate = (DateTime)mission.StartDate;
                 vm.endDate = (DateTime)mission.EndDate;
-                    vm.seats = Convert.ToInt32(mission.Seats);
+                vm.seats = Convert.ToInt32(mission.Seats);
                 vm.availability = mission.Availability;
                 vm.url = finalurl;
 
@@ -278,7 +278,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 }
 
                 var time = _CIDbContext.GoalMissions.FirstOrDefault(e => e.MissionId == id);
-                if(time != null)
+                if (time != null)
                 {
                     vm.goalObjectiveText = time.GoalObjectiveText;
                     vm.goalValue = time.GoalValue;
@@ -323,23 +323,32 @@ namespace CI_Platform.Areas.Admin.Controllers
 
 
             return PartialView("_MissionAddEdit", vm);
-            }
+        }
 
 
         [HttpPost]
         public IActionResult AddEditMission(MissionVM model)
         {
-            if(model.missionId == 0 || model.missionId == null)
+            try
             {
-                var files = Request.Form.Files;
-                _IUser.AddMission(model, files);
-            }
-            else
-            {
-                var files = Request.Form.Files;
-                _IUser.EditMission(model, files);
+                if (model.missionId == 0 || model.missionId == null)
+                {
+                    var files = Request.Form.Files;
+                    _IUser.AddMission(model, files);
+                    return RedirectToAction("Admin");
+                }
+                else
+                {
+                    var files = Request.Form.Files;
+                    _IUser.EditMission(model, files);
 
+                }
             }
+            catch
+            {
+                return RedirectToAction("Admin");
+            }
+
 
             model.Missions = _IUser.mission();
             model.countries = _IUser.countries();
@@ -347,8 +356,8 @@ namespace CI_Platform.Areas.Admin.Controllers
             model.skills = _IUser.skills();
             model.missionThemes = _IUser.missionThemes();
             //return PartialView("_MissionA", model);
-            return RedirectToAction("Admin", "Admin");
-        }
+            return RedirectToAction("Admin");
+            }
 
         [HttpPost]
         public IActionResult delDoc(string docId)
@@ -396,8 +405,20 @@ namespace CI_Platform.Areas.Admin.Controllers
 
         public bool CheckSkill(string skill)
         {
-            var check = _CIDbContext.Skills.FirstOrDefault(x => x.SkillName == skill);
-            if(check != null)
+            var check = _CIDbContext.Skills.FirstOrDefault(x => x.SkillName.ToUpper() == skill.ToUpper().Trim());
+            if (check != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool CheckTheme(string theme)
+        {
+            var check = _CIDbContext.MissionThemes.FirstOrDefault(x => x.Title.ToUpper() == theme.ToUpper().Trim());
+            if (check != null)
             {
                 return true;
             }

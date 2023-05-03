@@ -15,7 +15,7 @@ namespace CI_PlatForm.Repository.Repository
     public class UserRepository : IUserInterface
     {
         private readonly CIDbContext _CIDbContext;
-
+        
         public UserRepository(CIDbContext CIDbContext)
         {
             _CIDbContext = CIDbContext;
@@ -47,7 +47,7 @@ namespace CI_PlatForm.Repository.Repository
 
         public User Login(string Email, string Password)
         {
-            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password && u.DeletedAt == null && u.Status == "Active").FirstOrDefault();
+            return _CIDbContext.Users.Where(u => u.Email == Email && u.Password == Password && u.DeletedAt == null ).FirstOrDefault();
         }
         public Admin GetAdminDetails(string email, string password)
         {
@@ -75,6 +75,7 @@ namespace CI_PlatForm.Repository.Repository
         }
         public PasswordReset passwordResets(string email, string token)
         {
+
             var c = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
             if (c == null)
             {
@@ -578,10 +579,14 @@ namespace CI_PlatForm.Repository.Repository
         }
         public MissionTheme AddMissionTheme(string theme, int status)
         {
+            string s = theme.Trim();
+            string firstletter = s.Substring(0, 1);
+            string remainingletter = s.Substring(1);
+            string final = firstletter.ToUpper() + remainingletter.ToLower();
             MissionTheme mt = new MissionTheme();
             if (theme != null)
             {
-                mt.Title = theme;
+                mt.Title = final;
                 if (status == 1)
                 {
                     mt.Status = 1;
@@ -613,8 +618,14 @@ namespace CI_PlatForm.Repository.Repository
         }
         public MissionTheme EditTheme(string singleTheme, int ThemeId, int status)
         {
+            string s = singleTheme.Trim();
+            string firstletter = s.Substring(0, 1);
+            string remainingletter = s.Substring(1);
+            string final = firstletter.ToUpper() + remainingletter.ToLower();
+            MissionTheme mt = new MissionTheme();
+
             MissionTheme m = _CIDbContext.MissionThemes.FirstOrDefault(e => e.MissionThemeId == ThemeId);
-            m.Title = singleTheme;
+            m.Title = final;
             if (status == 1)
             {
                 m.Status = 1;
@@ -642,12 +653,17 @@ namespace CI_PlatForm.Repository.Repository
             }
             return m;
         }
-        public Skill AddSkill(string skill,int status)
+        public Skill AddSkill(string skill,int status)  
         {
+            string s = skill.Trim();
+            string firstletter = s.Substring(0,1);
+            string remainingletter = s.Substring(1);
+            string final  = firstletter.ToUpper() + remainingletter.ToLower();
+
             Skill mt = new Skill();
             if (skill != null)
             {
-                mt.SkillName = skill;
+                mt.SkillName = final;
                 mt.Status = Convert.ToString(status);
                 _CIDbContext.Add(mt);
                 _CIDbContext.SaveChanges();
@@ -661,8 +677,13 @@ namespace CI_PlatForm.Repository.Repository
         }
         public Skill EditSkill(string singleSkill, int skillId, int s)
         {
+            string skill = singleSkill.Trim();
+            string firstletter = skill.Substring(0, 1);
+            string remainingletter = skill.Substring(1);
+            string final = firstletter.ToUpper() + remainingletter.ToLower();
+
             Skill m = _CIDbContext.Skills.FirstOrDefault(e => e.SkillId == skillId);
-            m.SkillName = singleSkill;
+            m.SkillName = final;
             m.Status = Convert.ToString(s);
             m.UpdatedAt = DateTime.Now;
             _CIDbContext.Update(m);
@@ -870,6 +891,7 @@ namespace CI_PlatForm.Repository.Repository
             m.Seats = Convert.ToString(mission.seats);
             m.ThemeId = mission.missionThemeId;
             m.Deadline = mission.deadline;
+            m.Availability = mission.availability;
             _CIDbContext.Add(m);
             _CIDbContext.SaveChanges();
 

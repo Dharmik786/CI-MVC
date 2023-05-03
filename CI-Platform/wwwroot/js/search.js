@@ -75,7 +75,7 @@ function mySearch(jpg) {
     console.log(id);
 
     var Search = $("input[name='searchQuery']").val();
-
+    console.log(Search)
     var country = [];
 
     $("input[type='checkbox'][name='country']:checked").each(function () {

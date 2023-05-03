@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CI_Entity.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CI_Platform.Models
 {
     public class Forget
     {
-        [Required(ErrorMessage = "Please Enter Email")]
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "The email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string? Email { get; set; }
+        public List<Banner> Banners { get; set; }
     }
 }

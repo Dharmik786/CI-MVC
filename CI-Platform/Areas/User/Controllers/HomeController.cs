@@ -271,7 +271,7 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Policy()
         {
             UserProfile u = new UserProfile();
-            u.CmsPage = _IUser.GetCmsPage();
+            u.CmsPage = _IUser.GetCmsPage().Where(e=>e.Status=="Active").ToList();
             return View(u);
         }
 

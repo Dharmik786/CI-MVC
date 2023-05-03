@@ -65,7 +65,7 @@
                     <!-- Image text -->
                     <!-- Thumbnail images -->
                     <div class="row mt-1" style="flex-wrap: inherit;overflow-x: scroll;100px;overflow-y:hidden;">
-                      
+
                         @{
                             int num1 = 0;
                         }
@@ -180,22 +180,25 @@
                     <div class="d-flex">
                         @if (userId != null)
                         {
-                            <button class="col-6  date-btn m-1 p-1 addFav" id="addFav" value="addFav" onclick="addToFav(@Model.singleMission.MissionId)">
+                            <button class="col-6  date-btn m-1 p-1 addFav" id="addFav" value="addFav">
                                 @{
                                     var fav = Model.favoriteMissions.Where(e => e.MissionId == Model.singleMission.MissionId).FirstOrDefault();
                                 }
 
                                 @if (fav != null)
                                 {
-                                    <img src="~/Image/fill-heart.png" class="me-2" />
+                                    <div onclick="RemoveToFav(@Model.singleMission.MissionId)">
+                                        <img src="~/Image/fill-heart.png" class="me-2" />
 
-                                    <span>Remove from Favourite</span>
+                                        <span>Remove from Favourite</span>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img src="/Image/heart1.png" class="me-2" />
-
-                                    <span>Add to Favourite</span>
+                                    <div onclick="addToFav(@Model.singleMission.MissionId)">
+                                        <img src="/Image/heart1.png" class="me-2" />
+                                        <span>Add to Favourite</span>
+                                    </div>
                                 }
 
 
@@ -522,14 +525,6 @@
 
 
 
-
-
-
-
-
-
-
-
                             </div>
 
                         </div>
@@ -683,6 +678,9 @@
             function loginalert() {
                 alert("login first");
             }
+
+
+
             function addToFav(missonid) {
                 $.ajax({
                     type: 'GET',
@@ -690,13 +688,45 @@
                     data: { 'missonid': missonid },
                     success: function (res) {
                         $('.addFav').html($(res).find('.addFav').html());
-                        Console.log("Mission Add to Wishlist")
                     },
                     error: function () {
                         alert("please login first.");
                     }
                 });
             }
+
+
+            function RemoveToFav(missonid) {
+
+                Swal.fire({
+                    title: 'Are you sure to Remove From Favourite?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        addToFav(missonid);
+
+                        Swal.fire(
+                            
+                            'Mission has been Removed From Favourite.'
+                            
+                        )
+                    }
+                })
+
+
+            }
+
+
+
+
+
+
             function PostComment(missionid) {
                 var cmt = document.getElementById("comment").value;
                 console.log(cmt)

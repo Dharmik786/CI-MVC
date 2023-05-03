@@ -50,7 +50,8 @@ namespace CI_Platform.Areas.User.Controllers
         public async Task<IActionResult> Login(LoginVM model)
         {
 
-
+            LoginVM vm = new LoginVM();
+            vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
 
             if (model.Email != null || model.Password != null)
             {
@@ -67,6 +68,11 @@ namespace CI_Platform.Areas.User.Controllers
                 {
                     if (user != null)
                     {
+                        if(user.Status == "In-Active")
+                        {
+                            ViewBag.UserInActive = "User Is No Longer Active";
+                            return View(vm);
+                        }
 
                         HttpContext.Session.SetString("userID", username);
                         HttpContext.Session.SetString("user", user.UserId.ToString());
@@ -82,14 +88,13 @@ namespace CI_Platform.Areas.User.Controllers
                     }
                     else
                     {
-                        ViewBag.Email = "email or pass is incorrect";
+                        ViewBag.Email = "Email or Password is incorrect";
                     }
                 }
             }
 
 
-            LoginVM vm = new LoginVM();
-            vm.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+          
 
             //return RedirectToAction("Login", "User");
             return View(vm);
@@ -101,7 +106,7 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Registration()
         {
             Registration r = new Registration();
-            r.banners = _IUser.GetBanner();
+            r.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
             return View(r);
         }
         [HttpPost]
@@ -122,7 +127,7 @@ namespace CI_Platform.Areas.User.Controllers
             }
 
             Registration r = new Registration();
-            r.banners = _IUser.GetBanner();
+            r.banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
             return View(r);
         }
 
@@ -130,80 +135,100 @@ namespace CI_Platform.Areas.User.Controllers
 
         public IActionResult Forget()
         {
-            return View();
+            Forget r = new Forget();
+            r.Banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+            return View(r);
         }
         [HttpPost]
         public async Task<IActionResult> Forget(Forget model)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                //var c = _IUser.Forget(model.Email);
-                //var user = _CIDbContext.Users.FirstOrDefault(u => u.Email == model.Email);
-                var c = _IUser.Forget(model.Email);
-                if (c == null)
+                if (model.Email!=null)
                 {
-                    return RedirectToAction("Forget", "user");
-                    //ViewBag.Forget = "Enter Valid Email";
+                    
+                    var c = _IUser.Forget(model.Email);
+                    if (c == null)
+                    {
+                        ViewBag.EmailNotFound = "Your Email is Not Found";
+                        Forget rs = new Forget();
+                        rs.Banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+                        return View(rs);
+                    }
+
+                    var token = Guid.NewGuid().ToString();
+
+                    var passwordReset = new PasswordReset
+                    {
+                        Email = model.Email,
+                        Token = token
+                    };
+
+                   
+                    _IUser.passwordResets(passwordReset.Email, passwordReset.Token);
+                   
+
+                    var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
+
+                    var fromAddress = new MailAddress("officehl1881@gmail.com", "Vedant shah");
+                    var toAddress = new MailAddress(model.Email);
+                    var subject = "Password reset request";
+                    var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
+
+                    var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    };
+                    var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        UseDefaultCredentials = false,
+                        //Credentials = new NetworkCredential("tatvahl@gmail.com", "dvbexvljnrhcflfw"),
+                        Credentials = new NetworkCredential("officehl1881@gmail.com", "vrbxqqayjlbvoihx"),
+                        EnableSsl = true
+                    };
+                    smtpClient.Send(message);
+
+                    return RedirectToAction("Login", "User");
                 }
+            }
+            catch
+            {
 
-                var token = Guid.NewGuid().ToString();
-
-                var passwordReset = new PasswordReset
-                {
-                    Email = model.Email,
-                    Token = token
-                };
-
-                //_IUser.AddPassToken(passwordReset.Email, passwordReset.Token);
-                _IUser.passwordResets(passwordReset.Email, passwordReset.Token);
-                // _CIDbContext.PasswordResets.Add(passwordReset);
-                //_CIDbContext.SaveChanges();
-
-                var resetLink = Url.Action("Reset_Password", "User", new { email = model.Email, token }, Request.Scheme);
-
-                var fromAddress = new MailAddress("officehl1881@gmail.com", "Vedant shah");
-                var toAddress = new MailAddress(model.Email);
-                var subject = "Password reset request";
-                var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
-
-                var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
-                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    UseDefaultCredentials = false,
-                    //Credentials = new NetworkCredential("tatvahl@gmail.com", "dvbexvljnrhcflfw"),
-                    Credentials = new NetworkCredential("officehl1881@gmail.com", "vrbxqqayjlbvoihx"),
-                    EnableSsl = true
-                };
-                smtpClient.Send(message);
-
-                return RedirectToAction("Login", "User");
             }
 
-            return View();
+            Forget r = new Forget();
+            r.Banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+            return View(r);
         }
 
         //----------------------------------------------RESET PASSWORD-------------------------------------------------------------
         [HttpGet]
         public IActionResult Reset_Password(string email, string token)
         {
-            // var passwordReset = _CIDbContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
-            var passwordReset = _IUser.passwordResets(email, token);
-            if (passwordReset == null)
+            try
             {
-                return RedirectToAction("Login", "User");
+                var passwordReset = _IUser.passwordResets(email, token);
+                if (passwordReset == null)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                // Pass the email and token to the view for resetting the password
+                var model = new ResetPass
+                {
+                    Email = email,
+                    Token = token
+                };
+                ResetPass r = new ResetPass();
+                r.Banners = _IUser.GetBanner().Where(e => e.DeletedAt == null).ToList();
+                return View(r);
             }
-            // Pass the email and token to the view for resetting the password
-            var model = new ResetPass
+            catch
             {
-                Email = email,
-                Token = token
-            };
-            return View();
+                return RedirectToAction("Forget", "User");
+            }
         }
 
         [HttpPost]

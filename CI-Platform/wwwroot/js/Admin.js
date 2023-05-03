@@ -159,7 +159,7 @@ function Management() {
 }
 
 
-/*-----------------------------------------------------------------------------------------Theme--------------------------------------------------- */
+/*---------------------------------------------------------------------------------------- Theme -------------------------------------------------- */
 function EmptyTheme() {
     document.getElementById("missionTheme").value = " ";
 }
@@ -193,7 +193,7 @@ function DeleteTheme(ThemeId) {
 
                 },
                 error: function () {
-                    alert("theme Error")
+                    alert("Theme delete Error")
                 }
             });
 
@@ -213,8 +213,8 @@ function EditTheme(ThemeId) {
 
             document.getElementById("mtheme").value = result.missionTheme.title;
             document.getElementById("mthemeid").value = result.missionTheme.missionThemeId;
-            var z=document.getElementById("ThmeStatus2").value = result.missionTheme.status;
-           
+            var z = document.getElementById("ThmeStatus2").value = result.missionTheme.status;
+
         },
         error: function () {
             alert("Editt Theme Error")
@@ -256,7 +256,7 @@ function Addtheme() {
 
     var theme = document.getElementById("missionTheme").value;
     var status = document.getElementById("ThmeStatus1").value;
-   
+
     if (theme == "" || theme == null) {
         $(".theme-validation").removeClass("d-none");
     }
@@ -277,6 +277,33 @@ function Addtheme() {
     }
 
 
+}
+
+function CheckAddTheme() {
+    var c = document.getElementById("missionTheme").value;
+
+    if (c == null || c == " ") {
+        $(".theme-validation").removeClass("d-none");
+    }
+    else {
+        $.ajax({
+            method: "GET",
+            url: "/Admin/Admin/CheckTheme",
+            data: { 'theme': c },
+            success: function (result) {
+                if (result == true) {
+                    Swal.fire('This Theme is already Exist!', 'Please Enter Another Theme')
+                }
+                if (result == false) {
+                    Addtheme()
+                }
+
+            },
+            error: function () {
+                alert("Editt Theme Error")
+            }
+        });
+    }
 }
 /*----------------------------------------------------------------------------------------- Skill --------------------------------------------------- */
 
@@ -409,7 +436,6 @@ function skillPress() {
 
 }
 
-
 function CheckSkill() {
     var c = document.getElementById("missionSkill").value;
     if (c == null) {
@@ -419,10 +445,10 @@ function CheckSkill() {
         $.ajax({
             method: "POST",
             url: "/Admin/Admin/CheckSkill",
-            data: { 'skill':c },
+            data: { 'skill': c },
             success: function (result) {
                 if (result == true) {
-                    Swal.fire('This Skill is already Exist!','Please Enter Another Skill')
+                    Swal.fire('This Skill is already Exist!', 'Please Enter Another Skill')
                 }
                 if (result == false) {
                     AddSkill();
@@ -803,15 +829,19 @@ function change() {
 
 function AddUpdateBanner() {
 
-
     //var img = document.getElementById("imginput").files[0];
     var desc = document.getElementById("discrption").value;
     var sort = document.getElementById("sortorder").value;
     var id = document.getElementById("BannerId").value;
 
     var file = document.getElementById("imginput").files[0];
-
-    if (file != undefined) {
+    if (desc == null || desc == "") {
+        $("#desc-val").removeClass("d-none");
+    }
+    else if (sort == 0 || sort == null || sort == "") {
+        $("#sort-val").removeClass("d-none");
+    }
+    else if (file != undefined) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function (e) {
@@ -880,6 +910,7 @@ function EditBanner(id) {
 
     })
 }
+
 function Addbanner() {
 
     document.getElementById("BannerId").value = 0;
@@ -925,76 +956,6 @@ function deletebanner(id) {
     })
 }
 //----------------------------------------------------------Misison-------------------------------------------
-
-//function EditMission(id) {
-//    alert(id);
-
-//    $.ajax({
-//        url: "/Admin/Admin/EditMission",
-//        method: "GET",
-//        data: { id: id },
-//        success: function (res) {
-//            console.log(res)
-
-//            document.getElementById('Mid').value = res.mission.missionId;
-//            document.getElementById('Title').value = res.mission.title;
-//            document.getElementById('ShortDescription').value = res.mission.shortDescription;
-//            document.getElementById('Description').value = res.mission.description;
-//            document.getElementById('Country').value = res.mission.countryId;
-//            document.getElementById('City').value = res.mission.cityId;
-//            document.getElementById('OrName').value = res.mission.organizationName;
-//            document.getElementById('OrDetail').value = res.mission.organizationDetail;
-//            document.getElementById('Type').value = res.mission.missionType;
-//            document.getElementById('Sdate').value = res.mission.startDate;
-//            document.getElementById('Edate').value = res.mission.endDate;
-//            document.getElementById('seats').value = res.mission.seats;
-//            document.getElementById('Deadline').value = res.mission.deadline;
-//            document.getElementById('Theme').value = res.mission.themeId;
-//            document.getElementById('Skill').value = res.mission.skillId;
-
-//            //document.getElementById('Img').src = res.Mission.avatar;
-
-//        },
-//        error: function () {
-//            alert("Get user details error")
-//        }
-
-//    })
-//}
-
-//const fileInput = document.getElementById('fileInput');
-
-//fileInput.addEventListener('change', (e) => {
-//    const files = e.target.files;
-
-//    for (let i = 0; i < files.length; i++) {
-//        const file = files[i];
-//        console.log(file)
-//        const reader = new FileReader();
-//       // reader.addEventListener('load')
-//    }
-//})
-
-//const fileInput = document.getElementById('fileInput');
-
-//fileInput.addEventListener('change', (event) => {
-//    const files = event.target.files; // get the selected files
-//    for (let i = 0; i < files.length; i++) {
-//        const file = files[i];
-
-//        console.log(file)
-
-//        const reader = new FileReader();
-//        reader.addEventListener('load', (event) => {
-//            const contents = event.target.result; // get the contents of the file
-//            console.log(`File ${i + 1}: ${file.name}\nContents:\n${contents}`);
-//        });
-//        reader.readAsText(file); // read the contents of the file
-//    }
-//});
-
-//const input = document.querySelector(".file")
-//let imagesArray = []
 
 function Cancle() {
     Mission()
@@ -1112,32 +1073,7 @@ function deletemission(missionId) {
             )
         }
     })
-
-
-
-
-
 }
-
-//const inputDiv = document.querySelector(".input-div")
-//const input = document.querySelector("#imageupload")
-//const output = document.querySelector("#preview")
-//let imagesArray = [];
-//let FilesToUpload = [];
-//let FilesNameToUpload = [];
-//let DelImg = [];
-//$(output).html("");
-
-//input.addEventListener("change", () => {
-
-//    const files = input.files
-//    for (let i = 0; i < files.length; i++) {
-//        imagesArray.push(files[i])
-//        FilesNameToUpload.push(files[i].name)
-//    }
-
-//    displayImages()
-//})
 
 function dk1() {
 
@@ -1154,67 +1090,3 @@ function dk1() {
 
 }
 
-//inputDiv.addEventListener("drop", () => {
-//    e.preventDefault()
-//    const files = e.dataTransfer.files
-//    for (let i = 0; i < files.length; i++) {
-//        if (!files[i].type.match("image")) continue;
-
-//        if (imagesArray.every(image => image.name !== files[i].name))
-//            imagesArray.push(files[i])
-//    }
-//    displayImages()
-//})
-
-
-//function dk2() {
-//    e.preventDefault()
-//    const files = e.dataTransfer.files
-//    for (let i = 0; i < files.length; i++) {
-//        if (!files[i].type.match("image")) continue;
-
-//        if (imagesArray.every(image => image.name !== files[i].name))
-//            imagesArray.push(files[i])
-//    }
-//    displayImages()
-
-//}
-
-
-//function displayImages() {
-//    $(output).html("");
-//    FilesToUpload.length = 0;
-
-//    if (imagesArray != null) {
-//        imagesArray.forEach((image, i) => {
-//            var file = imagesArray[i];
-//            console.log(file)
-//            var reader = new FileReader();
-//            reader.onload = function (event) {
-//                $(output).append(`<div class="image">
-//                                                                 <img src="${event.target.result}" alt="image">
-//                                                                 <button type="button" class="position-absolute btn image-close-btn" onclick="deleteImage(${i})" style="right:-3px;font-size:15px">&#x2716</button>
-//                                                               </div>`)
-//                FilesToUpload.push(event.target.result);
-//            }
-
-//            reader.readAsDataURL(file);
-
-
-//        })
-
-//        console.log("aiufh", FilesToUpload);
-//    }
-//}
-
-//function deleteImage(i) {
-//    console.log($(this).parent())
-//    console.log(imagesArray[i])
-
-//    imagesArray.splice(i, 1);
-//    DelImg.push(imagesArray[i]);
-//    console.log("del", DelImg)
-
-//    console.log("hihjdjd", imagesArray);
-//    displayImages()
-//}

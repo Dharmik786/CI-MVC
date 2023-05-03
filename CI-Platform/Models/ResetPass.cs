@@ -1,4 +1,6 @@
-﻿namespace CI_Platform.Models
+﻿using CI_Entity.Models;
+
+namespace CI_Platform.Models
 {
     public class ResetPass
     {
@@ -9,5 +11,6 @@
         public string? Password { get; set; }
 
         public string? ConfirmPassword { get; set; }
+        public List<Banner> Banners { get; set; }
     }
 }

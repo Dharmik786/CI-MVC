@@ -14,7 +14,7 @@ namespace CI_Entity.ViewModel
         public List<Country> countries { get; set; }
         public List<IFormFile> DocFiles { get; set; }
         public List<MissionMedium> ImageFiles { get; set; }
-        public string url { get; set; }
+        public string? url { get; set; }
         public List<City> cities { get; set; }
         public List<Mission> Missions { get; set; }
         public List<Skill> skills { get; set; }

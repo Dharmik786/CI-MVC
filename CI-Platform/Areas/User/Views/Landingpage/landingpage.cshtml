@@ -5,8 +5,6 @@
     Layout = "_navbar1";
 }
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,8 +30,8 @@
                 <form role="search" class="d-flex">
                     <img src="/Image/search.png" height="22px" width="21px" class="m-2">
                     <!-- <i class="bi bi-search mt-2"></i> -->
-                    <input class="form-control searchbox" placeholder="Search mission....." aria-label="Search"
-                           id="search" name="searchQuery" @*value="@ViewBag.InputSearch"*@ onkeyup="mySearch()">
+                    <input class="form-control searchbox" type="search" placeholder="Search mission....." aria-label="Search"
+                           id="search" name="searchQuery" oninput="mySearch()">
                 </form>
             </div>
 

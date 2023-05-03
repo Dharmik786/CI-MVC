@@ -59,16 +59,18 @@
 
                                         <input type="file" style="display:none;" id="imginput" accept="image/png, image/gif, image/jpeg"  onchange="change()"/>
                                     </div>
-
+                                    <span class="d-none text-danger" id="ban-val">Please Select Image for Banner</span>
                                     <input type="hidden" id="BannerId" />
                                 </div>
                                 <div class="col-12">
                                     <label>Description</label>
                                     <textarea id="discrption" class="text-break form-control" rows="9"></textarea>
+                                    <span class="d-none text-danger" id="desc-val">Please Enter The Description</span>
                                 </div>
                                 <div class="col-12">
                                     <label> Sort Order Value</label>
                                     <input type="number" id="sortorder" min="0" class="form-control" />
+                                    <span class="d-none text-danger" id="sort-val">Please Enter The Sort Order</span>
 
                                 </div>
 
