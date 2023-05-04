@@ -82,12 +82,13 @@ namespace CI_Platform.Areas.User.Controllers
             m.mission = _IUser.mission();
             m.missionApplications = _IUser.missionApplications().Where(u => u.UserId == Convert.ToInt32(userId) && u.DeletedAt == null).ToList();
             m.timesheets = _IUser.timesheets().Where(U => U.UserId == Convert.ToInt64(userId)).ToList();
+            m.GoalValue = _CIDbContext.GoalMissions.Where(e => e.DeletedAt == null).ToList();
             return View(m);
         }
 
         [HttpPost]
         public IActionResult AddTimeSheet(MissionList model)
-            {
+        {
             var userId = HttpContext.Session.GetString("user");
             _IUser.AddTime(model.missionId, Convert.ToInt32(userId), model.hour, model.min, model.action, model.date, model.notes, model.Hidden);
             return RedirectToAction("VolunteeringTimeSheet", "Home");
@@ -271,8 +272,24 @@ namespace CI_Platform.Areas.User.Controllers
         public IActionResult Policy()
         {
             UserProfile u = new UserProfile();
-            u.CmsPage = _IUser.GetCmsPage().Where(e=>e.Status=="Active").ToList();
+            u.CmsPage = _IUser.GetCmsPage().Where(e => e.Status == "Active").ToList();
             return View(u);
+        }
+
+        public IActionResult GetGoalValue(int id)
+        {
+            var GoalMission = _CIDbContext.GoalMissions.FirstOrDefault(e => e.MissionId == id);
+            var GoalValue = Convert.ToInt32(GoalMission.GoalValue);
+
+            var GoalAction = _CIDbContext.Timesheets.Where(e => e.MissionId == id && e.DeletedAt==null).ToList();
+            var sum = 0;
+
+            foreach (var i in GoalAction)
+            {
+                sum = (int)(sum + i.Action);
+            }
+            var remGoalValue = GoalValue - sum;
+            return Json(new { success = true, remGoalValue = remGoalValue });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

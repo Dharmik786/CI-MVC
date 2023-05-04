@@ -90,6 +90,7 @@ function check() {
 function ClearAll() {
     $(".filter-close-button").click()
     $(".clear-all").remove();
+    $(".filters-section").html("");
 }
 
 function removeElement(value) {

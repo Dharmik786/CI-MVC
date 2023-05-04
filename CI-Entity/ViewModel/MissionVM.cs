@@ -23,8 +23,10 @@ namespace CI_Entity.ViewModel
         public List<MissionSkill> missionSkills { get; set; }
         [Required(ErrorMessage = "Title is a Required field.")]
         public string title { get; set; }
+        [Required(ErrorMessage = "GoalObjective Text is a Required field.")]
         public string goalObjectiveText { get; set; }
-        public string goalValue { get; set; }
+        [Required(ErrorMessage = "GoalObjective Value is a Required field.")]
+        public int goalValue { get; set; }
         [Required(ErrorMessage = "Short Discription is a Required field.")]
         [StringLength(50, MinimumLength = 25, ErrorMessage = "Short Description must be atleast 25 characters")]
         public string shortDescription { get; set; }

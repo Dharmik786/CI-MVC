@@ -137,9 +137,13 @@ function EditGoalSheet(id) {
         url: "/User/Home/EditGoalTimeSheet",
         data: { id: id },
         success: function (result) {
-
+            console.log(result)
             var mission = document.getElementById('mission');
             mission.value = result.timesheet.missionId;
+
+            document.getElementById('mission').setAttribute('disabled', 'disabled');
+
+            document.getElementById('m2').value = result.timesheet.missionId;
 
             var action = document.getElementById('Gaction');
             action.value = result.timesheet.action; 
@@ -152,6 +156,8 @@ function EditGoalSheet(id) {
 
             var Hidden = document.getElementById('TimeSheetId2');
             Hidden.value = result.timesheet.timesheetId; 
+
+            CheckGoalValue(result.timesheet.missionId)
         },
         error: function () {
             console.log("Erroor");
@@ -159,4 +165,28 @@ function EditGoalSheet(id) {
     });
 }
 
+function CheckGoalValue(missionid) {
+    if (missionid == null) {
 
+        var id = document.getElementById("AddGoalSelect").value;
+    }
+    else {
+        id = missionid;
+    }
+
+    alert(id)
+    $.ajax({
+        type:"GET",
+        url:"/User/Home/GetGoalValue",
+        data: { id: id },
+        success: function (res) {
+            console.log(res);
+            document.getElementById("GoalValue").max = res.remGoalValue;
+            document.getElementById("Gaction").max = res.remGoalValue;
+        },
+        error: function () {
+            console.log("check Goal Value Error")
+        }
+    })
+
+}

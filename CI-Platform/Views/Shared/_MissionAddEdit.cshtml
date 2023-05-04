@@ -29,7 +29,7 @@
     }
 
     .dropzone {
-    border:none!important;
+        border: none !important;
     }
 </style>
 <div class="container mt-4">
@@ -107,7 +107,7 @@
                 <span asp-validation-for="missionType" class="text-danger"></span>
             </div>
 
-            
+
 
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <lable>Start Date</lable>
@@ -120,19 +120,21 @@
                 <span asp-validation-for="endDate" class="text-danger"></span>
 
             </div>
-           
-            <div class="col-lg-6 col-md-6 col-12 mb-2 ">
+
+            <div class="col-lg-6 col-md-6 col-12 mb-2 " id="GoalObj">
                 <lable>Enter GoalObjective Text</lable>
-                <input asp-for="goalObjectiveText" type="text" class="form-control" id="seats" />
+                <input asp-for="goalObjectiveText" type="text" class="form-control" />
+                <span asp-validation-for="goalObjectiveText" class="text-danger"></span>
             </div>
-            <div class="col-lg-6 col-md-6 col-12 mb-2 ">
+            <div class="col-lg-6 col-md-6 col-12 mb-2 " id="GoalVal">
                 <lable>Enter GoalObjective value</lable>
-                <input asp-for="goalValue" type="number"  class="form-control" id="seats" />
+                <input asp-for="goalValue" type="number" class="form-control" />
+                <span asp-validation-for="goalValue" class="text-danger"></span>
             </div>
 
             <div class="col-lg-6 col-md-6 col-12 mb-2 ">
                 <lable>Total Seats</lable>
-                <input asp-for="seats" type="number" class="form-control" id="seats" min="1"  />
+                <input asp-for="seats" type="number" class="form-control" id="seats" min="1" />
                 <span asp-validation-for="seats" class="text-danger"></span>
             </div>
 
@@ -159,7 +161,7 @@
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                 <lable>Select Mission Avaliblity </lable>
                 <select asp-for="availability" class="form-select" id="Theme">
-                  <option selected disabled>--Select Availability--</option>
+                    <option selected disabled>--Select Availability--</option>
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Yearly">Yearly</option>
@@ -280,8 +282,8 @@
             </div>
 
             <lable>Select Mission Document/Image </lable>
-            <div class="bg-opacity-25 mb-3 " style="border:1px solid black"> 
-             
+            <div class="bg-opacity-25 mb-3 " style="border:1px solid black">
+
                 <div class="form-control w-100 p-1 fallback" style="height:40px;">
                     <input name="file" type="file" multiple class="form-control w-100 h-100 " style="opacity:0;">
                 </div>
@@ -363,8 +365,8 @@
             </div>
 
 
-           
-        
+
+
 
 
             <div class="col-12 mb-2">
@@ -373,11 +375,11 @@
             </div>
 
             <div class="col-12 d-flex">
-                <button class="form-control modal-close-btn" type="button"  onclick="Cancle()" >Cancle</button>
+                <button class="form-control modal-close-btn" type="button" onclick="Cancle()">Cancle</button>
 
                 <button type="submit" class="form-control modal-save-btn" id="missionSave" style="display:none;">Submit</button>
 
-                <button type="submit" id="missionSave1"class="form-control modal-save-btn">Submit</button>
+                <button type="submit" id="missionSave1" class="form-control modal-save-btn">Submit</button>
             </div>
 
         </div>
@@ -386,11 +388,26 @@
 
 <script>
 
+    function MissionType() {
+        var type = document.getElementById("Type").value;
+        if (type == "Goal") {
+            $("#GoalVal").removeClass("d-none")
+            $("#GoalObj").removeClass("d-none")
+        }
+        else if (type == "Time") {
+            $("#GoalVal").addClass("d-none")
+            $("#GoalObj").addClass("d-none")
+        }
+    }
+
+    $(document).ready(function () {
+        MissionType()
+    })
     function showSave() {
         document.getElementById("missionSave").style.display = "";
         document.getElementById("missionSave1").style.display = "none";
     }
-    
+
 
     Dropzone.autoDiscover = false;
 

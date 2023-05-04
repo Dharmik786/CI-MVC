@@ -923,7 +923,7 @@ namespace CI_PlatForm.Repository.Repository
                 var missiongoal = new GoalMission();
                 missiongoal.MissionId = m.MissionId;
                 missiongoal.GoalObjectiveText = mission.goalObjectiveText;
-                missiongoal.GoalValue = mission.goalValue;
+                missiongoal.GoalValue = Convert.ToString(mission.goalValue);
                 _CIDbContext.Add(missiongoal);
                 _CIDbContext.SaveChanges();
             }
@@ -1017,7 +1017,7 @@ namespace CI_PlatForm.Repository.Repository
                 var missiongoal = _CIDbContext.GoalMissions.FirstOrDefault(g => g.MissionId == m.MissionId);
                 missiongoal.MissionId = m.MissionId;
                 missiongoal.GoalObjectiveText = mission.goalObjectiveText;
-                missiongoal.GoalValue = mission.goalValue;
+                missiongoal.GoalValue = Convert.ToString(mission.goalValue);
                 _CIDbContext.Update(missiongoal);
                 _CIDbContext.SaveChanges();
             }

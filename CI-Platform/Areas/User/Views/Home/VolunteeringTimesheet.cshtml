@@ -63,7 +63,7 @@
                                                 </div>
                                                 <div class="row mt-2">
                                                     <lable class="col-6 fs-6">Date Volunteered</lable>
-                                                    <input asp-for="date" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23" >
+                                                    <input asp-for="date" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23">
                                                     <span asp-validation-for="date" class="text-danger"></span>
                                                 </div>
                                                 <div class="row mt-1 ">
@@ -129,7 +129,7 @@
                                             <td> @i.TimesheetTime.ToString().Split(":")[1]</td>
 
                                             <td class="d-flex align-items-center mt-1">
-                                                <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn" >
+                                                <button class=" addbtn" data-bs-toggle="modal" data-bs-target="#TimeEditbtn">
                                                     <i class="bi bi-pencil-square editimg" onclick="EditTimeSheet(@i.TimesheetId)"></i>
                                                 </button>
                                             </td>
@@ -164,7 +164,7 @@
                                                             </div>
                                                             <div class="row mt-2">
                                                                 <lable class="col-6 fs-6">Date Volunteered</lable>
-                                                                <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23" >
+                                                                <input asp-for="date" id="date1" class="col-12  datediv py-1 rounded-1" type="date" min="2023-02-23">
                                                                 <span asp-validation-for="date" class="text-danger"></span>
                                                             </div>
                                                             <div class="row mt-1 ">
@@ -199,7 +199,7 @@
                                     </div>
                                 }
                             }
-                            
+
 
                         </tbody>
 
@@ -221,6 +221,7 @@
                             <span>  ADD</span>
                         </button>
                         @*Goal Add Modal*@
+
                         <div class="modal fade" id="GoalADDbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog  modal-dialog-centered">
                                 <div class="modal-content">
@@ -228,13 +229,14 @@
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Goal</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                           
+
                                         </div>
                                         <div class="modal-body">
                                             <div class="container">
                                                 <div class="row">
                                                     <lable class="col-6 fs-6">Mission</lable>
-                                                    <select asp-for="missionId" class=" datediv  py-1 ro col-12" aria-label="Default select example">
+                                                    <select asp-for="missionId" class=" datediv  py-1 ro col-12" id="AddGoalSelect" aria-label="Default select example" onchange="CheckGoalValue()">
+                                                        <option selected disabled>--Select Mission--</option>
                                                         @foreach (var i in Model.missionApplications)
                                                         {
                                                             if (i.Mission.MissionType == "Goal")
@@ -243,11 +245,12 @@
                                                             }
                                                         }
                                                     </select>
-                                                     <span asp-validation-for="missionId" class="text-danger"></span>
+                                                    <span asp-validation-for="missionId" class="text-danger"></span>
                                                 </div>
+
                                                 <div class="row mt-2">
                                                     <lable class="col-6 fs-6">Action</lable>
-                                                    <input asp-for="action" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" type="text" />
+                                                    <input asp-for="action" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" id="GoalValue" type="number" min="1" />
                                                     <span asp-validation-for="action" class="text-danger"></span>
                                                 </div>
                                                 <div class="row mt-1 ">
@@ -255,7 +258,7 @@
                                                     <label class=" col-8 fs-6"> Date of Volunteered</label>
                                                     <input asp-for="date" type="Date" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " min="2023-02-23">
                                                     <span asp-validation-for="date" class="text-danger"></span>
-                                                        
+
 
                                                 </div>
                                                 <div class="row mt-1">
@@ -306,65 +309,63 @@
                                             </button>
                                         </td>
 
-                                        <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="GoalDelete(this.id)" style="cursor:pointer"/></td>
+                                        <td> <img src="/Image/bin.png" id="@i.TimesheetId" onclick="GoalDelete(this.id)" style="cursor:pointer" /></td>
                                     </tr>
                                 }
+                            }
 
-                                @*Goal Edit button*@
-                                <div class="modal fade" id="GoalEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog  modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form asp-controller="Home" asp-action="AddTimeSheet" method="post">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Goal</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="container">
-                                                        <div class="row">
-                                                            <lable class="col-6 fs-6">Mission</lable>
-                                                            <select asp-for="missionId" class=" datediv  py-1 ro col-12" aria-label="Default select example" id="mission">
-                                                                @foreach (var j in Model.missionApplications)
-                                                                {
-                                                                    <option value="@j.MissionId">@j.Mission.Title</option>
-                                                                }
-                                                            </select>
-
-                                                        </div>
-                                                        <div class="row mt-2">
-                                                            <lable class="col-6 fs-6">Action</lable>
-                                                            <input asp-for="action" id="Gaction" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" type="text" />
-                                                            <span asp-validation-for="action" class="text-danger"></span>
-
-                                                        </div>
-                                                        <div class="row mt-1 ">
-
-                                                            <label class=" col-8 fs-6"> Date of Volunteered</label>
-                                                            <input asp-for="date" type="datetime-local" id="dateVolunteered" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " />
-                                                            <span asp-validation-for="date" class="text-danger"></span>
-
-
-                                                        </div>
-                                                        <div class="row mt-1">
-                                                            <label class=" col-8 fs-6"> Enter Your Message</label>
-
-                                                            <textarea asp-for="notes" id="notes" class=" datediv rounded-1 mt-1 " placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-
-                                                        </div>
-                                                        <input type="hidden" asp-for="Hidden" id="TimeSheetId2">
+                            @*Goal Edit button*@
+                            <div class="modal fade" id="GoalEditbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog  modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <form asp-controller="Home" asp-action="AddTimeSheet" method="post">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Please input below Volunteering Goal</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <lable class="col-6 fs-6">Mission</lable>
+                                                        <select class=" datediv  py-1 ro col-12" aria-label="Default select example" id="mission">
+                                                            @foreach (var j in Model.missionApplications)
+                                                            {
+                                                                <option value="@j.MissionId">@j.Mission.Title</option>
+                                                            }
+                                                        </select>
+                                                        <input type="hidden" asp-for="missionId" id="m2">
+                                                    </div>
+                                                    <div class="row mt-2">
+                                                        <lable class="col-6 fs-6">Action</lable>
+                                                        <input asp-for="action" type="number" id="Gaction" class="col-12  datediv py-1 rounded-1" placeholder="Enter Actions" min="1" />
+                                                        <span asp-validation-for="action" class="text-danger"></span>
 
                                                     </div>
+                                                    <div class="row mt-1 ">
+
+                                                        <label class=" col-8 fs-6"> Date of Volunteered</label>
+                                                        <input asp-for="date" type="datetime-local" id="dateVolunteered" placeholder="Enter Date " class="py-1 datediv rounded-1 col-12 " />
+                                                        <span asp-validation-for="date" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <label class=" col-8 fs-6"> Enter Your Message</label>
+
+                                                        <textarea asp-for="notes" id="notes" class=" datediv rounded-1 mt-1 " placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+
+                                                    </div>
+                                                    <input type="hidden" asp-for="Hidden" id="TimeSheetId2">
+
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="rounded-pill addbtn  px-3 py-1">Submit</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="rounded-pill bg-white px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="rounded-pill addbtn  px-3 py-1">Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
+                            </div>
 
-                            }
 
                         </tbody>
 

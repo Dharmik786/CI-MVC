@@ -93,14 +93,11 @@ namespace CI_Platform.Areas.User.Controllers
             missionList.favoriteMissions = _IUser.favoriteMissions();
             missionList.missionRatings = _IUser.MissionRatings();
             missionList.missionMedia = _IUser.missionMedia();
-            List<FavoriteMission> fav = _IUser.favoriteMissions().ToList();
+
             var msn = _IUser.mission().ToList();
 
 
-            //var f = from M in mission.AsEnumerable()
-            //        join F in fav.AsEnumerable() on M.MissionId equals F.MissionId
-            //        select M;
-            //var Fav1 = f.ToList();
+
 
             //Seacrh
             if (search != null)
@@ -138,7 +135,8 @@ namespace CI_Platform.Areas.User.Controllers
                     break;
 
                 case "My Favourites":
-                    mission = mission;
+                    var favmissions = _CIDbContext.FavoriteMissions.Where(m => m.UserId.ToString() == id).ToList();
+                    mission = mission.OrderByDescending(x=>favmissions.Any(m=>m.MissionId == x.MissionId)).ToList();
                     break;
 
                 case "Registration deadline":

@@ -16,7 +16,7 @@ namespace CI_Entity.ViewModel
 {
     public class MissionList
     {   
-       
+       public List<GoalMission> GoalValue { get; set; }
         public List<Mission> mission { get; set; }
         public List<City> cities { get; set; }
         public List<Country> countries { get; set; }
@@ -43,7 +43,7 @@ namespace CI_Entity.ViewModel
         public int missionCount { get; set; }
 
         public int avgrating { get; set; }
-        [Required(ErrorMessage = "Select Mission")]
+        [Required(ErrorMessage = "Please Select Mission")]
         public long missionId { get; set; }
         public long userId { get; set; }
         public Story storydetails { get; set; }

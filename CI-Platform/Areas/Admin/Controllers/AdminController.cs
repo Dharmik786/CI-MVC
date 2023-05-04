@@ -281,7 +281,7 @@ namespace CI_Platform.Areas.Admin.Controllers
                 if (time != null)
                 {
                     vm.goalObjectiveText = time.GoalObjectiveText;
-                    vm.goalValue = time.GoalValue;
+                    vm.goalValue = Convert.ToInt32(time.GoalValue);
 
                 }
 

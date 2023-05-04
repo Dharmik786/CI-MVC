@@ -244,7 +244,9 @@
     @* <partial name="_navbar1"/>*@
     <div class="filters-section d-flex align-items-center flex-wrap justify-content-center mt-2">
     </div>
-
+    @{
+        var userId = Context.Session.GetString("user");
+    }
 
     <div class="container grid-container mt-2">
         <div class="row mb-2">
@@ -261,6 +263,10 @@
                             <option value="Newest">Newest</option>
                             <option value="Oldest">Oldest</option>
                             <option value="Lowest Seats">Lowest Seats</option>
+                            @if (userId != null)
+                            {
+                                <option value="My Favourites">My Favourite Missions</option>
+                            }
                             <option value="Highest Seats">Highest Seats</option>
                             <option value="Registration deadline">Registration deadline</option>
                         </select>

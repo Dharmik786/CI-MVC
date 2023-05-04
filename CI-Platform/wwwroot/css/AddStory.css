@@ -99,7 +99,7 @@
     height: 200px;
     border-radius: 5px;
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
     text-align: center;
     border: 2px dotted black;
